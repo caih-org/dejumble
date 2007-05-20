@@ -1,0 +1,17 @@
+SearchFS
+========
+
+Simple example:
+
+> python SearchFS/SearchFS.py /path/to/mount -o query="find ~/Music/ -name *.mp3"
+
+to unmount:
+
+> fusermount -u /path/to/mount
+
+
+Requirements
+============
+
+python 2.4 (not sure if this works with older versions)
+pyhton-fuse
