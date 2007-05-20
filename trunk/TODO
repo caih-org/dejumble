@@ -1,0 +1,28 @@
+Version 0.2
+
+* Expire queries
+
+
+Version 0.4
+
+* Define search backend API
+* Extract current shell search backend
+* Create a beagle backend
+
+
+Version 0.6
+
+* Write a music search backend with clasification by artist, album, genre, etc
+* Write a documents search backend with clasification by document type, last accesed, not classified, etc.
+
+
+Version 0.8
+
+* Write documentation 
+* gettext support
+
+
+Version 1.0
+
+* Cleanup code
+
