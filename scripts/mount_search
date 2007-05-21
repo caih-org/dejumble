@@ -9,7 +9,7 @@ def main():
     global server
 
     usage = """
-SearchFS: mounts a directory with the results of a query.
+mount_search: mounts a directory with the results of a query.
 
 """ + Fuse.fusage
 

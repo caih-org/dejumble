@@ -3,11 +3,11 @@ SearchFS
 
 Simple example:
 
-> python SearchFS/SearchFS.py /path/to/mount -o query="find ~/Music/ -name *.mp3"
+PYTHONPATH="src" scripts/mount_search /path/to/mount -o query="find ~/Music/ -name *.mp3"
 
 to unmount:
 
-> fusermount -u /path/to/mount
+fusermount -u /path/to/mount
 
 
 Requirements
