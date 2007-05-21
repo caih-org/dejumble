@@ -1,0 +1,5 @@
+<directory>
+	<directory name="Documents" handler="DocumentsHandler"/>
+	<directory name="Music" handler="MusicHandler" pattern="%a/%b/%t.%e"/>
+	<directory name="Applications" handler="ApplicationsHandler"/>
+</directory>

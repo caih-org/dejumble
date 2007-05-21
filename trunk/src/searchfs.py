@@ -10,20 +10,26 @@ import os
 import stat
 import errno
 import commands
+import logging
 
 import fuse
 from fuse import Fuse
 
 fuse.fuse_python_api = (0, 2)
 
+logger = logging.getLogger('searchfs')
+hdlr = logging.FileHandler('/home/cesar/.searchfs.log')
+formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+hdlr.setFormatter(formatter)
+logger.addHandler(hdlr)
+logger.setLevel(logging.INFO)
+
+
 def filenamepart(path):
     return path.rsplit('/', 1)[-1]
 
 def pathpart(path):
     return path.rsplit('/', 1)[-1]
-
-def log(message):
-        os.system('echo `date` "' + message + '" >> ~/.searchfs.log')
 
 def flag2mode(flags):
     md = {os.O_RDONLY: 'r', os.O_WRONLY: 'w', os.O_RDWR: 'w+'}
@@ -37,15 +43,17 @@ def flag2mode(flags):
 
 class SearchFS(Fuse):
     def main(self, *a, **kw):
-        log('main');
+        logger.info('main');
         self.file_class = self.SearchResultFile
         self.executequery();
         return Fuse.main(self, *a, **kw)
 
     def executequery(self):
-        log('executequery: ' + self.query);
+        logger.info('executequery: ' + self.query);
         self.files = { '..': '..', '.': '.' }
         filenames = commands.getoutput(self.query).splitlines()
+        logger.info('result (first line): ' + filenames[0]);
+	# TODO: Watch out for duplicates
         for r in filenames:
             self.files['/' + filenamepart(r)] = r
 
@@ -59,7 +67,6 @@ class SearchFS(Fuse):
             return os.lstat(self.files[path])
 
     def readdir(self, path, offset):
-	# TODO: Watch out for duplicates
         for filename, path in self.files.iteritems():
             yield fuse.Direntry(filename[1:])
 
