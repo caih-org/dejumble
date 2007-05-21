@@ -17,16 +17,19 @@ from distutils.core import setup
 
 doclines = __doc__.splitlines()
 
-setup(name="searchfs",
-      version="0.1",
-      packages = ["searchfs"],
-      maintainer="Cesar Izurieta",
-      maintainer_email="cesar@caih.org",
-      url="http://caih.org/searchfs",
-      license="http://www.gnu.org/copyleft/gpl.html",
-      platforms=["unix"],
+setup(name='searchfs',
+      version='0.1',
+      package_dir = {'' : 'src'},
+      packages = ['SearchFS'],
+      py_modules = ['searchfs'],
+      scripts = ['scripts/mount_search'],
+      maintainer='Cesar Izurieta',
+      maintainer_email='cesar@caih.org',
+      url='http://caih.org/searchfs',
+      license='http://www.gnu.org/copyleft/gpl.html',
+      platforms=['unix'],
       description = doclines[0],
       classifiers = filter(None, classifiers.splitlines()),
-      long_description = "\n".join(doclines[2:]),
+      long_description = '\n'.join(doclines[2:]),
 )
 
