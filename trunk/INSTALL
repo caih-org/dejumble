@@ -1,0 +1,8 @@
+To build:
+
+python setup.py build
+
+To install as root:
+
+python setup.py install
+

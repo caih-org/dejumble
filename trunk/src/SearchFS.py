@@ -17,10 +17,13 @@ from fuse import Fuse
 fuse.fuse_python_api = (0, 2)
 
 def filenamepart(path):
-    return path.split('/')[-1]
+    return path.rsplit('/', 1)[-1]
+
+def pathpart(path):
+    return path.rsplit('/', 1)[-1]
 
 def log(message):
-        commands.getoutput('echo `date` "' + message + '" >> ~/.searchfs.log')
+        os.system('echo `date` "' + message + '" >> ~/.searchfs.log')
 
 def flag2mode(flags):
     md = {os.O_RDONLY: 'r', os.O_WRONLY: 'w', os.O_RDWR: 'w+'}
@@ -56,6 +59,7 @@ class SearchFS(Fuse):
             return os.lstat(self.files[path])
 
     def readdir(self, path, offset):
+	# TODO: Watch out for duplicates
         for filename, path in self.files.iteritems():
             yield fuse.Direntry(filename[1:])
 
@@ -64,6 +68,11 @@ class SearchFS(Fuse):
 
     def unlink(self, path):
         os.unlink(self.files[path])
+
+    def rename(self, path, path1):
+        pathpart0 = pathpart(path)
+        pathpart1 = pathpart(path1)
+        os.rename(self.files[path], path1)
 
     def chmod(self, path, mode):
         os.chmod(self.files[path], mode)
@@ -135,25 +144,4 @@ class SearchFS(Fuse):
         def ftruncate(self, len):
             self.file.truncate(len)
 
-
-def main():
-    global server
-
-    usage = """
-SearchFS: mounts a directory with the results of a query.
-
-""" + Fuse.fusage
-
-    server = SearchFS(version="%prog " + fuse.__version__, 
-                     usage=usage, 
-                     dash_s_do='setsingle')
-
-    server.parser.add_option(mountopt="query", metavar="QUERY", default='locate *.mp3',
-                             help="execute QUERY [default: %default]")
-    server.parse(values=server, errex=1)
-
-    server.main()
-
-if __name__ == '__main__':
-    main()
 

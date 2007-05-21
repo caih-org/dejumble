@@ -1,3 +1,5 @@
+Items on this list may be work in progress
+
 Version 0.2
 
 * Expire queries
@@ -5,22 +7,25 @@ Version 0.2
 
 Version 0.4
 
-* Define search backend API
-* Extract current shell search backend
+* Define search backend plugin API
+* Extract current shell search backend plugin
 * Create a beagle backend
 
 
 Version 0.6
 
 * Write a music search backend with clasification by artist, album, genre, etc
-* Write a documents search backend with clasification by document type, last accesed, not classified, etc.
+* Write a documents search backend with clasification by document type, extension, last accesed, not classified, etc.
+* Write an application search backend for rpm to show all installed applications as one executable file and to let the user drop an rpm file on that folder (as root) to install and delete that file (as root too) to uninstall
 
 
 Version 0.8
 
 * Write documentation 
 * gettext support
-
+* Define package manager plugin API from the application search backend
+* Extract rpm package manager plugin 
+* Create a .deb and others package manager plugins 
 
 Version 1.0
 
