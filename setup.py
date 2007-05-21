@@ -4,9 +4,9 @@ SearchFS is a FUSE that lets the user mount a virtual directory with the result 
 """
 
 classifiers = """\
-Development Status :: 2 - Beta
+Development Status :: 4 - Beta
 Intended Audience :: Developers
-License :: OSI Approved :: Zope Public License
+License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)
 Programming Language :: Python
 Topic :: Filesystems
 Topic :: Software Development :: Libraries :: Python Modules
@@ -19,7 +19,7 @@ doclines = __doc__.splitlines()
 
 setup(name="searchfs",
       version="0.1",
-      packages = ["SearchFS"],
+      packages = ["searchfs"],
       maintainer="Cesar Izurieta",
       maintainer_email="cesar@caih.org",
       url="http://caih.org/searchfs",

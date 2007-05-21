@@ -1,0 +1,28 @@
+#!/usr/bin/env python
+
+import searchfs
+
+import fuse
+from fuse import Fuse
+
+def main():
+    global server
+
+    usage = """
+SearchFS: mounts a directory with the results of a query.
+
+""" + Fuse.fusage
+
+    server = searchfs.SearchFS(version="%prog " + fuse.__version__, 
+                     usage=usage, 
+                     dash_s_do='setsingle')
+
+    server.parser.add_option(mountopt="query", metavar="QUERY", default='locate *.mp3',
+                             help="execute QUERY [default: %default]")
+    server.parse(values=server, errex=1)
+
+    server.main()
+
+if __name__ == '__main__':
+    main()
+
