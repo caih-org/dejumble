@@ -9,6 +9,7 @@ Version 0.2
 
 Version 0.4
 
+* Create an XML parser to parse configuration of mount definition files
 * Define SearchBackendPlugin API
 * Extract current ShellSearchBackendPlugin
 * Create a BeagleSearchBackendPlugin
