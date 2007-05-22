@@ -8,6 +8,8 @@ import logging.config
 import fuse
 from fuse import Fuse
 
+import pkg_resources
+
 def main():
     global server
 
@@ -40,7 +42,7 @@ mount_search: mounts a directory with the results of a query.
 
 
 if __name__ == '__main__':
-    logging.config.fileConfig("logging.conf")
+    logging.config.fileConfig(pkg_resources.resource_string('SearchFS', 'conf/logging.conf'))
 
     # redirect stdout to a disk file
     saveout = sys.stdout
