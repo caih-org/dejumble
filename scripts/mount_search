@@ -42,7 +42,8 @@ mount_search: mounts a directory with the results of a query.
 
 
 if __name__ == '__main__':
-    logging.config.fileConfig(pkg_resources.resource_string('SearchFS', 'conf/logging.conf'))
+    print(pkg_resources.resource_filename('SearchFS', 'conf/logging.conf'))
+    logging.config.fileConfig(pkg_resources.resource_filename('SearchFS', 'conf/logging.conf'))
 
     # redirect stdout to a disk file
     saveout = sys.stdout
