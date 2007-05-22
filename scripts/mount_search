@@ -2,6 +2,9 @@
 
 import searchfs
 
+import sys
+import logging
+import logging.config
 import fuse
 from fuse import Fuse
 
@@ -14,15 +17,44 @@ mount_search: mounts a directory with the results of a query.
 """ + Fuse.fusage
 
     server = searchfs.SearchFS(version="%prog " + fuse.__version__, 
-                     usage=usage, 
-                     dash_s_do='setsingle')
+                               usage=usage, 
+                               dash_s_do='setsingle')
 
-    server.parser.add_option(mountopt="query", metavar="QUERY", default='locate *.mp3',
+    server.parser.add_option(mountopt="conf",
+                             metavar="CONF",
+                             default='~/.searchfs/default.xml',
+                             help="read configuration from CONF file [default: %default]")
+    server.parser.add_option(mountopt="handler",
+                             metavar="HANDLER",
+                             default='Search',
+                             help="use HANDLER to handle QUERY [default: %default]")
+    server.parser.add_option(mountopt="query",
+                             metavar="QUERY",
+                             default='locate *.mp3',
                              help="execute QUERY [default: %default]")
+
     server.parse(values=server, errex=1)
+
 
     server.main()
 
+
 if __name__ == '__main__':
+    logging.config.fileConfig("logging.conf")
+
+    # redirect stdout to a disk file
+    saveout = sys.stdout
+    saveerr = sys.stderr
+    outfile = open('/tmp/out.txt', 'w')
+    sys.stdout = outfile
+    sys.stderr = outfile
+
+    # output stuff
     main()
+
+    # restore stdout
+    outfile.flush()
+    outfile.close()
+    sys.stdout = saveout
+    sys.stderr = saveerr
 

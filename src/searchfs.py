@@ -9,24 +9,17 @@
 import os
 import stat
 import errno
-import commands
 import logging
 
 import fuse
 from fuse import Fuse
 
+import SearchFS.handlers
+from SearchFS.handlers import *
+
 fuse.fuse_python_api = (0, 2)
 
 logger = logging.getLogger('searchfs')
-hdlr = logging.FileHandler('/home/cesar/.searchfs.log')
-formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
-hdlr.setFormatter(formatter)
-logger.addHandler(hdlr)
-logger.setLevel(logging.INFO)
-
-
-def filenamepart(path):
-    return path.rsplit('/', 1)[-1]
 
 def pathpart(path):
     return path.rsplit('/', 1)[-1]
@@ -40,22 +33,15 @@ def flag2mode(flags):
 
     return m
 
-
 class SearchFS(Fuse):
     def main(self, *a, **kw):
-        logger.info('main');
+        global server
+        server = self 
+        logger.debug('main');
         self.file_class = self.SearchResultFile
-        self.executequery();
+        self.handler = getHandler(self.handler)
+        self.handler.executequery(self.query);
         return Fuse.main(self, *a, **kw)
-
-    def executequery(self):
-        logger.info('executequery: ' + self.query);
-        self.files = { '..': '..', '.': '.' }
-        filenames = commands.getoutput(self.query).splitlines()
-        logger.info('result (first line): ' + filenames[0]);
-	# TODO: Watch out for duplicates
-        for r in filenames:
-            self.files['/' + filenamepart(r)] = r
 
     def getattr(self, path):
         st = self.SearchFSStat()
@@ -64,40 +50,51 @@ class SearchFS(Fuse):
             st.st_nlink = 2
             return st
         else:
-            return os.lstat(self.files[path])
+            logger.debug('getattr(' + path + ')');
+            return os.lstat(self.handler.realpath(path))
 
     def readdir(self, path, offset):
-        for filename, path in self.files.iteritems():
+        logger.debug('readdir(' + path + ', ' + str(offset) + ')');
+        for filename, realpath in self.handler.filelist(path):
+            logger.debug('readdir ' + filename + ', ' + realpath);
             yield fuse.Direntry(filename[1:])
 
     def readlink(self, path):
-        return os.readlink(self.files[path])
+        logger.debug('readlink(' + path + ')');
+        return os.readlink(self.handler.realpath(path))
 
     def unlink(self, path):
-        os.unlink(self.files[path])
+        logger.debug('unlink(' + path + ')');
+        os.unlink(self.handler.realpath(path))
 
     def rename(self, path, path1):
+        logger.debug('rename(' + path + ', ' + path1 + ')');
         pathpart0 = pathpart(path)
         pathpart1 = pathpart(path1)
-        os.rename(self.files[path], path1)
+        if pathpart0 == pathpart1:
+            os.rename(self.handler.realpath(path), path1)
+        else:
+            return -errno.ENOENT
 
     def chmod(self, path, mode):
-        os.chmod(self.files[path], mode)
+        logger.debug('chmod(' + path + ', ' + mode + ')');
+        os.chmod(self.handler.realpath(path), mode)
 
     def chown(self, path, user, group):
-        os.chown(self.files[path], user, group)
+        os.chown(self.handler.realpath(path), user, group)
 
     def truncate(self, path, len):
-        f = open(self.files[path], "a")
+        f = open(self.handler.realpath(path), "a")
         f.truncate(len)
         f.close()
 
     def utime(self, path, times):
-        os.utime(self.files[path], times)
+        os.utime(self.handler.realpath(path), times)
 
     def access(self, path, mode):
-        if not os.access(self.files[path], mode):
-            return -EACCES
+        logger.debug('access(' + path + ', ' + mode + ')');
+        if not os.access(self.handler.realpath(path), mode):
+            return -errno.EACCES
 
     class SearchFSStat(fuse.Stat):
         def __init__(self):
@@ -114,20 +111,23 @@ class SearchFS(Fuse):
 
     class SearchResultFile(object):
         def __init__(self, path, flags, *mode):
-            self.file = os.fdopen(os.open(server.files[path], flags, *mode), 
+            self.file = os.fdopen(os.open(server.handler.realpath(path), flags, *mode), 
                                   flag2mode(flags))
             self.fd = self.file.fileno()
 
         def read(self, length, offset):
+            logger.debug('read(' + str(length) + ', ' + str(offset) + ')');
             self.file.seek(offset)
             return self.file.read(length)
 
         def write(self, buf, offset):
+            logger.debug('write([buf], ' + str(offset) + ')');
             self.file.seek(offset)
             self.file.write(buf)
             return len(buf)
 
         def release(self, flags):
+            logger.debug('release(' + str(flags) + ')');
             self.file.close()
 
         def _fflush(self):
@@ -146,6 +146,7 @@ class SearchFS(Fuse):
             os.close(os.dup(self.fd))
 
         def fgetattr(self):
+            logger.debug('fgetattr()');
             return os.fstat(self.fd)
 
         def ftruncate(self, len):
