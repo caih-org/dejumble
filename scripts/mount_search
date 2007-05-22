@@ -6,17 +6,21 @@ import sys
 import logging
 import logging.config
 import fuse
+import gettext
 from fuse import Fuse
 
 import pkg_resources
 
+#gettext.install('searchfs', pkg_resources.resource_filename('SearchFS', 'po/'))
+gettext.install('searchfs')
+
 def main():
     global server
 
-    usage = """
+    usage = _("""
 mount_search: mounts a directory with the results of a query.
 
-""" + Fuse.fusage
+""") + Fuse.fusage
 
     server = searchfs.SearchFS(version="%prog " + fuse.__version__, 
                                usage=usage, 
@@ -25,15 +29,15 @@ mount_search: mounts a directory with the results of a query.
     server.parser.add_option(mountopt="conf",
                              metavar="CONF",
                              default='~/.searchfs/default.xml',
-                             help="read configuration from CONF file [default: %default]")
+                             help=_("read configuration from CONF file [default: %default]"))
     server.parser.add_option(mountopt="handler",
                              metavar="HANDLER",
                              default='Search',
-                             help="use HANDLER to handle QUERY [default: %default]")
+                             help=_("use HANDLER to handle QUERY [default: %default]"))
     server.parser.add_option(mountopt="query",
                              metavar="QUERY",
                              default='locate *.mp3',
-                             help="execute QUERY [default: %default]")
+                             help=_("execute QUERY [default: %default]"))
 
     server.parse(values=server, errex=1)
 
@@ -42,7 +46,6 @@ mount_search: mounts a directory with the results of a query.
 
 
 if __name__ == '__main__':
-    print(pkg_resources.resource_filename('SearchFS', 'conf/logging.conf'))
     logging.config.fileConfig(pkg_resources.resource_filename('SearchFS', 'conf/logging.conf'))
 
     # redirect stdout to a disk file
