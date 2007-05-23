@@ -35,17 +35,17 @@ def flag2mode(flags):
 
 class SearchFS(Fuse):
     def main(self, *a, **kw):
+        logger.debug('main');
         global server
         server = self 
-        logger.debug('main');
         self.file_class = self.SearchResultFile
         self.handler = getHandler(self.handler)
         self.handler.executequery(self.query);
         return Fuse.main(self, *a, **kw)
 
     def getattr(self, path):
-        st = self.SearchFSStat()
         if path == '/':
+            st = self.SearchFSStat()
             st.st_mode = stat.S_IFDIR | 0755
             st.st_nlink = 2
             return st
@@ -77,18 +77,21 @@ class SearchFS(Fuse):
             return -errno.ENOENT
 
     def chmod(self, path, mode):
-        logger.debug('chmod(' + path + ', ' + mode + ')');
+        logger.debug('chmod(' + path + ', ' + str(mode) + ')');
         os.chmod(self.handler.realpath(path), mode)
 
     def chown(self, path, user, group):
+        logger.debug('chown(' + path + ', ' + str(user) + ', ' + str(group) + ')');
         os.chown(self.handler.realpath(path), user, group)
 
     def truncate(self, path, len):
+        logger.debug('truncate(' + path + ', ' + str(len) + ')');
         f = open(self.handler.realpath(path), "a")
         f.truncate(len)
         f.close()
 
     def utime(self, path, times):
+        logger.debug('utime(' + path + ', ' + str(times) + ')');
         os.utime(self.handler.realpath(path), times)
 
     def access(self, path, mode):
@@ -111,6 +114,7 @@ class SearchFS(Fuse):
 
     class SearchResultFile(object):
         def __init__(self, path, flags, *mode):
+            logger.debug('SearchResultFile(' + path + ', ' + flags + ', ' + mode + ')');
             self.file = os.fdopen(os.open(server.handler.realpath(path), flags, *mode), 
                                   flag2mode(flags))
             self.fd = self.file.fileno()
@@ -142,6 +146,7 @@ class SearchFS(Fuse):
                 os.fsync(self.fd)
 
         def flush(self):
+            logger.debug('flush()');
             self._fflush()
             os.close(os.dup(self.fd))
 
@@ -150,6 +155,7 @@ class SearchFS(Fuse):
             return os.fstat(self.fd)
 
         def ftruncate(self, len):
+            logger.debug('ftruncate(' + str(len) + ')');
             self.file.truncate(len)
 
 
