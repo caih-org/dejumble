@@ -2,8 +2,8 @@ Items on this list may be work in progress
 
 Version 0.2
 
-* Create the Handler API
-* Extract current SearchHandler and define it as the default Handler 
++ Create the Handler API
++ Extract current SearchHandler and define it as the default Handler 
 * Expire queries
 
 
