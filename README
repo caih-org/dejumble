@@ -1,9 +1,11 @@
 SearchFS
 ========
 
+Please read the INSTALL file before running this commands.
+
 Simple example:
 
-PYTHONPATH="src" scripts/mount_search /path/to/mount -o query="find ~/Music/ -name *.mp3"
+mount_search /path/to/mount -o query="find ~/Music/ -name *.mp3",handler="Search"
 
 to unmount:
 
@@ -14,4 +16,4 @@ Requirements
 ============
 
 python 2.4 (not sure if this works with older versions)
-pyhton-fuse
+fuse-py

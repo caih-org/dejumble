@@ -10,6 +10,7 @@ import os
 import stat
 import errno
 import logging
+import time
 
 import fuse
 from fuse import Fuse
@@ -34,13 +35,25 @@ def flag2mode(flags):
     return m
 
 class SearchFS(Fuse):
+    class SearchFSStat(fuse.Stat):
+        def __init__(self):
+            self.st_mode = 0
+            self.st_ino = 0
+            self.st_dev = 0
+            self.st_nlink = 0
+            self.st_uid = 0
+            self.st_gid = 0
+            self.st_size = 0
+            self.st_atime = 0
+            self.st_mtime = 0
+            self.st_ctime = 0
+
     def main(self, *a, **kw):
         logger.debug('main');
         global server
         server = self 
         self.file_class = self.SearchResultFile
-        self.handler = getHandler(self.handler)
-        self.handler.executequery(self.query);
+        self.handler = getHandler(self.handler, self.query)
         return Fuse.main(self, *a, **kw)
 
     def getattr(self, path):
@@ -71,6 +84,7 @@ class SearchFS(Fuse):
         logger.debug('rename(' + path + ', ' + path1 + ')');
         pathpart0 = pathpart(path)
         pathpart1 = pathpart(path1)
+        # FIXME: This won't work
         if pathpart0 == pathpart1:
             os.rename(self.handler.realpath(path), path1)
         else:
@@ -98,19 +112,6 @@ class SearchFS(Fuse):
         logger.debug('access(' + path + ', ' + mode + ')');
         if not os.access(self.handler.realpath(path), mode):
             return -errno.EACCES
-
-    class SearchFSStat(fuse.Stat):
-        def __init__(self):
-            self.st_mode = 0
-            self.st_ino = 0
-            self.st_dev = 0
-            self.st_nlink = 0
-            self.st_uid = 0
-            self.st_gid = 0
-            self.st_size = 0
-            self.st_atime = 0
-            self.st_mtime = 0
-            self.st_ctime = 0
 
     class SearchResultFile(object):
         def __init__(self, path, flags, *mode):
