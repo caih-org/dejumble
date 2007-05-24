@@ -1,0 +1,38 @@
+Items on this list may be work in progress
+
+Version 0.2
+
++ Create the Handler API
++ Extract current SearchHandler and define it as the default Handler 
++ Expire queries
+
+
+Version 0.4
+
+* Create an XML parser to parse configuration of mount definition files
+* Define SearchBackendPlugin API
+* Extract current ShellSearchBackendPlugin
+* Create a BeagleSearchBackendPlugin
+
+
+Version 0.6
+
+* Enable the posibility of using subdirectories 
+* Write a MusicHandler with clasification by artist, album, genre, etc
+* Write a DocumentsHandler with clasification by document type, extension, last access, not classified, etc.
+* Write an ApplicationsHandler for rpm to show all installed applications as one executable file and to let the user drop an rpm file on that folder (as root) to install and delete that file (as root too) to uninstall
+
+
+Version 0.8
+
+* Define PackageManagerPlugin API for the ApplicationsHandler
+* Extract RedhatPackageManagerPlugin
+* Create a DebianPackageManagerPlugin and possibly others PackageManagerPlugins 
+
+
+Version 1.0
+
+* Cleanup code
+* gettext support
+* Write documentation 
+

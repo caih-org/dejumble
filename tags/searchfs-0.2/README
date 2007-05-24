@@ -1,0 +1,19 @@
+SearchFS
+========
+
+Please read the INSTALL file before running this commands.
+
+Simple example:
+
+mount_search /path/to/mount -o query="find ~/Music/ -name *.mp3",handler="Search"
+
+to unmount:
+
+fusermount -u /path/to/mount
+
+
+Requirements
+============
+
+python 2.4 (not sure if this works with older versions)
+fuse-py

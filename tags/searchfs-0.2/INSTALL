@@ -1,0 +1,8 @@
+To build:
+
+python setup.py build
+
+To install:
+
+sudo python setup.py install
+
