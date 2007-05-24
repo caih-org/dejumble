@@ -11,16 +11,15 @@ from fuse import Fuse
 
 import pkg_resources
 
-#gettext.install('searchfs', pkg_resources.resource_filename('SearchFS', 'po/'))
 gettext.install('searchfs')
 
 def main():
     global server
 
-    usage = _("""
+    usage = """
 mount_search: mounts a directory with the results of a query.
 
-""") + Fuse.fusage
+""" + Fuse.fusage
 
     server = searchfs.SearchFS(version="%prog " + fuse.__version__, 
                                usage=usage, 
@@ -30,8 +29,8 @@ mount_search: mounts a directory with the results of a query.
                              metavar="CONF",
                              default='~/.searchfs/default.xml',
                              help=_("read configuration from CONF file [default: %default]"))
-    server.parser.add_option(mountopt="handler",
-                             metavar="HANDLER",
+    server.parser.add_option(mountopt="provider",
+                             metavar="PROVIDER",
                              default='Search',
                              help=_("use HANDLER to handle QUERY [default: %default]"))
     server.parser.add_option(mountopt="query",
