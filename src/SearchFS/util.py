@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 
 def filenamepart(path):
     return path.rsplit('/', 1)[-1]
