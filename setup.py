@@ -20,7 +20,7 @@ from distutils.core import setup
 doclines = __doc__.splitlines()
 
 setup(name='searchfs',
-      version='0.1',
+      version='0.3',
       package_dir = {'' : 'src'},
       packages = ['SearchFS'],
       package_data = {'':['conf/*.conf']},
