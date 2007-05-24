@@ -11,6 +11,8 @@ Programming Language :: Python
 Topic :: Filesystems
 Topic :: Software Development :: Libraries :: Python Modules
 Operating System :: Unix
+Operating System :: Linux
+Operating System :: MacOS
 """
 
 from distutils.core import setup
