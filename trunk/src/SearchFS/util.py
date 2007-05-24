@@ -2,11 +2,16 @@
 
 import os
 
+ORIGINAL_DIR="/.searchfs_original_dir"
+
 def filenamepart(path):
     return path.rsplit('/', 1)[-1]
 
 def pathpart(path):
     return path.rsplit('/', 1)[-1]
+
+def pathparts(path):
+    return path.split('/')[1:]
 
 def flag2mode(flags):
     md = {os.O_RDONLY: 'r', os.O_WRONLY: 'w', os.O_RDWR: 'w+'}
@@ -18,4 +23,13 @@ def flag2mode(flags):
 def increasefilename(filename):
     # FIXME make this function better
     return filename + '(1)';
+
+def addtrailingslash(path):
+    return '/' + path;
+
+def getbasefilelist():
+    return getbasefilemap().keys()
+
+def getbasefilemap():
+    return { '/..': '..', '/.': '.' }
 

@@ -41,12 +41,16 @@ class SearchFS(Fuse):
 
     def main(self, *a, **kw):
         global server
-        logger.debug(_('Initializing SearchFS'));
+        logger.info(_('Initializing SearchFS'));
         server = self 
         self.file_class = self.SearchResultFile
         self.provider = getFileListProvider(self.provider, self.query)
         self.originaldir = os.open(self.fuse_args.mountpoint, os.O_RDONLY)
-        result = Fuse.main(self, *a, **kw)
+        try:
+            result = Fuse.main(self, *a, **kw)
+        except fuse.FuseError:
+            result = -errno.ENOENT 
+            logger.info(_('Finalizing SearchFS'))
         os.close(self.originaldir)
         return result
 
@@ -55,15 +59,14 @@ class SearchFS(Fuse):
 
     def getattr(self, path):
         if path == '/':
-            st = self.SearchFSStat()
-            st.st_mode = stat.S_IFDIR | 0755
-            st.st_nlink = 2
-            return st
+            return os.lstat('.')
         else:
+            logger.info('getattr(' + path + ')')
             return os.lstat(self.provider.realpath(path))
 
     def readdir(self, path, offset):
-        for filename, realpath in self.provider.filelist(path):
+        logger.debug('readdir(' + path + ')')
+        for filename in self.provider.filelist(path):
             yield fuse.Direntry(filename[1:])
 
     def readlink(self, path):
@@ -88,7 +91,7 @@ class SearchFS(Fuse):
         os.chown(self.provider.realpath(path), user, group)
 
     def truncate(self, path, len):
-        f = open(self.provider.realpath(path), "a")
+        f = open(self.provider.realpath(path), 'a')
         f.truncate(len)
         f.close()
 

@@ -50,7 +50,7 @@ if __name__ == '__main__':
     # redirect stdout to a disk file
     saveout = sys.stdout
     saveerr = sys.stderr
-    outfile = open('/tmp/out.txt', 'w')
+    outfile = open('/tmp/log.txt', 'a+')
     sys.stdout = outfile
     sys.stderr = outfile
 
