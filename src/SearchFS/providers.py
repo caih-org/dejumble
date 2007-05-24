@@ -28,15 +28,24 @@ class FileListProvider:
 
     def realpath(self, path):
         self.refreshfilelist()
-        return self.files[path]
+        if path == '/':
+            return '.' + ORIGINAL_DIR
+        elif path == ORIGINAL_DIR:
+            return '.'
+        elif pathparts(path)[0] == ORIGINAL_DIR[1:]:
+            return './' + '/'.join(pathparts(path)[1:])
+        else:
+            return self.files[path]
 
     def filelist(self, path):
         self.refreshfilelist()
         # TODO: handle subdirectories
         if path == '/':
-            return self.files.iteritems()
+            return self.files.iterkeys()
+        elif path == ORIGINAL_DIR:
+            return getbasefilelist() + map(addtrailingslash, os.listdir('.'))
         else:
-            return os.listdir(self.realpath(path))
+            return getbasefilelist() + map(addtrailingslash, os.listdir(self.realpath(path)))
 
     def expirefilelist(self):
         self.expiretime = time.time()
@@ -53,12 +62,13 @@ class FileListProvider:
 
 class NullFileListProvider(FileListProvider):
     def _refreshfilelist(self):
-        self.files = { '/..': '..', '/.': '.', '/null': '/dev/null' }
+        self.files = getbasefilemap()
+        self.files.update({ '/null': '/dev/null' })
 
 
 class ShellFileListProvider(FileListProvider):
     def _refreshfilelist(self):
-        self.files = { '/..': '..', '/.': '.' }
+        self.files = getbasefilemap()
         status, output = commands.getstatusoutput(self.query)
         if status == -1:
             return -errno.ENOENT
@@ -72,14 +82,21 @@ class ShellFileListProvider(FileListProvider):
 
 class BeagleFileListProvider(FileListProvider):
     def _refreshfilelist(self):
-        self.files = { '/..': '..', '/.': '.' }
+        self.files = getbasefilemap()
     
 
 class OriginalDirectoryFileListProvider(FileListProvider):
+    def __init__(self):
+        FileListProvider.init()
+        # TODO mount tmp directory with the contents of self.originaldir
+
     def _refreshfilelist(self):
-        self.files = { '/..': '..', '/.': '.' }
+        self.files = getbasefilemap()
         for path in os.listdir('.'):
             # TODO recurse into subdirectories
             filename = '/' + filenamepart(path)
+            while filename in self.files:
+                filename = increasefilename(filename)
             self.files[filename] = path
-            logger.debug(filename + ' = ' + path)
+
+
