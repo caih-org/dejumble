@@ -52,7 +52,7 @@ class FileListProvider:
 
     def refreshfilelist(self):
         if self.expiretime < time.time():
-            logger.info('Executing query ' + self.query);
+            logger.debug('Executing query ' + self.query);
             self.expiretime = time.time() + 60
             self._refreshfilelist()
 
