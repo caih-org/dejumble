@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import os.path
 import commands
 import logging
 import errno
@@ -63,7 +64,7 @@ class FileListProvider:
 class NullFileListProvider(FileListProvider):
     def _refreshfilelist(self):
         self.files = getbasefilemap()
-        self.files.update({ '/null': '/dev/null' })
+        self.files['/null'] = '/dev/null'
 
 
 class ShellFileListProvider(FileListProvider):
@@ -74,7 +75,7 @@ class ShellFileListProvider(FileListProvider):
             return -errno.ENOENT
         filenames = output.splitlines()
         for path in filenames:
-            filename = '/' + filenamepart(path)
+            filename = '/' + os.path.basename(path)
             while filename in self.files:
                 filename = increasefilename(filename)
             self.files[filename] = path
@@ -86,17 +87,18 @@ class BeagleFileListProvider(FileListProvider):
     
 
 class OriginalDirectoryFileListProvider(FileListProvider):
-    def __init__(self):
-        FileListProvider.init()
-        # TODO mount tmp directory with the contents of self.originaldir
-
     def _refreshfilelist(self):
         self.files = getbasefilemap()
-        for path in os.listdir('.'):
-            # TODO recurse into subdirectories
-            filename = '/' + filenamepart(path)
-            while filename in self.files:
-                filename = increasefilename(filename)
-            self.files[filename] = path
+        self._getdirlist(self.files, '.')
+
+    def _getdirlist(self, files, dir):
+        for path in os.listdir(dir):
+            if os.path.isdir(path):
+                self._getdirlist(files, path)
+            else:
+                filename = '/' + os.path.basename(path)
+                while filename in self.files:
+                    filename = increasefilename(filename)
+                self.files[filename] = path
 
 

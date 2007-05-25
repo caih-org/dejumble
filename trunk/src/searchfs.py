@@ -7,6 +7,7 @@
 #
 
 import os
+import os.path
 import stat
 import errno
 import logging
@@ -61,7 +62,7 @@ class SearchFS(Fuse):
         if path == '/':
             return os.lstat('.')
         else:
-            logger.debug('getattr(' + path + ')')
+            #logger.debug('getattr(' + path + ')')
             return os.lstat(self.provider.realpath(path))
 
     def readdir(self, path, offset):
@@ -75,12 +76,12 @@ class SearchFS(Fuse):
     def unlink(self, path):
         os.unlink(self.provider.realpath(path))
 
-    def rename(self, path, path1):
-        pathpart0 = pathpart(path)
-        pathpart1 = pathpart(path1)
+    def rename(self, path, pathdest):
+        dirname = os.path.dirname(path)
+        dirnamedest = os.path.dirname(pathdest)
         # FIXME: This won't work
-        if pathpart0 == pathpart1:
-            os.rename(self.provider.realpath(path), path1)
+        if dirname == dirnamedest:
+            os.rename(self.provider.realpath(path), pathdest)
         else:
             return -errno.ENOENT
 
