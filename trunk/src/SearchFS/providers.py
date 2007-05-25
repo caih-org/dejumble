@@ -28,7 +28,6 @@ class FileListProvider:
         self.expirefilelist()
 
     def realpath(self, path):
-        logger.debug('realpath ' + path)
         self.refreshfilelist()
         if path == '/':
             return '.' + ORIGINAL_DIR
