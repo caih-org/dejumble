@@ -28,19 +28,22 @@ class FileListProvider:
         self.expirefilelist()
 
     def realpath(self, path):
+        logger.debug('realpath ' + path)
         self.refreshfilelist()
         if path == '/':
             return '.' + ORIGINAL_DIR
         elif path == ORIGINAL_DIR:
             return '.'
-        elif pathparts(path)[0] == ORIGINAL_DIR[1:]:
-            return './' + '/'.join(pathparts(path)[1:])
-        else:
+        elif path in self.files:
             return self.files[path]
+        elif pathparts(path)[0] == ORIGINAL_DIR[1:]:
+            return os.path.join('.', '/'.join(pathparts(path)[1:]))
+        else:
+            self.expirefilelist()
+            return './' + path
 
     def filelist(self, path):
         self.refreshfilelist()
-        # TODO: handle subdirectories
         if path == '/':
             return self.files.iterkeys()
         elif path == ORIGINAL_DIR:
@@ -89,16 +92,16 @@ class BeagleFileListProvider(FileListProvider):
 class OriginalDirectoryFileListProvider(FileListProvider):
     def _refreshfilelist(self):
         self.files = getbasefilemap()
-        self._getdirlist(self.files, '.')
+        self._getdirlist(self.files, '.', '.')
 
-    def _getdirlist(self, files, dir):
+    def _getdirlist(self, files, dir, currentpath):
         for path in os.listdir(dir):
-            if os.path.isdir(path):
-                self._getdirlist(files, path)
+            if os.path.isdir(path) and not os.path.islink(path):
+                self._getdirlist(files, path, os.path.join(path, dir))
             else:
-                filename = '/' + os.path.basename(path)
+                filename = addtrailingslash(os.path.basename(path))
                 while filename in self.files:
                     filename = increasefilename(filename)
-                self.files[filename] = path
+                self.files[filename] = os.path.join(currentpath, path)
 
 

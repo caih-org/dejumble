@@ -62,7 +62,7 @@ class SearchFS(Fuse):
         if path == '/':
             return os.lstat('.')
         else:
-            #logger.debug('getattr(' + path + ')')
+            logger.debug('getattr(' + path + ')')
             return os.lstat(self.provider.realpath(path))
 
     def readdir(self, path, offset):
@@ -79,9 +79,11 @@ class SearchFS(Fuse):
     def rename(self, path, pathdest):
         dirname = os.path.dirname(path)
         dirnamedest = os.path.dirname(pathdest)
-        # FIXME: This won't work
         if dirname == dirnamedest:
-            os.rename(self.provider.realpath(path), pathdest)
+            filenamedest = os.path.basename(pathdest)
+            realpath = self.provider.realpath(path)
+            realdirname = os.path.dirname(realpath)
+            os.rename(self.provider.realpath(path), os.path.join(realdirname, filenamedest))
         else:
             return -errno.ENOENT
 
@@ -105,6 +107,8 @@ class SearchFS(Fuse):
 
     class SearchResultFile(object):
         def __init__(self, path, flags, *mode):
+            logger.debug('SearchResultFile ' + path + ', ' + str(flags))
+            logger.debug('SearchResultFile ' + server.provider.realpath(path))
             self.file = os.fdopen(os.open(server.provider.realpath(path), flags, *mode), 
                                   flag2mode(flags))
             self.fd = self.file.fileno()
