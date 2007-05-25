@@ -1,14 +1,12 @@
 #!/usr/bin/env python
 
 import os
+import logging
+import re
+
+logger = logging.getLogger('searchfs')
 
 ORIGINAL_DIR="/.searchfs_original_dir"
-
-def filenamepart(path):
-    return path.rsplit('/', 1)[-1]
-
-def pathpart(path):
-    return path.rsplit('/', 1)[-1]
 
 def pathparts(path):
     return path.split('/')[1:]
@@ -20,9 +18,14 @@ def flag2mode(flags):
         m = m.replace('w', 'a', 1)
     return m
 
-def increasefilename(filename):
-    # FIXME make this function better
-    return filename + '(1)';
+def increasefilename(path):
+    filename, extension = path.rsplit('.', 1)
+    num = 1
+    m = re.match('^(.*)\((\d+)\)$', filename)
+    if not m is None:
+        num = int(m.group(2)) + 1
+        filename = m.group(1)
+    return filename + '(' + str(num) + ').' + extension;
 
 def addtrailingslash(path):
     return '/' + path;
