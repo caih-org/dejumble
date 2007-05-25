@@ -61,7 +61,7 @@ class SearchFS(Fuse):
         if path == '/':
             return os.lstat('.')
         else:
-            logger.info('getattr(' + path + ')')
+            logger.debug('getattr(' + path + ')')
             return os.lstat(self.provider.realpath(path))
 
     def readdir(self, path, offset):
