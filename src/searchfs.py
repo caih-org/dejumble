@@ -75,6 +75,7 @@ class SearchFS(Fuse):
 
     def unlink(self, path):
         os.unlink(self.provider.realpath(path))
+        self.provider.expirefilelist()
 
     def rename(self, path, pathdest):
         dirname = os.path.dirname(path)
@@ -86,6 +87,7 @@ class SearchFS(Fuse):
             os.rename(self.provider.realpath(path), os.path.join(realdirname, filenamedest))
         else:
             return -errno.ENOENT
+        self.provider.expirefilelist()
 
     def chmod(self, path, mode):
         os.chmod(self.provider.realpath(path), mode)
@@ -107,8 +109,6 @@ class SearchFS(Fuse):
 
     class SearchResultFile(object):
         def __init__(self, path, flags, *mode):
-            logger.debug('SearchResultFile ' + path + ', ' + str(flags))
-            logger.debug('SearchResultFile ' + server.provider.realpath(path))
             self.file = os.fdopen(os.open(server.provider.realpath(path), flags, *mode), 
                                   flag2mode(flags))
             self.fd = self.file.fileno()
