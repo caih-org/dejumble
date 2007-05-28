@@ -7,10 +7,10 @@ import logging
 import errno
 import time
 
-import SearchFS.util
-from SearchFS.util import *
+import dejumble.util
+from dejumble.util import *
 
-logger = logging.getLogger('searchfs.providers')
+logger = logging.getLogger('dejumblefs.providers')
 
 
 class FileListProvider:

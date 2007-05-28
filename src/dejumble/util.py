@@ -4,9 +4,9 @@ import os
 import logging
 import re
 
-logger = logging.getLogger('searchfs.util')
+logger = logging.getLogger('dejumblefs.util')
 
-ORIGINAL_DIR="/.searchfs_original_dir"
+ORIGINAL_DIR="/.dejumblefs_original_dir"
 
 def pathparts(path):
     return path.split('/')[1:]

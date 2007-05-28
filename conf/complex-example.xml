@@ -1,4 +1,4 @@
-<searchfs>
+<dejumblefs>
 	<directory>
 		<handler path="docs" type="Documents"/>
 		<handler path="music" type="Music">
@@ -6,4 +6,4 @@
 		</handler>
 		<handler path="apps" type="Applications"/>
 	</directory>
-</searchfs>
+</dejumblefs>

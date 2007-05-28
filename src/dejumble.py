@@ -16,29 +16,29 @@ import time
 import fuse
 from fuse import Fuse
 
-import SearchFS.organizers
-from SearchFS.organizers import *
-import SearchFS.util
-from SearchFS.util import *
+import dejumble.organizers
+from dejumble.organizers import *
+import dejumble.util
+from dejumble.util import *
 
 fuse.fuse_python_api = (0, 2)
 
-logger = logging.getLogger('searchfs.main')
+logger = logging.getLogger('dejumblefs.main')
 
 
-class SearchFS(Fuse):
+class DejumbleFS(Fuse):
     def main(self, *a, **kw):
         global server
-        logger.info(_('Initializing SearchFS'))
+        logger.info(_('Initializing dejumblefs'))
         server = self 
-        self.file_class = self.SearchFSFile
+        self.file_class = self.DejumbleFile
         self.organizer = getorganizer(self.organizer, self.provider, self.query)
         self.originaldir = os.open(self.fuse_args.mountpoint, os.O_RDONLY)
         try:
             result = Fuse.main(self, *a, **kw)
         except fuse.FuseError:
             result = -errno.ENOENT 
-            logger.info(_('Finalizing SearchFS'))
+            logger.warn(_('Finalizing dejumblefs'))
         os.close(self.originaldir)
         return result
 
@@ -96,7 +96,7 @@ class SearchFS(Fuse):
         if not os.access(self.organizer.realpath(path), mode):
             return -errno.EACCES
 
-    class SearchFSFile(object):
+    class DejumbleFile(object):
         def __init__(self, path, flags, *mode):
             f = os.open(server.organizer.realpath(path), flags, *mode)
             self.file = os.fdopen(f, flags2mode(flags))

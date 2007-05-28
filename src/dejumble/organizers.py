@@ -4,12 +4,12 @@ import errno
 import logging
 import os.path
 
-import SearchFS.providers
-from SearchFS.providers import *
-import SearchFS.util
-from SearchFS.util import *
+import dejumble.providers
+from djumble.providers import *
+import dejumble.util
+from dejumble.util import *
 
-logger = logging.getLogger('searchfs.organizer')
+logger = logging.getLogger('dejumblefs.organizer')
 
 def getorganizer(name, provider, query):
     logger.info('provider = ' + provider + 'FileListProvider(' + query + ')')
