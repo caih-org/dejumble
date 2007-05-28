@@ -27,24 +27,11 @@ logger = logging.getLogger('searchfs')
 
 
 class SearchFS(Fuse):
-    class SearchFSStat(fuse.Stat):
-        def __init__(self):
-            self.st_mode = 0
-            self.st_ino = 0
-            self.st_dev = 0
-            self.st_nlink = 0
-            self.st_uid = 0
-            self.st_gid = 0
-            self.st_size = 0
-            self.st_atime = 0
-            self.st_mtime = 0
-            self.st_ctime = 0
-
     def main(self, *a, **kw):
         global server
         logger.info(_('Initializing SearchFS'));
         server = self 
-        self.file_class = self.SearchResultFile
+        self.file_class = self.SearchFSFile
         self.provider = getFileListProvider(self.provider, self.query)
         self.originaldir = os.open(self.fuse_args.mountpoint, os.O_RDONLY)
         try:
@@ -59,16 +46,16 @@ class SearchFS(Fuse):
         os.fchdir(self.originaldir)
 
     def getattr(self, path):
+        logger.debug('getattr(' + path + ')')
         if path == '/':
             return os.lstat('.')
         else:
-            logger.debug('getattr(' + path + ')')
             return os.lstat(self.provider.realpath(path))
 
     def readdir(self, path, offset):
         logger.debug('readdir(' + path + ')')
         for filename in self.provider.filelist(path):
-            yield fuse.Direntry(filename[1:])
+            yield fuse.Direntry(filename)
 
     def readlink(self, path):
         return os.readlink(self.provider.realpath(path))
@@ -107,10 +94,10 @@ class SearchFS(Fuse):
         if not os.access(self.provider.realpath(path), mode):
             return -errno.EACCES
 
-    class SearchResultFile(object):
+    class SearchFSFile(object):
         def __init__(self, path, flags, *mode):
-            self.file = os.fdopen(os.open(server.provider.realpath(path), flags, *mode), 
-                                  flag2mode(flags))
+            f = os.open(server.provider.realpath(path), flags, *mode);
+            self.file = os.fdopen(f, flags2mode(flags))
             self.fd = self.file.fileno()
 
         def read(self, length, offset):

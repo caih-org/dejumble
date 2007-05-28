@@ -33,13 +33,13 @@ class FileListProvider:
             return '.' + ORIGINAL_DIR
         elif path == ORIGINAL_DIR:
             return '.'
-        elif path in self.files:
-            return self.files[path]
+        elif path[1:] in self.files:
+            return self.files[path[1:]]
         elif pathparts(path)[0] == ORIGINAL_DIR[1:]:
             return os.path.join('.', '/'.join(pathparts(path)[1:]))
         else:
             self.expirefilelist()
-            return './' + path
+            return '.' + path
 
     def filelist(self, path):
         self.refreshfilelist()
@@ -62,11 +62,17 @@ class FileListProvider:
     def _refreshfilelist(self):
         return -errno.ENOENT
 
+    def _addfilename(self, path):
+        filename = os.path.basename(path)
+        while filename in self.files:
+            filename = increasefilename(filename)
+        self.files[filename] = path
+
 
 class NullFileListProvider(FileListProvider):
     def _refreshfilelist(self):
         self.files = getbasefilemap()
-        self.files['/null'] = '/dev/null'
+        self.files['null'] = '/dev/null'
 
 
 class ShellFileListProvider(FileListProvider):
@@ -77,10 +83,7 @@ class ShellFileListProvider(FileListProvider):
             return -errno.ENOENT
         filenames = output.splitlines()
         for path in filenames:
-            filename = '/' + os.path.basename(path)
-            while filename in self.files:
-                filename = increasefilename(filename)
-            self.files[filename] = path
+            self._addfilename(path)
 
 
 class BeagleFileListProvider(FileListProvider):
@@ -98,9 +101,6 @@ class OriginalDirectoryFileListProvider(FileListProvider):
             if os.path.isdir(path) and not os.path.islink(path):
                 self._getdirlist(files, path, os.path.join(path, dir))
             else:
-                filename = addtrailingslash(os.path.basename(path))
-                while filename in self.files:
-                    filename = increasefilename(filename)
-                self.files[filename] = os.path.join(currentpath, path)
+                self._addfilename(os.path.join(currentpath, path))
 
 
