@@ -4,7 +4,7 @@ import os
 import logging
 import re
 
-logger = logging.getLogger('searchfs')
+logger = logging.getLogger('searchfs.util')
 
 ORIGINAL_DIR="/.searchfs_original_dir"
 

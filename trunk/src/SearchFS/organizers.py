@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import errno
+import logging
 import os.path
 
 import SearchFS.providers
@@ -8,7 +9,7 @@ from SearchFS.providers import *
 import SearchFS.util
 from SearchFS.util import *
 
-logger = logging.getLogger('searchfs')
+logger = logging.getLogger('searchfs.organizer')
 
 def getorganizer(name, provider, query):
     logger.info('provider = ' + provider + 'FileListProvider(' + query + ')')
