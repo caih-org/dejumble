@@ -16,8 +16,8 @@ import time
 import fuse
 from fuse import Fuse
 
-import SearchFS.providers
-from SearchFS.providers import *
+import SearchFS.organizers
+from SearchFS.organizers import *
 import SearchFS.util
 from SearchFS.util import *
 
@@ -29,10 +29,10 @@ logger = logging.getLogger('searchfs')
 class SearchFS(Fuse):
     def main(self, *a, **kw):
         global server
-        logger.info(_('Initializing SearchFS'));
+        logger.info(_('Initializing SearchFS'))
         server = self 
         self.file_class = self.SearchFSFile
-        self.provider = getFileListProvider(self.provider, self.query)
+        self.organizer = getorganizer(self.organizer, self.provider, self.query)
         self.originaldir = os.open(self.fuse_args.mountpoint, os.O_RDONLY)
         try:
             result = Fuse.main(self, *a, **kw)
@@ -46,57 +46,59 @@ class SearchFS(Fuse):
         os.fchdir(self.originaldir)
 
     def getattr(self, path):
-        logger.debug('getattr(' + path + ')')
         if path == '/':
             return os.lstat('.')
         else:
-            return os.lstat(self.provider.realpath(path))
+            logger.debug('getattr(' + path + ')')
+            logger.debug('getattr ' + self.organizer.realpath(path))
+            return os.lstat(self.organizer.realpath(path))
 
     def readdir(self, path, offset):
         logger.debug('readdir(' + path + ')')
-        for filename in self.provider.filelist(path):
+        for filename in self.organizer.filelist(path):
             yield fuse.Direntry(filename)
 
     def readlink(self, path):
-        return os.readlink(self.provider.realpath(path))
+        return os.readlink(self.organizer.realpath(path))
 
     def unlink(self, path):
-        os.unlink(self.provider.realpath(path))
-        self.provider.expirefilelist()
+        os.unlink(self.organizer.realpath(path))
+        self.organizer.expirecache()
+
 
     def rename(self, path, pathdest):
         dirname = os.path.dirname(path)
         dirnamedest = os.path.dirname(pathdest)
         if dirname == dirnamedest:
             filenamedest = os.path.basename(pathdest)
-            realpath = self.provider.realpath(path)
+            realpath = self.organizer.realpath(path)
             realdirname = os.path.dirname(realpath)
-            os.rename(self.provider.realpath(path), os.path.join(realdirname, filenamedest))
+            os.rename(realpath, os.path.join(realdirname, filenamedest))
         else:
             return -errno.ENOENT
-        self.provider.expirefilelist()
+        self.organizer.expirecache()
 
     def chmod(self, path, mode):
-        os.chmod(self.provider.realpath(path), mode)
+        os.chmod(self.organizer.realpath(path), mode)
 
     def chown(self, path, user, group):
-        os.chown(self.provider.realpath(path), user, group)
+        os.chown(self.organizer.realpath(path), user, group)
 
     def truncate(self, path, len):
-        f = open(self.provider.realpath(path), 'a')
+        f = open(self.organizer.realpath(path), 'a')
         f.truncate(len)
         f.close()
 
     def utime(self, path, times):
-        os.utime(self.provider.realpath(path), times)
+        os.utime(self.organizer.realpath(path), times)
 
     def access(self, path, mode):
-        if not os.access(self.provider.realpath(path), mode):
+        if not os.access(self.organizer.realpath(path), mode):
             return -errno.EACCES
 
     class SearchFSFile(object):
         def __init__(self, path, flags, *mode):
-            f = os.open(server.provider.realpath(path), flags, *mode);
+            f = os.open(server.organizer.realpath(path), flags, *mode)
             self.file = os.fdopen(f, flags2mode(flags))
             self.fd = self.file.fileno()
 

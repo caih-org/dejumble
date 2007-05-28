@@ -12,52 +12,25 @@ from SearchFS.util import *
 
 logger = logging.getLogger('searchfs')
 
-def getFileListProvider(name, query):
-    logger.debug('getFileListProvider(' + name + ', ' + query + ')')
-    return {
-        'Null': NullFileListProvider,
-        'Shell': ShellFileListProvider,
-        'Beagle': BeagleFileListProvider,
-        'OriginalDirectory': OriginalDirectoryFileListProvider
-    }[name](query)
-
 
 class FileListProvider:
     def __init__(self, query):
         self.query = query
-        self.expirefilelist()
 
     def realpath(self, path):
         self.refreshfilelist()
-        if path == '/':
-            return '.' + ORIGINAL_DIR
-        elif path == ORIGINAL_DIR:
-            return '.'
-        elif path[1:] in self.files:
+        if path[1:] in self.files:
             return self.files[path[1:]]
-        elif pathparts(path)[0] == ORIGINAL_DIR[1:]:
-            return os.path.join('.', '/'.join(pathparts(path)[1:]))
         else:
-            self.expirefilelist()
             return '.' + path
 
     def filelist(self, path):
         self.refreshfilelist()
-        if path == '/':
-            return self.files.iterkeys()
-        elif path == ORIGINAL_DIR:
-            return getbasefilelist() + map(addtrailingslash, os.listdir('.'))
-        else:
-            return getbasefilelist() + map(addtrailingslash, os.listdir(self.realpath(path)))
-
-    def expirefilelist(self):
-        self.expiretime = time.time()
+        return self.files.iterkeys()
 
     def refreshfilelist(self):
-        if self.expiretime < time.time():
-            logger.debug('Executing query ' + self.query);
-            self.expiretime = time.time() + 60
-            self._refreshfilelist()
+        logger.debug('Executing query ' + self.query)
+        self._refreshfilelist()
 
     def _refreshfilelist(self):
         return -errno.ENOENT
