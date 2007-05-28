@@ -1,12 +1,12 @@
-"""SearchFS: mounts a directory with the results of a query.
+"""SearchFS: A filesystem that presents the content of a directory in an organized structure.
 
-SearchFS is a FUSE that lets the user mount a virtual directory with the result of a query. This query can be a shell script (find, locate, etc) or many other backends as beagle.
+SearchFS is a FUSE that lets the user mount a virtual directory with the contents of the original directory, or the results of a search. This search an be a shell script (find, locate, etc) or many other backends as beagle. Files can be presented to the user organized by filetype, access time, metadata,  etc.
 """
 
 classifiers = """\
 Development Status :: 4 - Beta
 Intended Audience :: Developers
-License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)
+License :: OSI Approved :: GNU General Public License (GPL)
 Programming Language :: Python
 Topic :: Filesystems
 Topic :: Software Development :: Libraries :: Python Modules
@@ -20,7 +20,7 @@ from distutils.core import setup
 doclines = __doc__.splitlines()
 
 setup(name='searchfs',
-      version='0.3',
+      version='0.4',
       package_dir = {'' : 'src'},
       packages = ['SearchFS'],
       package_data = {'':['conf/*.conf']},
