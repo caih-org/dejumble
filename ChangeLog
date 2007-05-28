@@ -1,9 +1,9 @@
-dejumble 0.2 - May 24, 2007
-
-	- Default SearchHandler implementation. That means that you can do shell searches. See README for details.
-
-dejumble 0.4 - May 28, 2007
+searchfs 0.4 - May 28, 2007
 
 	- Many file providers implemented: OriginalDirectory, Null, Shell.
 	- Updated command line options
+
+searchfs 0.2 - May 24, 2007
+
+	- Default SearchHandler implementation. That means that you can do shell searches. See README for details.
 
