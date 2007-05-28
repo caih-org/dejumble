@@ -23,7 +23,7 @@ from SearchFS.util import *
 
 fuse.fuse_python_api = (0, 2)
 
-logger = logging.getLogger('searchfs')
+logger = logging.getLogger('searchfs.main')
 
 
 class SearchFS(Fuse):

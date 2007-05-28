@@ -11,7 +11,7 @@ from fuse import Fuse
 
 import pkg_resources
 
-gettext.install('searchfs')
+gettext.install('searchfs.mount_search')
 
 def main():
     global server

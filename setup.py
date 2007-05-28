@@ -1,6 +1,6 @@
-"""SearchFS: A filesystem that presents the content of a directory in an organized structure.
+"""dejumble: presents the content of a directory in an organized structure.
 
-SearchFS is a FUSE that lets the user mount a virtual directory with the contents of the original directory, or the results of a search. This search an be a shell script (find, locate, etc) or many other backends as beagle. Files can be presented to the user organized by filetype, access time, metadata,  etc.
+dejumble is a FUSE that lets the user mount a virtual directory with the contents of the original directory, or the results of a search. This search an be a shell script (find, locate, etc) or many other backends as beagle. Files can be presented to the user organized by filetype, access time, metadata,  etc.
 """
 
 classifiers = """\
@@ -19,7 +19,7 @@ from distutils.core import setup
 
 doclines = __doc__.splitlines()
 
-setup(name='searchfs',
+setup(name='dejumble',
       version = '0.5',
       package_dir = { '' : 'src' },
       packages = [ 'SearchFS' ],

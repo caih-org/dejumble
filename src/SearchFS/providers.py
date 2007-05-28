@@ -10,7 +10,7 @@ import time
 import SearchFS.util
 from SearchFS.util import *
 
-logger = logging.getLogger('searchfs')
+logger = logging.getLogger('searchfs.providers')
 
 
 class FileListProvider:
