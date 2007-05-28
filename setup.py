@@ -21,10 +21,9 @@ doclines = __doc__.splitlines()
 
 setup(name='dejumble',
       version = '0.5',
-      package_dir = { 'dejumble' : 'dejumble' },
+      package_dir = { '' : '' },
       packages = [ 'dejumble' ],
       package_data = { '' : [ 'conf/*.conf' ] },
-      py_modules = [ 'dejumble' ],
       scripts = [ 'scripts/dejumble' ],
       maintainer = 'Cesar Izurieta',
       maintainer_email = 'cesar@caih.org',

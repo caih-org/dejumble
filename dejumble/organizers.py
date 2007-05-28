@@ -5,7 +5,7 @@ import logging
 import os.path
 
 import dejumble.providers
-from djumble.providers import *
+from dejumble.providers import *
 import dejumble.util
 from dejumble.util import *
 

@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 
-import dejumblefs
-
 import sys
 import logging
 import logging.config
 import fuse
 import gettext
 from fuse import Fuse
-
 import pkg_resources
+
+import dejumble.fs
+from dejumble.fs import *
 
 gettext.install('dejumble')
 
@@ -21,7 +21,7 @@ dejumble: presents the content of a directory in an organized structure.
 
 """ + Fuse.fusage
 
-    server = dejumble.DejumbleFS(version="%prog " + fuse.__version__, 
+    server = DejumbleFS(version="%prog " + fuse.__version__, 
                                usage=usage, 
                                dash_s_do='setsingle')
 
