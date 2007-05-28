@@ -3,9 +3,9 @@ Please read the INSTALL file before running these commands.
 Some examples:
 
 {{{
-dejumble /path/to/mount -o query="",provider="Null",nonempty
-dejumble /path/to/mount -o query="",provider="OriginalDirectory",nonempty
-dejumble /path/to/mount -o query="find ~/Music/ -name *.mp3",provider="Shell",nonempty
+dejumble /path/to/mount -o query="",provider="Null",organizer="Flat",nonempty
+dejumble /path/to/mount -o query="",provider="OriginalDirectory",organizer="Flat",nonempty
+dejumble /path/to/mount -o query="find ~/Music/ -name *.mp3",provider="Shell",organizer="Flat",nonempty
 }}}
 
 to unmount:
