@@ -1,5 +1,3 @@
-=dejumble=
-
 Please read the INSTALL file before running these commands.
 
 Some examples:
@@ -13,24 +11,24 @@ dejumble /path/to/mount -o query="find ~/Music/ -name *.mp3",provider="Shell",no
 to unmount:
 
 {{{
-~> fusermount -u /path/to/mount
+fusermount -u /path/to/mount
 }}}
 
 ==Providers==
 
-Null - provides a file 'null' that is a proxy for /dev/null, for testing purposes only.
-Shell - provides a list of files that are proxies for those returned by the shell script defined by 'query'
-OriginalDirectory - provides a list of files that contains all the files present before on the mounting directory
+  * `Null` - provides a file 'null' that is a proxy for /dev/null, for testing purposes only.
+  * `Shell` - provides a list of files that are proxies for those returned by the shell script defined by 'query'
+  * `OriginalDirectory` - provides a list of files that contains all the files present before on the mounting directory
 
 Currently you need to provide a query even for those providers that don't require one.
 
-The 'nonempty' flag lets you mount over an existing directory. File contents are preserved in a special directory '.dejumblefs_original_dir' that contains all the previous directory structure. This directory is not shown, not even with a 'ls -a' but you can cd into it.
+The `nonempty` flag lets you mount over an existing directory. File contents are preserved in a special directory `.dejumblefs_original_dir` that contains all the previous directory structure. This directory is not shown, not even with a `ls -a` but you can cd into it.
 
 ==Requirements==
 
-python
-python-fuse
-python-beagle (not yet)
+  * python
+  * python-fuse
+  * python-beagle (not yet)
 
 ==Known issues==
 
