@@ -29,6 +29,10 @@ mount_search: mounts a directory with the results of a query.
                              metavar="CONF",
                              default='~/.searchfs/default.xml',
                              help=_("read configuration from CONF file [default: %default]"))
+    server.parser.add_option(mountopt="organizer",
+                             metavar="ORGANIZER",
+                             default='Plain',
+                             help=_("read configuration from CONF file [default: %default]"))
     server.parser.add_option(mountopt="provider",
                              metavar="PROVIDER",
                              default='Search',

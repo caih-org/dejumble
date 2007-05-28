@@ -25,10 +25,10 @@ def increasefilename(path):
     if not m is None:
         num = int(m.group(2)) + 1
         filename = m.group(1)
-    return filename + '(' + str(num) + ').' + extension;
+    return filename + '(' + str(num) + ').' + extension
 
 def addtrailingslash(path):
-    return '/' + path;
+    return '/' + path
 
 def getbasefilelist():
     return getbasefilemap().keys()
