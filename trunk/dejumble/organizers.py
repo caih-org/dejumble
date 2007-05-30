@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import errno
 import logging
 import os.path
 
@@ -9,7 +8,7 @@ from dejumble.providers import *
 import dejumble.util
 from dejumble.util import *
 
-logger = logging.getLogger('dejumblefs.organizer')
+logger = logging.getLogger('dejumble')
 
 def getorganizer(name, provider, query):
     logger.info('provider = ' + provider + 'FileListProvider(' + query + ')')
@@ -38,26 +37,27 @@ class Organizer:
         self.expirecache()
 
     def realpath(self, path):
+        self.refreshcache()
         if path == '/':
-            return '.' + ORIGINAL_DIR
-        elif path == ORIGINAL_DIR:
+            return ORIGINAL_DIR
+        elif path == addtrailingslash(ORIGINAL_DIR):
             return '.'
-        elif pathparts(path)[0] == ORIGINAL_DIR[1:]:
+        elif pathparts(path)[0] == ORIGINAL_DIR:
             return os.path.join('.', '/'.join(pathparts(path)[1:]))
         else:
             filename = os.path.basename(path)
             return self.provider.realpath(addtrailingslash(filename))
 
     def filelist(self, path):
+        self.refreshcache()
         if path == '/':
             return self._filelist(path)
-        elif path == ORIGINAL_DIR:
+        elif path == addtrailingslash(ORIGINAL_DIR):
             return getbasefilelist() + os.listdir('.')
-        else:
+        elif pathparts(path)[0] == ORIGINAL_DIR:
             return getbasefilelist() + os.listdir(self.realpath(path))
-
-    def _filelist(self, path):
-        return -errno.ENOENT
+        else:
+            raise NotImplemented
 
     def expirecache(self):
         self.expiretime = time.time()
@@ -74,7 +74,7 @@ class Organizer:
 
 class FlatOrganizer(Organizer):
     def _filelist(self, path):
-        return self.provider.filelist(path)
+        return self.provider.filelist()
 
 
 class ExtensionOrganizer(Organizer):

@@ -23,7 +23,7 @@ from dejumble.util import *
 
 fuse.fuse_python_api = (0, 2)
 
-logger = logging.getLogger('dejumblefs.main')
+logger = logging.getLogger('dejumble')
 
 
 class DejumbleFS(Fuse):
@@ -41,7 +41,7 @@ class DejumbleFS(Fuse):
             logger.warn(_('Finalizing dejumblefs'))
         os.close(self.originaldir)
         return result
-
+ 
     def fsinit(self):
         os.fchdir(self.originaldir)
 
@@ -50,7 +50,6 @@ class DejumbleFS(Fuse):
             return os.lstat('.')
         else:
             logger.debug('getattr(' + path + ')')
-            logger.debug('getattr ' + self.organizer.realpath(path))
             return os.lstat(self.organizer.realpath(path))
 
     def readdir(self, path, offset):

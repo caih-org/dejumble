@@ -6,51 +6,54 @@ import commands
 import logging
 import errno
 import time
+import pkg_resources
 
 import dejumble.util
 from dejumble.util import *
+import dejumble.storage
+from dejumble.storage import *
 
-logger = logging.getLogger('dejumblefs.providers')
+logger = logging.getLogger('dejumble')
 
 
 class FileListProvider:
     def __init__(self, query):
         self.query = query
+        self.storage = MemoryStorage()
 
+    def _reset(self):
+        self.storage.reset()
+
+    def _addfilename(self, realpath):
+        filename = os.path.basename(realpath)
+        self.storage.savefile(filename, realpath)
+
+    def realpath(self, filename):
+        return self.storage.realpath(filename)
+     
     def realpath(self, path):
-        self.refreshfilelist()
-        if path[1:] in self.files:
-            return self.files[path[1:]]
+        realpath = self.storage.realpath(path[1:])
+        if not realpath == None:
+            return realpath
         else:
             return '.' + path
 
-    def filelist(self, path):
-        self.refreshfilelist()
-        return self.files.iterkeys()
+    def filelist(self):
+        return self.storage.filelist()
 
     def refreshfilelist(self):
-        logger.debug('Executing query ' + self.query)
         self._refreshfilelist()
-
-    def _refreshfilelist(self):
-        return -errno.ENOENT
-
-    def _addfilename(self, path):
-        filename = os.path.basename(path)
-        while filename in self.files:
-            filename = increasefilename(filename)
-        self.files[filename] = path
 
 
 class NullFileListProvider(FileListProvider):
     def _refreshfilelist(self):
-        self.files = getbasefilemap()
-        self.files['null'] = '/dev/null'
+        self._reset()
+        self._addfilename('/dev/null')
 
 
 class ShellFileListProvider(FileListProvider):
     def _refreshfilelist(self):
-        self.files = getbasefilemap()
+        self._reset()
         status, output = commands.getstatusoutput(self.query)
         if status == -1:
             return -errno.ENOENT
@@ -61,18 +64,18 @@ class ShellFileListProvider(FileListProvider):
 
 class BeagleFileListProvider(FileListProvider):
     def _refreshfilelist(self):
-        self.files = getbasefilemap()
+        self._reset()
     
 
 class OriginalDirectoryFileListProvider(FileListProvider):
     def _refreshfilelist(self):
-        self.files = getbasefilemap()
-        self._getdirlist(self.files, '.', '.')
+        self._reset()
+        self._getdirlist('.', '.')
 
-    def _getdirlist(self, files, dir, currentpath):
+    def _getdirlist(self, dir, currentpath):
         for path in os.listdir(dir):
             if os.path.isdir(path) and not os.path.islink(path):
-                self._getdirlist(files, path, os.path.join(path, dir))
+                self._getdirlist(path, os.path.join(path, dir))
             else:
                 self._addfilename(os.path.join(currentpath, path))
 
