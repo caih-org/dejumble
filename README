@@ -22,7 +22,7 @@ fusermount -u /path/to/mount
 
 Currently you need to provide a query even for those providers that don't require one.
 
-The `nonempty` flag lets you mount over an existing directory. File contents are preserved in a special directory `.dejumblefs_original_dir` that contains all the previous directory structure. This directory is not shown, not even with a `ls -a` but you can cd into it.
+The `nonempty` flag lets you mount over an existing directory. File contents are preserved in a special directory `.dejumblefs` that contains all the previous directory structure. This directory is not shown, not even with a `ls -a` but you can cd into it.
 
 ==Requirements==
 

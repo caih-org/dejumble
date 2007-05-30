@@ -2,8 +2,6 @@
 
 ==Version 0.6==
 
-  * Define Organizer API
-  * Extract current FlatOrganizer 
   * Write a DocumentsOrganizer with clasification by document type, extension, last access, not classified, etc.
   * Write an ApplicationsOrganizer along with an ApplicationsFileListProvider for rpm to show every installed application as one executable file and to let the user drop an rpm file on that folder (as root) to install and delete that file (as root too) to uninstall
   * Create a MultiOrganizer that can use other organizers
