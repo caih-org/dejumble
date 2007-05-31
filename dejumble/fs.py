@@ -46,7 +46,7 @@ class DejumbleFS(Fuse):
         self.organizer = getorganizer(self.organizer, self.provider, self.query)
 
     def getattr(self, path):
-        if path == '/':
+        if path == '/' or self.organizer.isdir(path):
             return os.lstat('.')
         else:
             # logger.debug('getattr(' + path + ')')
