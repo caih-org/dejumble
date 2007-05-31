@@ -52,15 +52,14 @@ class Organizer:
             return self.provider.realpath(addtrailingslash(filename))
 
     def filelist(self, path):
+        logger.debug('0')
         self.refreshcache()
-        if path == '/':
-            return self._filelist(path)
-        elif path == addtrailingslash(ORIGINAL_DIR):
+        if path == addtrailingslash(ORIGINAL_DIR):
             return getbasefilelist() + os.listdir('.')
         elif pathparts(path)[0] == ORIGINAL_DIR:
             return getbasefilelist() + os.listdir(self.realpath(path))
         else:
-            raise NotImplemented
+            return self._filelist(path)
 
     def expirecache(self):
         self.expiretime = time.time()
@@ -85,10 +84,15 @@ class FlatOrganizer(Organizer):
 
 class ExtensionOrganizer(Organizer):
     def _filelist(self, path):
-        return self.provider.filelist()
+        if path == '/':
+            logger.debug(str(self.provider.storage.typelist('extension')))
+            return self.provider.storage.typelist('extension')
+        else:
+            logger.debug('2')
+            return self.provider.storage.metadatafilelist('extension', pathparts(path)[0])
 
     def _isdir(self, path):
-        None
+        return len(pathparts(path)) == 1
 
     def _refreshcache(self):
         None

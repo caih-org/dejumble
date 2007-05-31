@@ -48,3 +48,19 @@ def filenameextension(path):
 def getbasefilelist():
     return [ '..', '.' ]
 
+def unique(inlist, keepstr = True):
+    typ = type(inlist)
+    if not typ == list:
+        inlist = list(inlist)
+    i = 0
+    while i < len(inlist):
+        try:
+            del inlist[inlist.index(inlist[i], i + 1)]
+        except:
+            i += 1
+    if not typ in (str, unicode):
+        inlist = typ(inlist)
+    elif keepstr:
+        inlist = ''.join(inlist)
+    return inlist
+

@@ -52,9 +52,9 @@ class Storage:
         return [ r['filename'] for r in list ]
 
     def setmetadata(self, filename, type, value):
-        if not value == None:
+        if not value == None and not value == '':
             self.metadata.insert(filename, type, value, type  + '=' + value)
 
-    def metadatalist(self, metadata):
-        return self._filelist()
+    def typelist(self, type):
+        return unique([ r['value'] for r in self.metadata if r['type'] == type ])
 
