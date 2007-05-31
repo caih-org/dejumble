@@ -36,6 +36,9 @@ class Organizer:
         self.provider = provider
         self.expirecache()
 
+    def isdir(self, path):
+        return self._isdir(path)
+
     def realpath(self, path):
         self.refreshcache()
         if path == '/':
@@ -68,6 +71,9 @@ class Organizer:
             self.provider.refreshfilelist()
             self._refreshcache()
 
+    def _isdir(self, path):
+        None
+
     def _refreshcache(self):
         None
 
@@ -81,6 +87,9 @@ class ExtensionOrganizer(Organizer):
     def _filelist(self, path):
         return self.provider.filelist()
 
+    def _isdir(self, path):
+        None
+
     def _refreshcache(self):
         None
 
@@ -88,6 +97,9 @@ class ExtensionOrganizer(Organizer):
 class DateOrganizer(Organizer):
     def _filelist(self, path):
         return self.provider.filelist()
+
+    def _isdir(self, path):
+        None
 
     def _refreshcache(self):
         None

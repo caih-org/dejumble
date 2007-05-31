@@ -32,7 +32,6 @@ class DejumbleFS(Fuse):
         logger.info(_('Initializing dejumblefs'))
         server = self 
         self.file_class = self.DejumbleFile
-        self.organizer = getorganizer(self.organizer, self.provider, self.query)
         self.originaldir = os.open(self.fuse_args.mountpoint, os.O_RDONLY)
         try:
             result = Fuse.main(self, *a, **kw)
@@ -44,12 +43,13 @@ class DejumbleFS(Fuse):
  
     def fsinit(self):
         os.fchdir(self.originaldir)
+        self.organizer = getorganizer(self.organizer, self.provider, self.query)
 
     def getattr(self, path):
         if path == '/':
             return os.lstat('.')
         else:
-            logger.debug('getattr(' + path + ')')
+            # logger.debug('getattr(' + path + ')')
             return os.lstat(self.organizer.realpath(path))
 
     def readdir(self, path, offset):
