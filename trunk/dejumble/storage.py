@@ -1,99 +1,60 @@
 #!/usr/bin/env python
 
-from pysqlite2 import dbapi2 as sqlite
+from PyDbLite import Base
 
 import dejumble.util
 from dejumble.util import *
 
-#DB_FILE = '/tmp/dejumblefsdb'
-DB_FILE = ':memory:'
+DB_FILE = './.dejumbledb'
+DB_FILE_METADATA = './.dejumbledb_metadata'
+
 
 class Storage:
     def __init__(self):
+        self.db = Base(DB_FILE)
+        self.metadata = Base(DB_FILE_METADATA)
         self.reset()
 
     def reset(self):
-        self._reset()
+        self.db.create('filename', 'realpath', mode = 'override')
+        self.metadata.create('filename', 'type', 'value', 'type_value', mode = 'override')
+        self.db.create_index('filename')
+        self.metadata.create_index('type_value')
+
         for filename in getbasefilelist():
             self.savefile(filename, filename)
 
     def savefile(self, filename, realpath):
-        while not self._realpath(filename) == None:
+        while not self.realpath(filename) == None:
             filename = increasefilename(filename)
-        self._savefile(filename, realpath)
+
+        self.db.insert(filename, realpath)
+
+        f, extension = filenameextension(filename)
+        self.setmetadata(filename, 'extension', extension)
 
     def realpath(self, filename):
-        return self._realpath(filename)
+        realpaths = [ r['realpath'] for r in self.db._filename[filename] ]
+        if len(realpaths) == 0:
+            return None
+        else:
+            return realpaths[0]
 
     def filelist(self):
+        return [ r['filename'] for r in self.db ] 
+
+    def metadatafilelist(self, type, *values):
+        list = []
+
+        for value in values:
+            list += self.metadata._type_value[type + '=' + value]
+
+        return [ r['filename'] for r in list ]
+
+    def setmetadata(self, filename, type, value):
+        if not value == None:
+            self.metadata.insert(filename, type, value, type  + '=' + value)
+
+    def metadatalist(self, metadata):
         return self._filelist()
-
-class MemoryStorage(Storage):
-    def _reset(self):
-        self.files = {}
-
-    def _savefile(self, filename, realpath):
-        self.files[filename] = realpath
-
-    def _realpath(self, filename):
-        if filename in self.files:
-            return self.files[filename]
-        else:
-            return None
-
-    def _filelist(self):
-        return self.files.keys()
-
-
-class DBStorage(Storage):
-    def __init__(self):
-        self._initdb()
-        Storage.init(self)
-
-    def _initdb(self):
-        logger.debug('_initdb')
-        if os.path.exists(DB_FILE):
-            os.remove(DB_FILE)
-        cur = DejumbleCursor()
-        cur.execute(pkg_resources.resource_string('dejumble', 'conf/schema.sql'))
-        cur.close()
-
-    def _reset(self):
-        logger.debug('_resetdb')
-        cur = DejumbleCursor()
-        cur.execute('DELETE FROM files')
-        cur.close()
-
-    def _savefile(self, filename, realpath):
-        cur = DejumbleCursor()
-        cur.execute('INSERT INTO files (filename, realpath) VALUES (?, ?)', (filename, realpath))
-        cur.close()
-
-    def _realpath(self, filename):
-        cur = DejumbleCursor()
-        cur.execute('SELECT realpath FROM files WHERE filename=?', (filename,))
-        result = cur.fetchone()
-        cur.close()
-        return extract(result)
-
-    def _filelist(self):
-        cur = DejumbleCursor()
-        cur.execute('SELECT filename FROM files')
-        results = cur.fetchall()
-        cur.close()
-        return map(extract, results)
-
-
-class DejumbleCursor(sqlite.Cursor):
-    def __init__(self):
-        self.db = sqlite.connect(DB_FILE, isolation_level=None)
-        sqlite.Cursor.__init__(self, self.db)
-
-    def execute(self, *args, **kwargs):
-        logging.debug('execute ' + str(args) + " :: " + str(kwargs))
-        sqlite.Cursor.execute(self, *args, **kwargs)
-
-    def close(self):
-        sqlite.Cursor.close(self)
-        self.db.close()
 

@@ -19,11 +19,10 @@ def flags2mode(flags):
     return m
 
 def increasefilename(path):
-    if re.search('\.', path):
-        filename, extension = path.rsplit('.', 1)
+    filename, extension = filenameextension(path)
+    if not extension == None:
         extension = '.' + extension
     else:
-        filename = path
         extension = ''
 
     num = 1
@@ -38,12 +37,14 @@ def increasefilename(path):
 def addtrailingslash(path):
     return '/' + path
 
+def filenameextension(path):
+    if re.search('\.', path):
+        filename, extension = path.rsplit('.', 1)
+    else:
+        filename = path
+        extension = None
+    return filename, extension
+
 def getbasefilelist():
     return [ '..', '.' ]
-
-def extract(tuple):
-    if tuple == None:
-        return None
-    else:
-        return str(tuple[0])
 
