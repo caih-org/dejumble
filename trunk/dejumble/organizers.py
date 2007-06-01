@@ -24,7 +24,7 @@ def getorganizer(name, provider, query):
 
     organizer = {
         'Flat': FlatOrganizer,
-        'Extension': ExtensionOrganizer,
+        'Documents': DocumentsOrganizer,
         'Date': DateOrganizer
     }[name](provider)
 
@@ -52,7 +52,6 @@ class Organizer:
             return self.provider.realpath(addtrailingslash(filename))
 
     def filelist(self, path):
-        logger.debug('0')
         self.refreshcache()
         if path == addtrailingslash(ORIGINAL_DIR):
             return getbasefilelist() + os.listdir('.')
@@ -82,14 +81,20 @@ class FlatOrganizer(Organizer):
         return self.provider.filelist()
 
 
-class ExtensionOrganizer(Organizer):
+class DocumentsOrganizer(Organizer):
+    def __init__(self, provider):
+        Organizer.__init__(self, provider)
+        self.config = readconfig('filetypes')        
+
     def _filelist(self, path):
         if path == '/':
-            logger.debug(str(self.provider.storage.typelist('extension')))
-            return self.provider.storage.typelist('extension')
+            return self.config.keys()
         else:
-            logger.debug('2')
-            return self.provider.storage.metadatafilelist('extension', pathparts(path)[0])
+            extensions = self.config[path[1:]]
+            #reg = re.compile('[(' + '$)|('.join(map(re.escape, extensions.split(','))) + '$)]')
+            reg = '((' + ')|('.join(map(re.escape, extensions.split(','))) + '))$'
+            reg = re.compile(reg)
+            return [ r['filename'] for r in self.provider.storage.db if not reg.search(r['filename']) == None ]
 
     def _isdir(self, path):
         return len(pathparts(path)) == 1
