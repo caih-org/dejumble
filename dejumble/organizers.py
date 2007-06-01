@@ -2,6 +2,7 @@
 
 import logging
 import os.path
+import time
 
 import dejumble.providers
 from dejumble.providers import *
@@ -83,11 +84,8 @@ class FlatOrganizer(Organizer):
 
 class DocumentsOrganizer(Organizer):
     def __init__(self, provider):
-        logger.debug('1')
         Organizer.__init__(self, provider)
-        logger.debug('2')
         self.filetypes = readconfig('filetypes')
-        logger.debug('3')
 
     def _filelist(self, path):
         if path == '/':
@@ -110,13 +108,18 @@ class DocumentsOrganizer(Organizer):
 
 class DateOrganizer(Organizer):
     def _filelist(self, path):
-        return self.provider.filelist()
+        if path == '/':
+            return self.provider.storage.taglist('date')
+        else:
+            return self.provider.storage.filelistbytag('date', path[1:])
 
     def _isdir(self, path):
-        None
+        return len(pathparts(path)) == 1
 
     def _refreshcache(self):
-        None
-
+        for filename in self.provider.filelist():
+            stats = os.stat(self.provider.realpath(addtrailingslash(filename)))
+            lastmod = time.localtime(stats[8])
+            self.provider.storage.tag(filename, 'date', time.strftime('%Y %B', lastmod))
 
 

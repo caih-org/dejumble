@@ -17,8 +17,9 @@ class Storage:
 
     def reset(self):
         self.db.create('filename', 'realpath', mode = 'override')
-        self.tags.create('filename', 'category', 'tag', mode = 'override')
         self.db.create_index('filename')
+
+        self.tags.create('filename', 'category', 'tag', mode = 'override')
         self.tags.create_index('category')
 
         for filename in getbasefilelist():
