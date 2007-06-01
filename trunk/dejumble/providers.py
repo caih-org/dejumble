@@ -28,9 +28,6 @@ class FileListProvider:
         filename = os.path.basename(realpath)
         self.storage.savefile(filename, realpath)
 
-    def realpath(self, filename):
-        return self.storage.realpath(filename)
-     
     def realpath(self, path):
         realpath = self.storage.realpath(path[1:])
         if not realpath == None:
