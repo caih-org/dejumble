@@ -6,20 +6,20 @@ import dejumble.util
 from dejumble.util import *
 
 DB_FILE = './.dejumbledb'
-DB_FILE_METADATA = './.dejumbledb_metadata'
+DB_FILE_TAGS = './.dejumbledb_tags'
 
 
 class Storage:
     def __init__(self):
         self.db = Base(DB_FILE)
-        self.metadata = Base(DB_FILE_METADATA)
+        self.tags = Base(DB_FILE_TAGS)
         self.reset()
 
     def reset(self):
         self.db.create('filename', 'realpath', mode = 'override')
-        self.metadata.create('filename', 'type', 'value', 'type_value', mode = 'override')
+        self.tags.create('filename', 'category', 'tag', mode = 'override')
         self.db.create_index('filename')
-        self.metadata.create_index('type_value')
+        self.tags.create_index('category')
 
         for filename in getbasefilelist():
             self.savefile(filename, filename)
@@ -29,6 +29,10 @@ class Storage:
             filename = increasefilename(filename)
 
         self.db.insert(filename, realpath)
+
+    def tag(self, filename, category, tag):
+        if not tag == None and not tag == '':
+            self.tags.insert(filename, category, tag)
 
     def realpath(self, filename):
         realpaths = [ r['realpath'] for r in self.db._filename[filename] ]
@@ -40,18 +44,9 @@ class Storage:
     def filelist(self):
         return [ r['filename'] for r in self.db ] 
 
-    def metadatafilelist(self, type, *values):
-        list = []
+    def filelistbytag(self, category, tags):
+        return [ r['filename'] for r in self.tags._category[category] if r['tag'] in tags ]
 
-        for value in values:
-            list += self.metadata._type_value[type + '=' + value]
-
-        return [ r['filename'] for r in list ]
-
-    def setmetadata(self, filename, type, value):
-        if not value == None and not value == '':
-            self.metadata.insert(filename, type, value, type  + '=' + value)
-
-    def typelist(self, type):
-        return unique([ r['value'] for r in self.metadata if r['type'] == type ])
+    def taglist(self, category):
+        return unique([ r['tag'] for r in self.tags._category[category] ])
 

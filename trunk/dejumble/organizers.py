@@ -83,24 +83,29 @@ class FlatOrganizer(Organizer):
 
 class DocumentsOrganizer(Organizer):
     def __init__(self, provider):
+        logger.debug('1')
         Organizer.__init__(self, provider)
-        self.config = readconfig('filetypes')        
+        logger.debug('2')
+        self.filetypes = readconfig('filetypes')
+        logger.debug('3')
 
     def _filelist(self, path):
         if path == '/':
-            return self.config.keys()
+            return self.provider.storage.taglist('extension')
         else:
-            extensions = self.config[path[1:]]
-            #reg = re.compile('[(' + '$)|('.join(map(re.escape, extensions.split(','))) + '$)]')
-            reg = '((' + ')|('.join(map(re.escape, extensions.split(','))) + '))$'
-            reg = re.compile(reg)
-            return [ r['filename'] for r in self.provider.storage.db if not reg.search(r['filename']) == None ]
+            return self.provider.storage.filelistbytag('extension', path[1:])
 
     def _isdir(self, path):
         return len(pathparts(path)) == 1
 
     def _refreshcache(self):
-        None
+        for filetype in self.filetypes.keys():
+            extensions = self.filetypes[filetype]
+            for extension in extensions.split(','):
+                reg = re.compile('%s$' % extension);
+                for filename in self.provider.filelist():
+                    if not reg.search(filename) == None:
+                        self.provider.storage.tag(filename, 'extension', filetype)
 
 
 class DateOrganizer(Organizer):

@@ -49,12 +49,10 @@ class DejumbleFS(Fuse):
         if path == '/' or self.organizer.isdir(path):
             return os.lstat('.')
         else:
-            # logger.debug('getattr(' + path + ')')
             return os.lstat(self.organizer.realpath(path))
 
     def readdir(self, path, offset):
         logger.debug('readdir(' + path + ')')
-        logger.debug(str(self.organizer))
         for filename in self.organizer.filelist(path):
             yield fuse.Direntry(filename)
 
