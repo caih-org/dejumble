@@ -30,9 +30,6 @@ class Storage:
 
         self.db.insert(filename, realpath)
 
-        f, extension = filenameextension(filename)
-        self.setmetadata(filename, 'extension', extension)
-
     def realpath(self, filename):
         realpaths = [ r['realpath'] for r in self.db._filename[filename] ]
         if len(realpaths) == 0:

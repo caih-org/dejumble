@@ -3,6 +3,7 @@
 import os
 import logging
 import re
+import pkg_resources
 
 logger = logging.getLogger('dejumble')
 
@@ -63,4 +64,29 @@ def unique(inlist, keepstr = True):
     elif keepstr:
         inlist = ''.join(inlist)
     return inlist
+
+_configuration = {}
+
+def readconfig(name):
+    global _configuration
+    if not name in _configuration:
+        defaultfilename = pkg_resources.resource_filename('dejumble', 'conf/%s-default.conf' % name)
+        userfilename = os.path.expanduser('~/.dejumble/%s.conf' % name)
+        currentdirfilename = './.dejumble/%s.conf' % name
+        config = {}
+        readconfigfile(config, defaultfilename)
+        readconfigfile(config, userfilename)
+        readconfigfile(config, currentdirfilename)
+        _configuration[name] = config
+    return _configuration[name]
+
+def readconfigfile(config, path):
+    if os.path.isfile(path):
+        file = open(path, 'r')
+        for line in file.readlines():
+            name, value = line.split('=', 1)
+            config[name] = value.strip()
+
+    return config
+
 
