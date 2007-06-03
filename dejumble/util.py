@@ -38,6 +38,9 @@ def increasefilename(path):
 def addtrailingslash(path):
     return '/' + path
 
+def isnotdot(filename):
+    return not filename == '..' and not filename == '.' 
+
 def filenameextension(path):
     if re.search('\.', path):
         filename, extension = path.rsplit('.', 1)
