@@ -97,13 +97,18 @@ class DocumentsOrganizer(Organizer):
         return len(pathparts(path)) == 1
 
     def _refreshcache(self):
-        for filetype in self.filetypes.keys():
-            extensions = self.filetypes[filetype]
-            for extension in extensions.split(','):
-                reg = re.compile('%s$' % extension);
-                for filename in self.provider.filelist():
+        for filename in self.provider.filelist():
+            hastag = False
+            for filetype in self.filetypes.keys():
+                extensions = self.filetypes[filetype]
+                for extension in extensions.split(','):
+                    reg = re.compile('%s$' % extension);
                     if not reg.search(filename) == None:
                         self.provider.storage.tag(filename, 'extension', filetype)
+                        hastag = True
+            if not hastag:
+                self.provider.storage.tag(filename, 'extension', 'Other')
+
 
 
 class DateOrganizer(Organizer):
@@ -117,9 +122,18 @@ class DateOrganizer(Organizer):
         return len(pathparts(path)) == 1
 
     def _refreshcache(self):
-        for filename in self.provider.filelist():
+        for filename in filter(isnotdot, self.provider.filelist()):
             stats = os.stat(self.provider.realpath(addtrailingslash(filename)))
             lastmod = time.localtime(stats[8])
+            today = time.localtime()
             self.provider.storage.tag(filename, 'date', time.strftime('%Y %B', lastmod))
+            if time.strftime('%x', today) == time.strftime('%x', lastmod):
+                self.provider.storage.tag(filename, 'date', 'Today')
+            if time.strftime('%Y%W', today) == time.strftime('%Y%W', lastmod):
+                self.provider.storage.tag(filename, 'date', 'This Week')
+            lastweek = time.localtime(time.time() - 7 * 24 * 60 * 60)
+            if time.strftime('%Y%W', lastweek) == time.strftime('%Y%W', lastmod):
+                self.provider.storage.tag(filename, 'date', 'Last Week')
+
 
 
