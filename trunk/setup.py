@@ -20,7 +20,7 @@ from distutils.core import setup
 doclines = __doc__.splitlines()
 
 setup(name='dejumble',
-      version = '0.6',
+      version = '0.7',
       package_dir = { '' : '' },
       packages = [ 'dejumble' ],
       package_data = { '' : [ 'conf/*.conf', 'conf/*.sql' ] },
