@@ -1,0 +1,6 @@
+<dejumblefs>
+	<handler name="Search">
+		<type>shell</type>
+		<query>find ~/Music/ -name *.mp3</query>
+	</handler>
+</dejumblefs>

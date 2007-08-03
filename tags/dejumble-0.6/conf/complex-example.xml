@@ -1,0 +1,9 @@
+<dejumblefs>
+	<directory>
+		<handler path="docs" type="Documents"/>
+		<handler path="music" type="Music">
+			<pattern>%a/%b/%t.%e</pattern>
+		</handler>
+		<handler path="apps" type="Applications"/>
+	</directory>
+</dejumblefs>

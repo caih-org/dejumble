@@ -1,0 +1,16 @@
+*Follow this steps only for a local installation*
+
+Most users should use packages for their operating system. Find them at the Downloads page.
+
+==Installation==
+
+{{{
+python setup.py build
+}}}
+
+==Uninstallation==
+
+{{{
+sudo python setup.py install
+}}}
+
