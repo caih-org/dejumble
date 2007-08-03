@@ -24,6 +24,12 @@ Currently you need to provide a query even for those providers that don't requir
 
 The `nonempty` flag lets you mount over an existing directory. File contents are preserved in a special directory `.dejumblefs` that contains all the previous directory structure. This directory is not shown, not even with a `ls -a` but you can cd into it.
 
+==Organizers==
+
+  * `Flat` - Just shows the list of files provided 
+  * `Documents` - Organizes the files on folders by filetype
+  * `Date` - Organizes de files on folders by date
+
 ==Requirements==
 
   * python

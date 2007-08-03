@@ -1,12 +1,5 @@
 *Items on this list may be work in progress*
 
-==Version 0.6==
-
-  * Write a TagOrganizer that can organize files given some tags
-  * Write a DocumentsOrganizer extending tag organizer with clasification by document type, extension, not classified, etc.
-  * Write a DateOrganizer extending tag organizer with clasification by access time.
-
-
 ==Version 0.8==
 
   * Create a MultiOrganizer that can use other organizers

@@ -45,7 +45,7 @@ class Storage:
     def filelist(self):
         return [ r['filename'] for r in self.db ] 
 
-    def filelistbytag(self, category, tags):
+    def filelistbytags(self, category, tags):
         return [ r['filename'] for r in self.tags._category[category] if r['tag'] in tags ]
 
     def taglist(self, category):

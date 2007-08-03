@@ -12,7 +12,7 @@ from dejumble.util import *
 logger = logging.getLogger('dejumble')
 
 def getorganizer(name, provider, query):
-    logger.info('provider = ' + provider + 'FileListProvider(' + query + ')')
+    logger.info('provider = %sFileListProvider(%s)' % (provider, query))
 
     provider = {
         'Null': NullFileListProvider,
@@ -21,7 +21,7 @@ def getorganizer(name, provider, query):
         'OriginalDirectory': OriginalDirectoryFileListProvider
     }[provider](query)
 
-    logger.info('organizer = ' + name + "Organizer")
+    logger.info('organizer = %sOrganizer' % name)
 
     organizer = {
         'Flat': FlatOrganizer,
@@ -82,58 +82,56 @@ class FlatOrganizer(Organizer):
         return self.provider.filelist()
 
 
-class DocumentsOrganizer(Organizer):
-    def __init__(self, provider):
+class TagOrganizer(Organizer):
+    def __init__(self, provider, category):
         Organizer.__init__(self, provider)
-        self.filetypes = readconfig('filetypes')
+        self.category = category
 
     def _filelist(self, path):
         if path == '/':
-            return self.provider.storage.taglist('extension')
+            return self.provider.storage.taglist(self.category)
         else:
-            return self.provider.storage.filelistbytag('extension', path[1:])
+            return self.provider.storage.filelistbytags(self.category, path[1:])
 
     def _isdir(self, path):
         return len(pathparts(path)) == 1
 
+
+class DocumentsOrganizer(TagOrganizer):
+    def __init__(self, provider):
+        TagOrganizer.__init__(self, provider, 'filetype')
+        self.filetypes = readconfig('filetypes')
+        for filetype, extensions in self.filetypes.iteritems():
+            self.filetypes[filetype] = map(extensionregex, extensions.split(','))
+
     def _refreshcache(self):
-        for filename in self.provider.filelist():
+        for filename in filter(ignoretag, self.provider.filelist()):
             hastag = False
-            for filetype in self.filetypes.keys():
-                extensions = self.filetypes[filetype]
-                for extension in extensions.split(','):
-                    reg = re.compile('%s$' % extension);
-                    if not reg.search(filename) == None:
-                        self.provider.storage.tag(filename, 'extension', filetype)
+            for filetype, extensions in self.filetypes.iteritems():
+                for extension in extensions:
+                    if not extension.search(filename) == None:
+                        self.provider.storage.tag(filename, self.category, _(filetype))
                         hastag = True
             if not hastag:
-                self.provider.storage.tag(filename, 'extension', 'Other')
+                self.provider.storage.tag(filename, self.category, _('Other'))
 
 
 
-class DateOrganizer(Organizer):
-    def _filelist(self, path):
-        if path == '/':
-            return self.provider.storage.taglist('date')
-        else:
-            return self.provider.storage.filelistbytag('date', path[1:])
-
-    def _isdir(self, path):
-        return len(pathparts(path)) == 1
+class DateOrganizer(TagOrganizer):
+    def __init__(self, provider):
+        TagOrganizer.__init__(self, provider, 'date')
 
     def _refreshcache(self):
-        for filename in filter(isnotdot, self.provider.filelist()):
+        for filename in filter(ignoretag, self.provider.filelist()):
             stats = os.stat(self.provider.realpath(addtrailingslash(filename)))
             lastmod = time.localtime(stats[8])
             today = time.localtime()
-            self.provider.storage.tag(filename, 'date', time.strftime('%Y %B', lastmod))
+            self.provider.storage.tag(filename, self.category, time.strftime('%Y %B', lastmod))
             if time.strftime('%x', today) == time.strftime('%x', lastmod):
-                self.provider.storage.tag(filename, 'date', 'Today')
+                self.provider.storage.tag(filename, self.category, _('Today'))
             if time.strftime('%Y%W', today) == time.strftime('%Y%W', lastmod):
-                self.provider.storage.tag(filename, 'date', 'This Week')
+                self.provider.storage.tag(filename, self.category, _('This Week'))
             lastweek = time.localtime(time.time() - 7 * 24 * 60 * 60)
             if time.strftime('%Y%W', lastweek) == time.strftime('%Y%W', lastmod):
-                self.provider.storage.tag(filename, 'date', 'Last Week')
-
-
+                self.provider.storage.tag(filename, self.category, _('Last Week'))
 
