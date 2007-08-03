@@ -52,7 +52,7 @@ class DejumbleFS(Fuse):
             return os.lstat(self.organizer.realpath(path))
 
     def readdir(self, path, offset):
-        logger.debug('readdir(' + path + ')')
+        logger.debug('readdir(%s)' % path)
         for filename in self.organizer.filelist(path):
             yield fuse.Direntry(filename)
 

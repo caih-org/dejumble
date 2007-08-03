@@ -19,27 +19,32 @@ def flags2mode(flags):
         m = m.replace('w', 'a', 1)
     return m
 
+_filenameincrease = re.compile('^(.*)\((\d+)\)$')
+
 def increasefilename(path):
     filename, extension = filenameextension(path)
     if not extension == None:
-        extension = '.' + extension
+        extension = '.%s' % extension
     else:
         extension = ''
 
     num = 1
-    m = re.match('^(.*)\((\d+)\)$', filename)
+    m = _filenameincrease.match(filename)
 
     if not m is None:
         num = int(m.group(2)) + 1
         filename = m.group(1)
 
-    return filename + '(' + str(num) + ')' + extension
+    return '%s(%i)%s' % (filename, num, extension)
 
 def addtrailingslash(path):
-    return '/' + path
+    return '/%s' % path
 
-def isnotdot(filename):
-    return not filename == '..' and not filename == '.' 
+def ignoretag(filename):
+    return not filename == '..' and not filename == '.' and not re.match('\.dejumble', filename)
+
+def extensionregex(extension):
+    return re.compile('%s$' % extension);
 
 def filenameextension(path):
     if re.search('\.', path):
@@ -71,7 +76,6 @@ def unique(inlist, keepstr = True):
 _configuration = {}
 
 def readconfig(name):
-    global _configuration
     if not name in _configuration:
         defaultfilename = pkg_resources.resource_filename('dejumble', 'conf/%s-default.conf' % name)
         userfilename = os.path.expanduser('~/.dejumble/%s.conf' % name)
@@ -81,6 +85,7 @@ def readconfig(name):
         readconfigfile(config, userfilename)
         readconfigfile(config, currentdirfilename)
         _configuration[name] = config
+
     return _configuration[name]
 
 def readconfigfile(config, path):
