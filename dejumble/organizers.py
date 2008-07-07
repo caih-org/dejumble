@@ -4,22 +4,17 @@ import logging
 import os.path
 import time
 
-import dejumble.providers
-from dejumble.providers import *
+import dejumble.filters
+from dejumble.filters import *
 import dejumble.util
 from dejumble.util import *
 
 logger = logging.getLogger('dejumble')
 
 def getorganizer(name, provider, query):
-    logger.info('provider = %sFileListProvider(%s)' % (provider, query))
+    logger.info('provider = %sFileListFilter(%s)' % (provider, query))
 
-    provider = {
-        'Null': NullFileListProvider,
-        'Shell': ShellFileListProvider,
-        'Beagle': BeagleFileListProvider,
-        'OriginalDirectory': OriginalDirectoryFileListProvider
-    }[provider](query)
+	provider = __import__("dejumble.filters." + provider.lower() + "." + provider + "FileListFilter"(query)
 
     logger.info('organizer = %sOrganizer' % name)
 
