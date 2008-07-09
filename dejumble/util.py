@@ -20,6 +20,16 @@ def flags2mode(flags):
     return m
 
 _filenameincrease = re.compile('^(.*)\((\d+)\)$')
+    
+def increasefilelist(self, files):
+    filelist = [ ]
+
+    for path in files:
+        while path in filelist:
+            path = increasefilename(path)
+        addfile(path)
+
+    return filelist
 
 def increasefilename(path):
     filename, extension = filenameextension(path)
@@ -72,6 +82,9 @@ def unique(inlist, keepstr = True):
     elif keepstr:
         inlist = ''.join(inlist)
     return inlist
+
+############################################
+# Configuration functions
 
 _configuration = {}
 

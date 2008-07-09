@@ -3,10 +3,11 @@
 import sys
 import logging
 import logging.config
-import fuse
-import gettext
-from fuse import Fuse
 import pkg_resources
+import gettext
+
+import fuse
+from fuse import Fuse
 
 import dejumble.fs
 from dejumble.fs import *
@@ -25,25 +26,32 @@ dejumble: presents the content of a directory in an organized structure.
                                usage=usage, 
                                dash_s_do='setsingle')
 
+    server.parser.add_option(mountopt="root",
+                             metavar="ROOT",
+                             default='~/',
+                             help=_("root for all file operations [default: %default]"))
     server.parser.add_option(mountopt="conf",
                              metavar="CONF",
                              default='~/.dejumblefs/default.xml',
-                             help=_("read configuration from CONF file [default: %default]"))
+                             help=_("read configuration from CONF file [default: %default]"))        
+    server.parser.add_option(mountopt="filter",
+                             metavar="FILTER",
+                             default='OriginalDirectory',
+                             help=_("use FILTER to handle QUERY [default: %default]"))
+    server.parser.add_option(mountopt="cache",
+                             metavar="CACHE",
+                             default='WriteThrough',
+                             help=_("use CACHE to handle caching [default: %default]"))
     server.parser.add_option(mountopt="organizer",
                              metavar="ORGANIZER",
-                             default='Plain',
-                             help=_("read configuration from CONF file [default: %default]"))
-    server.parser.add_option(mountopt="provider",
-                             metavar="PROVIDER",
-                             default='Search',
-                             help=_("use HANDLER to handle QUERY [default: %default]"))
+                             default='Original',
+                             help=_("use ORGANIZER [default: %default]"))
     server.parser.add_option(mountopt="query",
                              metavar="QUERY",
-                             default='locate *.mp3',
+                             default='',
                              help=_("execute QUERY [default: %default]"))
 
     server.parse(values=server, errex=1)
-
 
     server.main()
 
