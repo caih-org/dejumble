@@ -19,34 +19,6 @@ def flags2mode(flags):
         m = m.replace('w', 'a', 1)
     return m
 
-_filenameincrease = re.compile('^(.*)\((\d+)\)$')
-    
-def increasefilelist(self, files):
-    filelist = [ ]
-
-    for path in files:
-        while path in filelist:
-            path = increasefilename(path)
-        addfile(path)
-
-    return filelist
-
-def increasefilename(path):
-    filename, extension = filenameextension(path)
-    if not extension == None:
-        extension = '.%s' % extension
-    else:
-        extension = ''
-
-    num = 1
-    m = _filenameincrease.match(filename)
-
-    if not m is None:
-        num = int(m.group(2)) + 1
-        filename = m.group(1)
-
-    return '%s(%i)%s' % (filename, num, extension)
-
 def addtrailingslash(path):
     return '/%s' % path
 
@@ -55,14 +27,6 @@ def ignoretag(filename):
 
 def extensionregex(extension):
     return re.compile('%s$' % extension);
-
-def filenameextension(path):
-    if re.search('\.', path):
-        filename, extension = path.rsplit('.', 1)
-    else:
-        filename = path
-        extension = None
-    return filename, extension
 
 def getbasefilelist():
     return [ '..', '.' ]
@@ -82,6 +46,25 @@ def unique(inlist, keepstr = True):
     elif keepstr:
         inlist = ''.join(inlist)
     return inlist
+
+############################################
+# Cacheable class
+
+class Cacheable:
+    def reset(self):
+        self.expirecache()
+        self.refreshcache()
+
+    def expirecache(self):
+        self.expiretime = time.time()
+
+    def refreshcache(self):
+        if self.expiretime < time.time():
+            self.expiretime = time.time() + 60
+            self.updatecache()
+
+    def updatecache(self):
+    	None
 
 ############################################
 # Configuration functions

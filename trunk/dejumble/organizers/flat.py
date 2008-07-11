@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 
+import os
+import os.path
+
 import dejumble.organizer
 from dejumble.organizer import *
 
 
 class FlatOrganizer(Organizer):
-    def _filelist(self, path):
-        return increasefilelist([ os.file.basename(path) for path in self.cache.filelist() ])
+    def paths(self, realpath):
+        return os.path.basename(realpath);

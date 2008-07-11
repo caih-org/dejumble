@@ -15,6 +15,8 @@ class ShellFileListFilter(FileListFilter):
             return -errno.ENOENT
 
         filenames = output.splitlines()
+        
+        # TODO: convert files inside the mount directory to relative paths.
 
         return filenames
 
