@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+import os
+import time
+
 import dejumble.organizer
 from dejumble.organizer import *
 

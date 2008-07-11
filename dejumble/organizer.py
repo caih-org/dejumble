@@ -17,7 +17,6 @@ increase_regex = re.compile('^(.*)\((\d+)\)$')
 
 logger = logging.getLogger('dejumble')
 
-
 class Organizer(Cacheable):
     """
     This is the base class for organizers
@@ -44,14 +43,14 @@ class Organizer(Cacheable):
 
     def paths(self, realpath):
         """
-        Generates paths for a given realpath (a file can have more than one transformed path)
+        Generates paths for a given real path (a file can have more than one transformed path)
         """
-        # TODO: substract root from this path
+        # TODO: subtract root from this path
         return realpath
 
     def dirlist(self, path):
         """
-        Returns a list of (non-existant) directories for a given path
+        Returns a list of (non-existent) directories for a given path
         """
         return [ ]
 
@@ -67,16 +66,18 @@ class Organizer(Cacheable):
 
     def addfile(self, realpath):
         """
-        Stores a file in self.transformed if not there already
+        Stores a file in self.transformed if not there already and returns 
         """
-        if len(self.transformed._realpath[realpath]) > 0:
-            return
-            
-        for path in self.paths(realpath):
-            while len(self.transformed._path[path]) > 0:
-                path = self.increasefilename(path)
+        transformed = self.transformed._realpath[realpath]
 
-            self.transformed.insert(realpath=realpath, path=path, dir=os.path.dirname(path))
+        if transformed:
+            [ (yield r['path']) for r in transformed ]
+        else:
+            for path in self.paths(realpath):
+                while self.transformed._path[path]:
+                    path = self.increasefilename(path)
+    
+                yield self.transformed.insert(realpath=realpath, path=path, dir=os.path.dirname(path))
 
     def increasefilename(self, filename):
         """
@@ -97,11 +98,11 @@ class Organizer(Cacheable):
 
     def realpath(self, path):
         """
-        Returns the real path for a file given the path in the filesystem.
+        Returns the real path for a file given the path in the file system.
         """
         realpaths = [ r['realpath'] for r in self.transformed._path[path] ]
 
-        if len(realpaths) > 0:
+        if realpaths:
             return realpaths[0]
 
         if path == '/':
@@ -112,10 +113,10 @@ class Organizer(Cacheable):
             return os.path.join('.', '/'.join(pathparts(path)[1:]))
 
     def filelist(self, path):
-        return [ os.basename(r['path']) for r in self.cache.transformed._dir[path]  ]
+        [ (yield os.basename(r['path'])) for r in self.cache.transformed._dir[path]  ]
 
 	############################################
-	# Filesystem functions
+	# File system functions
 
     def getattr(self, path):
         if self.realpath(path) is not None:
@@ -138,7 +139,7 @@ class Organizer(Cacheable):
 
 
 class TagOrganizer(Organizer):
-    def __init__(self, cache, category):
+    def __init__(self, cache, category=None):
         self.tags = Base(DB_FILE_TAGS)
         self.category = category
         Organizer.__init__(self, cache)
@@ -153,8 +154,7 @@ class TagOrganizer(Organizer):
         Organizer.updatecache(self)
 
     def paths(self, realpath):
-        for tag in [ r['tag'] for r in self.tags._realpath[realpath] ]:
-            yield os.path.join(tag, os.path.basename(realpath))
+        [ (yield os.path.join(tag, os.path.basename(realpath))) for tag in [ r['tag'] for r in self.tags._realpath[realpath] ] ]
 
     def dirlist(self, path):
         if path == '/':
@@ -173,7 +173,7 @@ class TagOrganizer(Organizer):
             self.tags.insert(realpath, category, tag)
 
     def filelistbytags(self, category, tags):
-        return [ os.path.basename(r['realpath']) for r in self.tags._category[category] if r['tag'] in tags ]
+        [ (yield os.path.basename(r['realpath'])) for r in self.tags._category[category] if r['tag'] in tags ]
 
     def taglist(self, category):
         return unique([ r['tag'] for r in self.tags._category[category] ])

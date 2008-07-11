@@ -17,7 +17,7 @@ class ISO9660Organizer(Organizer):
             
             for pathpart in pathparts(realpath):
                 currentpath = os.path.join(pathpart)
-                addfile(currentpath)
+                self.addfile(currentpath)
 
     def paths(self, realpath):
         yield os.path.join(os.path.dirname(realpath), self._path(os.path.basename(realpath)))
