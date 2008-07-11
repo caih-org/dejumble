@@ -28,7 +28,7 @@ dejumble: presents the content of a directory in an organized structure.
 
     server.parser.add_option(mountopt="root",
                              metavar="ROOT",
-                             default='~/',
+                             default='./',
                              help=_("root for all file operations [default: %default]"))
     server.parser.add_option(mountopt="conf",
                              metavar="CONF",
@@ -40,7 +40,7 @@ dejumble: presents the content of a directory in an organized structure.
                              help=_("use FILTER to handle QUERY [default: %default]"))
     server.parser.add_option(mountopt="cache",
                              metavar="CACHE",
-                             default='WriteThrough',
+                             default='PassThrough',
                              help=_("use CACHE to handle caching [default: %default]"))
     server.parser.add_option(mountopt="organizer",
                              metavar="ORGANIZER",

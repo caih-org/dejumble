@@ -6,58 +6,33 @@ from PyDbLite import Base
 
 import dejumble.util
 from dejumble.util import *
+import dejumble.cacheable
+from dejumble.cacheable import *
 
 DB_FILES = './.dejumbledb'
-DB_FILE_TAGS = './.dejumbledb_tags'
 
 
-class Cache:
+class Cache(Cacheable):
+    """
+    This is the base class for the caching system
+    """
+
     def __init__(self, filter_):
         self.filter = filter_
         self.files = Base(DB_FILES)
-        self.tags = Base(DB_FILE_TAGS)
         self.reset()
 
     def reset(self):
         self.files.create('realpath', mode = 'override')
         self.files.create_index('filename')
+        Cacheable.reset(self)
 
-        self.tags.create('realpath', 'category', 'tag', mode = 'override')
-        self.tags.create_index('category')
-
-        self.expirecache()
-        self.refreshcache()
-
-    def expirecache(self):
-        self.expiretime = time.time()
-
-    def refreshcache(self):
-        if self.expiretime < time.time():
-            self.expiretime = time.time() + 60
-            self.refreshfilelist()
-
-    def refreshfilelist(self):
+    def updatecache(self):
         for realpath in self.filter.filelist():
-            self.addfile(realpath)
-
-    def addfile(self, realpath):
-        self.files.insert(realpath)
+            self.files.insert(realpath)
 
     def filelist(self):
         return [ r['realpath'] for r in self.files ]
-
-    ############################################
-    # Tag management
-
-    def tag(self, realpath, category, tag):
-        if not tag == None and not tag == '':
-            self.tags.insert(realpath, category, tag)
-
-    def pathlistbytags(self, category, tags):
-        return [ r['realpath'] for r in self.tags._category[category] if r['tag'] in tags ]
-
-    def taglist(self, category):
-        return unique([ r['tag'] for r in self.tags._category[category] ])
 
     ############################################
     # Original filesystem functions
@@ -89,25 +64,36 @@ class Cache:
         self.organizer.expirecache()
 
     def chmod(self, realpath, mode):
+        logger.debug('chmod(%s, %s)' % (realpath, mode))
         os.chmod(realpath, mode)
 
-    def chown(self, path, user, group):
+    def chown(self, realpath, user, group):
+        logger.debug('chown(%s, %s, %s)' % (realpath, user, group))
         os.chown(realpath, user, group)
 
     def truncate(self, realpath, len):
+        logger.debug('truncate(%s, %s)' % (realpath, len))
         f = open(realpath, 'a')
         f.truncate(len)
         f.close()
 
     def utime(self, realpath, times):
+        logger.debug('utime(%s, %s)' % (realpath, times))
         os.utime(realpath, times)
 
     def access(self, realpath, mode):
+        logger.debug('access(%s, %s)' % (realpath, mode))
         if not os.access(realpath, mode):
             return -errno.EACCES
 
+    ############################################
+    # File functions embedded in a class
 
     class DejumbleFile(object):
+        """
+        This is the base class to manage a File on the caching system.
+        """
+
         def __init__(self, path, flags, *mode):
             global server
             f = os.open(server.organizer.realpath(path), flags, *mode)

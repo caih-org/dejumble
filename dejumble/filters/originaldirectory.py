@@ -22,4 +22,3 @@ class OriginalDirectoryFileListFilter(FileListFilter):
 
         return filenames
 
-
