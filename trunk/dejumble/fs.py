@@ -29,7 +29,7 @@ logger = logging.getLogger('dejumble')
 class DejumbleFS(Fuse):
     def main(self, *a, **kw):
         logger.info(_('Initializing dejumblefs'))
-        setup_organizer()
+        self.setup_organizer()
         self.file_class = self.organizer.cache.DejumbleFile
         self.originaldir = os.open(self.fuse_args.mountpoint, os.O_RDONLY)
         try:
@@ -43,7 +43,7 @@ class DejumbleFS(Fuse):
     def setup_organizer(self):
         what = 'dejumble.filters.%s.%sFileListFilter' % (self.filter.lower(), self.filter)
         logger.info('Loading filter %s(%s)' % (what, self.query))
-        filter_ = __import__(what)(self.query)
+        filter_ = __import__(what)(self.query, self.root)
 
         what = 'dejumble.caches.%s.%sCache' % (self.cache.lower(), self.cache)
         logger.info('Loading cache %s' % what)
@@ -67,9 +67,11 @@ class DejumbleFS(Fuse):
         return self.organizer.cache.readlink(self.organizer.realpath(path))
 
     def unlink(self, path):
+        self.organizer.expirecache()
         self.organizer.cache.unlink(self.organizer.realpath(path))
 
     def rename(self, path, pathdest):
+        self.organizer.expirecache()
         self.organizer.cache.rename(self.organizer.realpath(path), self.organizer.realpath(pathdest))
 
     def chmod(self, path, mode):

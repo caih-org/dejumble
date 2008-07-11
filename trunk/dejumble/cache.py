@@ -32,7 +32,7 @@ class Cache(Cacheable):
             self.files.insert(realpath)
 
     def filelist(self):
-        return [ r['realpath'] for r in self.files ]
+        [ (yield r['realpath']) for r in self.files ]
 
     ############################################
     # Original filesystem functions
@@ -96,7 +96,10 @@ class Cache(Cacheable):
 
         def __init__(self, path, flags, *mode):
             global server
-            f = os.open(server.organizer.realpath(path), flags, *mode)
+            realpath = server.organizer.realpath(path)
+            if not os.path.exists(realpath):
+                server.organizer.expirecache()
+            f = os.open(realpath, flags, *mode)
             self.file = os.fdopen(f, flags2mode(flags))
             self.fd = self.file.fileno()
 

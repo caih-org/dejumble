@@ -20,7 +20,10 @@ def flags2mode(flags):
     return m
 
 def addtrailingslash(path):
-    return '/%s' % path
+	if path[0] != '/':
+	    return '/%s' % path
+	else:
+		return path
 
 def ignoretag(filename):
     return not filename == '..' and not filename == '.' and not re.match('\.dejumble', filename)
@@ -92,5 +95,4 @@ def readconfigfile(config, path):
             config[name] = value.strip()
 
     return config
-
 

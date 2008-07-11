@@ -4,7 +4,6 @@ import dejumble.organizer
 from dejumble.organizer import *
 
 
-
 class DocumentsOrganizer(TagOrganizer):
     def __init__(self, cache):
         TagOrganizer.__init__(self, cache, 'filetype')
