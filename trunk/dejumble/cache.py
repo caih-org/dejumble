@@ -6,8 +6,6 @@ from PyDbLite import Base
 
 import dejumble.util
 from dejumble.util import *
-import dejumble.cacheable
-from dejumble.cacheable import *
 
 DB_FILES = './.dejumbledb'
 
@@ -17,14 +15,14 @@ class Cache(Cacheable):
     This is the base class for the caching system
     """
 
-    def __init__(self, filter_):
-        self.filter = filter_
+    def __init__(self, filter):
+        self.filter = filter
         self.files = Base(DB_FILES)
         self.reset()
 
     def reset(self):
         self.files.create('realpath', mode = 'override')
-        self.files.create_index('filename')
+        self.files.create_index('realpath')
         Cacheable.reset(self)
 
     def updatecache(self):
@@ -32,6 +30,7 @@ class Cache(Cacheable):
             self.files.insert(realpath)
 
     def filelist(self):
+        self.refreshcache()
         [ (yield r['realpath']) for r in self.files ]
 
     ############################################
@@ -51,17 +50,9 @@ class Cache(Cacheable):
         self.expirecache()
 
     def rename(self, realpath, pathdest):
-        logger.debug('rename(%s)' % realpath)
-        dirname = os.path.dirname(realpath)
-        dirnamedest = os.path.dirname(pathdest)
-        if dirname == dirnamedest:
-            filenamedest = os.path.basename(pathdest)
-            realpath = self.organizer.path(realpath)
-            dirname = os.path.dirname(path)
-            os.rename(path, os.path.join(dirname, filenamedest))
-        else:
-            return -errno.ENOENT
-        self.organizer.expirecache()
+        logger.debug('rename(%s, %s)' % (realpath, pathdest))
+        os.rename(realpath, pathdest)
+        self.expirecache()
 
     def chmod(self, realpath, mode):
         logger.debug('chmod(%s, %s)' % (realpath, mode))

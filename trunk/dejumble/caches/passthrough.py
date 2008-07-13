@@ -3,6 +3,6 @@
 import dejumble.cache
 from dejumble.cache import *
 
-class WriteThroughCache(Cache):
+class PassThroughCache(Cache):
     None
 

@@ -2,13 +2,13 @@
 
 Most users should use packages for their operating system. Find them at the Downloads page.
 
-==Installation==
+==Build==
 
 {{{
 python setup.py build
 }}}
 
-==Uninstallation==
+==Installation==
 
 {{{
 sudo python setup.py install

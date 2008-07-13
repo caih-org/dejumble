@@ -7,6 +7,9 @@ dejumble /path/to/mount -o nonempty
 dejumble /path/to/mount -o filter="Null",nonempty
 dejumble /path/to/mount -o filter="OriginalDirectory",organizer="Documents",nonempty
 dejumble /path/to/mount -o query="find ~/Music/ -name *.mp3",filter="Shell",organizer="Flat",nonempty
+
+
+dejumble tmo -o filter="Null",query="",root="",cache="PassThrough",organizer='Flat'
 }}}
 
 to unmount:

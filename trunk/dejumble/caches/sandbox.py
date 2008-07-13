@@ -3,7 +3,7 @@
 import dejumble.cache
 from dejumble.cache import *
 
-class WriteThroughCache(Cache):
+class SandboxCache(Cache):
     # TODO: implement
     None
 

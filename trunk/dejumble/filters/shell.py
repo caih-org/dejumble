@@ -3,8 +3,8 @@
 import commands
 import errno
 
-import dejumble.filters
-from dejumble.filters import *
+import dejumble.filter
+from dejumble.filter import *
 
 
 class ShellFileListFilter(FileListFilter):

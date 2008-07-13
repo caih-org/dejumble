@@ -33,7 +33,7 @@ class DejumbleFS(Fuse):
         self.file_class = self.organizer.cache.DejumbleFile
         self.originaldir = os.open(self.fuse_args.mountpoint, os.O_RDONLY)
         try:
-            result = self.main(*a, **kw)
+            result = Fuse.main(self, *a, **kw)
         except fuse.FuseError:
             result = -errno.ENOENT
             logger.warn(_('Finalizing dejumblefs'))
@@ -41,17 +41,22 @@ class DejumbleFS(Fuse):
         return result
 
     def setup_organizer(self):
-        what = 'dejumble.filters.%s.%sFileListFilter' % (self.filter.lower(), self.filter)
-        logger.info('Loading filter %s(%s)' % (what, self.query))
-        filter_ = __import__(what)(self.query, self.root)
+        filter_ = self._loadclass('filters', 'FileListFilter', self.filter)(self.query, self.root)
+        cache = self._loadclass('caches', 'Cache', self.cache)(filter_)
+        self.organizer = self._loadclass('organizers', 'Organizer', self.organizer)(cache)
 
-        what = 'dejumble.caches.%s.%sCache' % (self.cache.lower(), self.cache)
-        logger.info('Loading cache %s' % what)
-        cache = __import__(what)(filter_)
+    def _loadclass(self, moduleprefix, classsuffix, name):
+        modulename = 'dejumble.%s.%s' % (moduleprefix, name.lower())
+        classname = '%s%s' % (name, classsuffix)
+        logger.info('Loading %s.%s' % (modulename, classname))
+        return getattr(self._import(modulename), classname)
 
-        what = 'dejumble.organizers.%s.%sOrganizer' % (self.organizer.lower(), self.organizer)
-        logger.info('Loading organizer %s' % what)
-        self.organizer = __import__(what)(cache)
+    def _import(self, name):
+        mod = __import__(name)
+        components = name.split('.')
+        for comp in components[1:]:
+            mod = getattr(mod, comp)
+        return mod
 
     def fsinit(self):
         os.fchdir(self.originaldir)
@@ -67,12 +72,12 @@ class DejumbleFS(Fuse):
         return self.organizer.cache.readlink(self.organizer.realpath(path))
 
     def unlink(self, path):
-        self.organizer.expirecache()
         self.organizer.cache.unlink(self.organizer.realpath(path))
+        self.organizer.expirecache()
 
     def rename(self, path, pathdest):
-        self.organizer.expirecache()
         self.organizer.cache.rename(self.organizer.realpath(path), self.organizer.realpath(pathdest))
+        self.organizer.expirecache()
 
     def chmod(self, path, mode):
         self.organizer.cache.chmod(self.organizer.realpath(path), mode)
