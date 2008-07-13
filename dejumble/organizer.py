@@ -5,8 +5,10 @@ import os
 import os.path
 import time
 
-import dejumble.filters
-from dejumble.filters import *
+from PyDbLite import Base
+
+import dejumble.filter
+from dejumble.filter import *
 import dejumble.util
 from dejumble.util import *
 
@@ -45,14 +47,19 @@ class Organizer(Cacheable):
         """
         Generates paths for a given real path (a file can have more than one transformed path)
         """
-        # TODO: subtract root from this path
-        return realpath
+        return '/%s' % realpath.replace(self.cache.filter.root, '')
 
     def dirlist(self, path):
         """
-        Returns a list of (non-existent) directories for a given path
+        Returns a list of (non-existent or generated) directories for a given path
         """
         return [ ]
+
+    def _realpath(self, path):
+        """
+        Generates a real path for a inexistent path
+        """
+        return os.path.basename(path)
 
 	############################################
 	# General functions
@@ -66,7 +73,8 @@ class Organizer(Cacheable):
 
     def addfile(self, realpath):
         """
-        Stores a file in self.transformed if not there already and returns 
+        Stores a file in self.transformed if not there already and returns the paths for that
+        file in the proxy file system 
         """
         transformed = self.transformed._realpath[realpath]
 
@@ -82,7 +90,7 @@ class Organizer(Cacheable):
     def increasefilename(self, filename):
         """
         Returns a new filename in sequence. Called if the current filename already exists.
-        This default implementation adds a (1) to the end if not present or increases that
+        This default implementation adds a "(1)" to the end if not present or increases that
         number by one.
         """
         root, ext = os.path.splitextension(filename)
@@ -100,6 +108,7 @@ class Organizer(Cacheable):
         """
         Returns the real path for a file given the path in the file system.
         """
+        self.refreshcache()
         realpaths = [ r['realpath'] for r in self.transformed._path[path] ]
 
         if realpaths:
@@ -111,9 +120,12 @@ class Organizer(Cacheable):
             return '.'
         elif pathparts(path)[0] == ORIGINAL_DIR:
             return os.path.join('.', '/'.join(pathparts(path)[1:]))
+        else:
+            return self._realpath(path)
 
     def filelist(self, path):
-        [ (yield os.basename(r['path'])) for r in self.cache.transformed._dir[path]  ]
+        self.refreshcache()
+        [ (yield os.basename(r['path'])) for r in self.transformed._dir[path]  ]
 
 	############################################
 	# File system functions
@@ -147,10 +159,10 @@ class TagOrganizer(Organizer):
     def reset(self):
         self.tags.create('realpath', 'category', 'tag', mode = 'override')
         self.tags.create_index('category')
-        Organizer.resetcache(self)
+        Organizer.reset(self)
 
     def updatecache(self):
-        self.generatetags() 
+        self.generatetags()
         Organizer.updatecache(self)
 
     def paths(self, realpath):
@@ -158,7 +170,7 @@ class TagOrganizer(Organizer):
 
     def dirlist(self, path):
         if path == '/':
-            return self.cache.taglist(self.category)
+            return self.taglist(self.category)
         else:
             return [ ]
 
@@ -173,8 +185,10 @@ class TagOrganizer(Organizer):
             self.tags.insert(realpath, category, tag)
 
     def filelistbytags(self, category, tags):
+        self.refreshcache()
         [ (yield os.path.basename(r['realpath'])) for r in self.tags._category[category] if r['tag'] in tags ]
 
     def taglist(self, category):
+        self.refreshcache()
         return unique([ r['tag'] for r in self.tags._category[category] ])
 

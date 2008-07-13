@@ -58,7 +58,7 @@ dejumble: presents the content of a directory in an organized structure.
 
 
 if __name__ == '__main__':
-	psyco.full()
+    psyco.full()
     logging.config.fileConfig(pkg_resources.resource_filename('dejumble', 'conf/logging.conf'))
 
     # redirect stdout to a disk file
