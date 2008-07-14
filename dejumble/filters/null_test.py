@@ -3,6 +3,7 @@
 import unittest
 
 import dejumble.filters.null
+from dejumble.filters.null import *
 
 class NullFileListFilterTestCase(unittest.TestCase):
     def testfilelist(self):
