@@ -30,16 +30,16 @@ class ISO9660Organizer(Organizer):
     
         if not m is None:
             num = int(m.group(2)) + 1
-            filename = m.group(1)
+            root = m.group(1)
 
-        return self._path(realpath, num)
+        return self._path("%s%s" % (root, ext), num)
 
     def _path(self, filename, num=0):
         root, ext = os.path.splitext(filename)
 
         # TODO: exclude all non valid characters
-        root = root.replaceall(' ', '')
-        root = root.replaceall('+', '_')
+        root = root.replace(' ', '')
+        root = root.replace('+', '_')
 
         size = int(6 - math.log10(len(str(num))))
         
