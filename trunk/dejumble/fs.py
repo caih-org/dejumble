@@ -23,7 +23,7 @@ from dejumble.util import *
 
 fuse.fuse_python_api = (0, 2)
 
-logger = logging.getLogger('dejumble')
+logger = logging.getLogger('dejumble.DejumbleFS')
 
 
 class DejumbleFS(Fuse):
@@ -44,6 +44,7 @@ class DejumbleFS(Fuse):
         filter_ = self._loadclass('filters', 'FileListFilter', self.filter)(self.query, self.root)
         cache = self._loadclass('caches', 'Cache', self.cache)(filter_)
         self.organizer = self._loadclass('organizers', 'Organizer', self.organizer)(cache)
+        logger.info(_('Done loading modules'))
 
     def _loadclass(self, moduleprefix, classsuffix, name):
         modulename = 'dejumble.%s.%s' % (moduleprefix, name.lower())
@@ -61,35 +62,46 @@ class DejumbleFS(Fuse):
     def fsinit(self):
         os.fchdir(self.originaldir)
         self.organizer.reset()
+        logger.info(_('dejumblefs initialized!'))
 
     def getattr(self, path):
+        logger.debug('getattr(%s)' % path)
         return self.organizer.getattr(path)
 
     def readdir(self, path, offset):
+        logger.debug('readdir(%s, %s)' % (path, offset))
         return self.organizer.readdir(path, offset)
 
     def readlink(self, path):
+        logger.debug('readlink(%s)' % path)
         return self.organizer.cache.readlink(self.organizer.realpath(path))
 
     def unlink(self, path):
+        logger.debug('unlink(%s)' % path)
         self.organizer.cache.unlink(self.organizer.realpath(path))
         self.organizer.expirecache()
 
     def rename(self, path, pathdest):
+        logger.debug('rename(%s, %s)' % (path, pathdest))
         self.organizer.cache.rename(self.organizer.realpath(path), self.organizer.realpath(pathdest))
         self.organizer.expirecache()
 
     def chmod(self, path, mode):
+        logger.debug('chmod(%s, %s)' % (path, mode))
         self.organizer.cache.chmod(self.organizer.realpath(path), mode)
 
     def chown(self, path, user, group):
+        logger.debug('chown(%s, %s, %s)' % (path, user, group))
         self.organizer.cache.chown(self.organizer.realpath(path), user, group)
 
     def truncate(self, path, len):
+        logger.debug('truncate(%s, %s)' % (path, len))
         self.organizer.cache.truncate(self.organizer.realpath(path), len)
 
     def utime(self, path, times):
+        logger.debug('utime(%s, %s)' % (path, times))
         self.organizer.cache.utime(self.organizer.realpath(path), times)
 
     def access(self, path, mode):
+        logger.debug('access(%s, %s)' % (path, mode))
         self.organizer.cache.access(self.organizer.realpath(path), mode)

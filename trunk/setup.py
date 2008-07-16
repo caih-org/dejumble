@@ -10,9 +10,9 @@ License :: OSI Approved :: GNU General Public License (GPL)
 Programming Language :: Python
 Topic :: Filesystems
 Topic :: Software Development :: Libraries :: Python Modules
-Operating System :: Unix
 Operating System :: Linux
-Operating System :: MacOS
+Operating System :: MacOS :: MacOS X
+Operating System :: POSIX
 """
 
 from distutils.core import setup
@@ -21,9 +21,9 @@ doclines = __doc__.splitlines()
 
 setup(name='dejumble',
       version = '0.7',
-      package_dir = { '' : '' },
       packages = [ 'dejumble', 'dejumble.filters', 'dejumble.caches', 'dejumble.organizers' ],
-      package_data = { '' : [ 'conf/*.conf', 'conf/*.sql' ] },
+      package_dir = { '' : '' },
+      package_data = { 'dejumble' : [ 'conf/*.conf', 'conf/*.sql' ], 'dejumble.testdata' : [ '*.*' ] },
       scripts = [ 'scripts/dejumble' ],
       maintainer = 'Cesar Izurieta',
       maintainer_email = 'cesar@caih.org',

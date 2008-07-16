@@ -3,13 +3,13 @@
 import os
 import os.path
 
-import dejumble.filters
-from dejumble.filters import *
+import dejumble.filter
+from dejumble.filter import *
 
 
 class CompleteDirectoryFileListFilter(FileListFilter):
     def filelist(self):
-        return _filelist(self.root, self.root)
+        return self._filelist(self.root, self.root)
 
     def _filelist(self, dir, currentpath):
         for path in os.listdir(dir):

@@ -12,5 +12,5 @@ class OriginalDirectoryFileListFilter(CompleteDirectoryFileListFilter):
         CompleteDirectoryFileListFilter.__init__(self, query, './')
 
     def filelist(self):
-        return _filelist('.', '.')
+        return self._filelist('.', '.')
 

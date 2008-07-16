@@ -5,8 +5,7 @@ import logging
 import re
 import pkg_resources
 import time
-
-logger = logging.getLogger('dejumble')
+import copy
 
 ORIGINAL_DIR = '.dejumblefs'
 
@@ -16,18 +15,18 @@ def pathparts(path):
 def flags2mode(flags):
     md = {os.O_RDONLY: 'r', os.O_WRONLY: 'w', os.O_RDWR: 'w+'}
     m = md[flags & (os.O_RDONLY | os.O_WRONLY | os.O_RDWR)]
-    if flags | os.O_APPEND:
+    if flags & os.O_APPEND:
         m = m.replace('w', 'a', 1)
     return m
 
 def addtrailingslash(path):
-	if path[0] != '/':
-	    return '/%s' % path
-	else:
-		return path
+    if path.startswith(os.sep):
+        return path
+    else:
+        return '%s%s' % (os.sep, path)
 
 def ignoretag(filename):
-    return not filename == '..' and not filename == '.' and not re.match('\.dejumble', filename)
+    return not filename == '..' and not filename == '.' and not filename.startswith('.dejumble')
 
 def extensionregex(extension):
     return re.compile('%s$' % extension);
@@ -36,6 +35,7 @@ def getbasefilelist():
     return [ '..', '.' ]
 
 def unique(inlist, keepstr = True):
+    inlist = copy.copy(inlist)
     typ = type(inlist)
     if not typ == list:
         inlist = list(inlist)
@@ -63,7 +63,7 @@ class Cacheable:
         self.expiretime = time.time()
 
     def refreshcache(self):
-        if self.expiretime < time.time():
+        if self.expiretime and self.expiretime < time.time():
             self.expiretime = time.time() + 60
             self.updatecache()
 
