@@ -26,8 +26,9 @@ class Organizer(Cacheable):
     This is the base class for organizers
     """
 
-    def __init__(self, cache):
+    def __init__(self, cache, recursive=True):
         self.cache = cache
+        self.recursive = recursive
         self.transformed = Base(DB_TRANSFORMED)
         # Do not call reset here, it is called from fs.py when the fs is already started
 
@@ -40,44 +41,54 @@ class Organizer(Cacheable):
     	Cacheable.reset(self)
 
     def updatecache(self):
-        self.generatepaths()
+        self.generateallpaths()
 
 	############################################
 	# Overwritable functions
 
-    def paths(self, realpath):
-        """
-        Generates paths for a given real path (a file can have more than one transformed path)
-        """
-        yield '/%s' % realpath.replace(self.cache.filter.root, '')
-
     def dirlist(self, path):
         """
-        Returns a list of (non-existent or generated) directories for a given path
+        Returns a list of (non-existent, generated, virtual) directories for a given path. Default implementation.
         """
         return [ ]
 
-    def _realpath(self, path):
+    def generatepaths(self, realpath):
         """
-        Generates a real path for a inexistent path
+        Generates paths for a given real path. A file can have more than one transformed path. Default implementation.
+        """
+        yield addtrailingslash(realpath.replace(self.cache.filter.root, '', 1))
+
+    def generaterealpath(self, path):
+        """
+        Generates a real path for a inexistent path. Default implementation.
         """
         return os.path.join(self.cache.filter.root, os.path.basename(path))
 
 	############################################
 	# General functions
 
-    def generatepaths(self):
+    def generateallpaths(self):
         """
         Generates paths for all the files given by the cache and stores them in self.transformed
         """
         for realpath in self.cache.filelist():
-            self.addfile(realpath)
+            if self.recursive:
+                # Add all sub-directories first
+                currentpath = self.cache.filter.root
+                
+                for pathpart in pathparts(realpath.replace(self.cache.filter.root, '', 1)):
+                    currentpath = os.path.join(currentpath, pathpart)
+                    self.addfile(currentpath)
+            else:
+                self.addfile(realpath)
 
     def addfile(self, realpath):
         """
         Stores a file in self.transformed if not there already and returns the paths for that
         file in the proxy file system 
         """
+        logger.debug('addfile(%s)' % realpath)
+        self.refreshcache()
         transformed = self.transformed._realpath[realpath]
 
         if transformed:
@@ -85,10 +96,16 @@ class Organizer(Cacheable):
         else:
             paths = [ ]
             for path in self.paths(realpath):
+                logger.debug('addfile 2 (%s)' % path)
                 while self.transformed._path[path]:
+                    logger.debug('addfile 3 (%s)' % path)
                     path = self.increasefilename(path)
-    
-                self.transformed.insert(realpath=realpath, path=path, dir=os.path.dirname(path))
+                    logger.debug('addfile 4 (%s)' % path)
+
+                logger.debug('addfile 5 (%s)' % path)
+                dir = os.path.dirname(path)
+                logger.debug('addfile(%s, %s, %s)' % (realpath, path, dir))
+                self.transformed.insert(realpath=realpath, path=path, dir=dir)
                 paths.append(path)
 
         return paths
@@ -99,7 +116,7 @@ class Organizer(Cacheable):
         This default implementation adds a "(1)" to the end if not present or increases that
         number by one.
         """
-        root, ext = os.path.splitextension(filename)
+        root, ext = os.path.splitext(filename)
     
         num = 1
         m = increase_regex.match(root)
@@ -109,6 +126,28 @@ class Organizer(Cacheable):
             filename = m.group(1)
     
         return '%s(%i)%s' % (root, num, ext)        
+
+    ############################################
+    # General functions that read the cache
+
+    def filelist(self, path):
+        """
+        Returns a list of filenames in a list from cache
+        """
+        self.refreshcache()
+        [ (yield os.path.basename(r['path'])) for r in self.transformed._dir[path]  ]
+
+    def paths(self, realpath):
+        """
+        Generates or returns paths from cache for a given real path
+        """
+        self.refreshcache()
+        paths = self.transformed._realpath[realpath]
+
+        if paths:
+            [ (yield path) for path in paths ]
+        else:
+            [ (yield path) for path in self.generatepaths(realpath) ]
 
     def realpath(self, path):
         """
@@ -128,11 +167,7 @@ class Organizer(Cacheable):
         elif pathparts(path)[0] == ORIGINAL_DIR:
             return os.path.join('.', '/'.join(pathparts(path)[1:]))
         else:
-            return self._realpath(path)
-
-    def filelist(self, path):
-        self.refreshcache()
-        [ (yield os.path.basename(r['path'])) for r in self.transformed._dir[path]  ]
+            return self.generaterealpath(path)
 
 	############################################
 	# File system functions
@@ -161,7 +196,7 @@ class TagOrganizer(Organizer):
     def __init__(self, cache, category=None):
         self.tags = Base(DB_FILE_TAGS)
         self.category = category
-        Organizer.__init__(self, cache)
+        Organizer.__init__(self, cache, False)
 
     def reset(self):
         self.tags.create('realpath', 'category', 'tag', mode = 'override')
@@ -172,7 +207,7 @@ class TagOrganizer(Organizer):
         self.generatetags()
         Organizer.updatecache(self)
 
-    def paths(self, realpath):
+    def generatepaths(self, realpath):
         [ (yield os.path.join(tag, os.path.basename(realpath))) for tag in [ r['tag'] for r in self.tags._realpath[realpath] ] ]
 
     def dirlist(self, path):

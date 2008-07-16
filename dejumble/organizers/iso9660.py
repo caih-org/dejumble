@@ -10,17 +10,11 @@ from dejumble.organizer import *
 iso9660_increase_regex = re.compile('^(.*)~(\d+)$')
 
 class ISO9660Organizer(Organizer):
-    def generatepaths(self):
-        for realpath in self.filter.filelist():
-            # Add all subdirectories first
-            currentpath = os.sep
-            
-            for pathpart in pathparts(realpath):
-                currentpath = os.path.join(pathpart)
-                self.addfile(currentpath)
-
-    def paths(self, realpath):
-        yield os.path.join(os.path.dirname(realpath), self._path(os.path.basename(realpath)))
+    #def generatepaths(self, realpath):
+    #    newpath = os.sep
+    #    for part in pathparts(realpath):
+    #        newpath = os.path.join(paths)
+    #    yield os.path.join(os.path.dirname(realpath), self._path(os.path.basename(realpath)))
 
     def increasefilename(self, filename):
         root, ext = os.path.splitext(filename)
