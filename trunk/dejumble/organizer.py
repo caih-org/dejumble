@@ -96,13 +96,9 @@ class Organizer(Cacheable):
         else:
             paths = [ ]
             for path in self.paths(realpath):
-                logger.debug('addfile 2 (%s)' % path)
                 while self.transformed._path[path]:
-                    logger.debug('addfile 3 (%s)' % path)
                     path = self.increasefilename(path)
-                    logger.debug('addfile 4 (%s)' % path)
 
-                logger.debug('addfile 5 (%s)' % path)
                 dir = os.path.dirname(path)
                 logger.debug('addfile(%s, %s, %s)' % (realpath, path, dir))
                 self.transformed.insert(realpath=realpath, path=path, dir=dir)
@@ -145,7 +141,7 @@ class Organizer(Cacheable):
         paths = self.transformed._realpath[realpath]
 
         if paths:
-            [ (yield path) for path in paths ]
+            [ (yield path['path']) for path in paths ]
         else:
             [ (yield path) for path in self.generatepaths(realpath) ]
 
