@@ -41,6 +41,7 @@ class DejumbleFS(Fuse):
         return result
 
     def setup_organizer(self):
+        # TODO: remove trailing slash from root if present
         filter_ = self._loadclass('filters', 'FileListFilter', self.filter)(self.query, self.root)
         cache = self._loadclass('caches', 'Cache', self.cache)(filter_)
         self.organizer = self._loadclass('organizers', 'Organizer', self.organizer)(cache)

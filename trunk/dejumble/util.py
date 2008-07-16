@@ -63,7 +63,7 @@ class Cacheable:
         self.expiretime = time.time()
 
     def refreshcache(self):
-        if self.expiretime and self.expiretime < time.time():
+        if self.expiretime < time.time():
             self.expiretime = time.time() + 60
             self.updatecache()
 
