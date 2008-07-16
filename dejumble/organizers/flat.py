@@ -8,4 +8,4 @@ from dejumble.organizer import *
 
 class FlatOrganizer(Organizer):
     def paths(self, realpath):
-        return os.path.basename(realpath);
+        yield addtrailingslash(os.path.basename(realpath));

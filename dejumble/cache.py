@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
 import time
+import errno
+import logging
 
 from PyDbLite import Base
 
@@ -8,6 +10,8 @@ import dejumble.util
 from dejumble.util import *
 
 DB_FILES = './.dejumbledb'
+
+logger = logging.getLogger('dejumble.Cache')
 
 
 class Cache(Cacheable):

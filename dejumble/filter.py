@@ -2,7 +2,7 @@
 
 import logging
 
-logger = logging.getLogger('dejumble')
+logger = logging.getLogger('dejumble.Filter')
 
 
 class FileListFilter:

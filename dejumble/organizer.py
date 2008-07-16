@@ -6,6 +6,8 @@ import os.path
 import time
 
 from PyDbLite import Base
+import fuse
+from fuse import Fuse
 
 import dejumble.filter
 from dejumble.filter import *
@@ -17,7 +19,7 @@ DB_FILE_TAGS = './.dejumbledb_tags'
 
 increase_regex = re.compile('^(.*)\((\d+)\)$')
 
-logger = logging.getLogger('dejumble')
+logger = logging.getLogger('dejumble.Organizer')
 
 class Organizer(Cacheable):
     """
@@ -47,7 +49,7 @@ class Organizer(Cacheable):
         """
         Generates paths for a given real path (a file can have more than one transformed path)
         """
-        return '/%s' % realpath.replace(self.cache.filter.root, '')
+        yield '/%s' % realpath.replace(self.cache.filter.root, '')
 
     def dirlist(self, path):
         """
@@ -59,17 +61,17 @@ class Organizer(Cacheable):
         """
         Generates a real path for a inexistent path
         """
-        return os.path.basename(path)
+        return os.path.join(self.cache.filter.root, os.path.basename(path))
 
 	############################################
 	# General functions
 
     def generatepaths(self):
         """
-        Generates paths for all the files given by the filter and stores them in self.transformed
+        Generates paths for all the files given by the cache and stores them in self.transformed
         """
-        for realpath in self.filter.filelist():
-            addfile(realpath)
+        for realpath in self.cache.filelist():
+            self.addfile(realpath)
 
     def addfile(self, realpath):
         """
@@ -79,13 +81,17 @@ class Organizer(Cacheable):
         transformed = self.transformed._realpath[realpath]
 
         if transformed:
-            [ (yield r['path']) for r in transformed ]
+            return [ r for r in transformed ]
         else:
+            paths = [ ]
             for path in self.paths(realpath):
                 while self.transformed._path[path]:
                     path = self.increasefilename(path)
     
-                yield self.transformed.insert(realpath=realpath, path=path, dir=os.path.dirname(path))
+                self.transformed.insert(realpath=realpath, path=path, dir=os.path.dirname(path))
+                paths.append(path)
+
+        return paths
 
     def increasefilename(self, filename):
         """
@@ -108,6 +114,7 @@ class Organizer(Cacheable):
         """
         Returns the real path for a file given the path in the file system.
         """
+        logger.debug('realpath(%s)' % path)
         self.refreshcache()
         realpaths = [ r['realpath'] for r in self.transformed._path[path] ]
 
@@ -125,7 +132,7 @@ class Organizer(Cacheable):
 
     def filelist(self, path):
         self.refreshcache()
-        [ (yield os.basename(r['path'])) for r in self.transformed._dir[path]  ]
+        [ (yield os.path.basename(r['path'])) for r in self.transformed._dir[path]  ]
 
 	############################################
 	# File system functions
