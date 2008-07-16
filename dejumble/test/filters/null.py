@@ -2,10 +2,13 @@
 
 import unittest
 
+import dejumble.test.base
+from dejumble.test.base import *
 import dejumble.filters.null
 from dejumble.filters.null import *
 
-class NullFileListFilterTestCase(unittest.TestCase):
+
+class NullFileListFilterTestCase(BaseFileListFilterTestCase):
     def testfilelist(self):
         filelist = list(NullFileListFilter().filelist())
         self.assertEqual(len(filelist), 1)
