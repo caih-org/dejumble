@@ -46,8 +46,6 @@ class DejumbleFS(Fuse):
         except fuse.FuseError:
             result = -errno.ENOENT
             logger.warn(_('Finalizing dejumblefs'))
-        except Error:
-            logger.error('ERROR!!!')
         os.close(self.originaldir)
         return result
 
@@ -82,7 +80,6 @@ class DejumbleFS(Fuse):
     def setup_organizer(self):
         # HACK: set defaults since fuse is not doing that
         defaults = self.parser.get_default_values()
-        logger.debug(defaults)
         
         if not self.conf: self.conf = defaults.conf
         if not self.root: self.root = defaults.root
@@ -113,50 +110,54 @@ class DejumbleFS(Fuse):
             mod = getattr(mod, comp)
         return mod
 
+    ############################################
+    # Filesystem functions
+
     def fsinit(self):
         os.fchdir(self.originaldir)
         self.organizer.reset()
         logger.info(_('dejumblefs initialized!'))
 
     def getattr(self, path):
-        logger.debug('getattr(%s)' % path)
+        logger.debug('getattr(%s) =============================' % path)
         return self.organizer.getattr(path)
 
     def readdir(self, path, offset):
-        logger.debug('readdir(%s, %s)' % (path, offset))
-        return self.organizer.readdir(path, offset)
+        logger.debug('readdir(%s, %s) =============================' % (path, offset))
+        # FIXME: convert to list from generator to bring up errors
+        return list(self.organizer.readdir(path, offset))
 
     def readlink(self, path):
-        logger.debug('readlink(%s)' % path)
+        logger.debug('readlink(%s) =============================' % path)
         return self.organizer.cache.readlink(self.organizer.realpath(path))
 
     def unlink(self, path):
-        logger.debug('unlink(%s)' % path)
+        logger.debug('unlink(%s) =============================' % path)
         self.organizer.cache.unlink(self.organizer.realpath(path))
         self.organizer.deletefromcache(path)
 
     def rename(self, path, pathdest):
-        logger.debug('rename(%s, %s)' % (path, pathdest))
+        logger.debug('rename(%s, %s) =============================' % (path, pathdest))
         self.organizer.cache.rename(self.organizer.realpath(path), self.organizer.realpath(pathdest))
         self.organizer.deletefromcache(path)
         self.organizer.addtocache(pathdest)
 
     def chmod(self, path, mode):
-        logger.debug('chmod(%s, %s)' % (path, mode))
+        logger.debug('chmod(%s, %s) =============================' % (path, mode))
         self.organizer.cache.chmod(self.organizer.realpath(path), mode)
 
     def chown(self, path, user, group):
-        logger.debug('chown(%s, %s, %s)' % (path, user, group))
+        logger.debug('chown(%s, %s, %s) =============================' % (path, user, group))
         self.organizer.cache.chown(self.organizer.realpath(path), user, group)
 
     def truncate(self, path, len):
-        logger.debug('truncate(%s, %s)' % (path, len))
+        logger.debug('truncate(%s, %s) =============================' % (path, len))
         self.organizer.cache.truncate(self.organizer.realpath(path), len)
 
     def utime(self, path, times):
-        logger.debug('utime(%s, %s)' % (path, times))
+        logger.debug('utime(%s, %s) =============================' % (path, times))
         self.organizer.cache.utime(self.organizer.realpath(path), times)
 
     def access(self, path, mode):
-        logger.debug('access(%s, %s)' % (path, mode))
+        logger.debug('access(%s, %s) =============================' % (path, mode))
         self.organizer.cache.access(self.organizer.realpath(path), mode)
