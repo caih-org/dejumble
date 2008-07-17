@@ -20,9 +20,8 @@ class CompleteDirectoryFileListFilterTestCase(BaseFileListFilterTestCase):
         filter = CompleteDirectoryFileListFilter('', self.original_dir)
         filelist = list(filter.filelist())
 
-        self.assertEqual(len(filelist), 4)
+        self.assertEqual(len(filelist), 3)
         self.assertTrue(original_file1[1] in filelist)
         self.assertTrue(original_file2[1] in filelist)
-        self.assertTrue(original_subdir in filelist)
         self.assertTrue(original_file3[1] in filelist)
 

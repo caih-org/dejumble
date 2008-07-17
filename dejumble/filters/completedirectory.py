@@ -19,6 +19,6 @@ class CompleteDirectoryFileListFilter(FileListFilter):
             if os.path.isdir(path) and not os.path.islink(path):
                 for realpath in self._generatefilelist(path):
                     yield realpath 
-            
-            yield path
+            else:
+                yield path
 
