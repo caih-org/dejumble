@@ -7,9 +7,6 @@ dejumble /path/to/mount -o nonempty
 dejumble /path/to/mount -o filter="Null",nonempty
 dejumble /path/to/mount -o filter="OriginalDirectory",organizer="Documents",nonempty
 dejumble /path/to/mount -o query="find ~/Music/ -name *.mp3",filter="Shell",organizer="Flat",nonempty
-
-
-dejumble tmp -o filter="Shell",query="echo /tmp/1",root="/",cache="PassThrough",organizer="Flat",nonempty
 }}}
 
 to unmount:
@@ -17,8 +14,6 @@ to unmount:
 {{{
 fusermount -u /path/to/mount
 }}}
-
-Currently you need to provide a query even for those providers that don't require one.
 
 The `nonempty` flag lets you mount over an existing directory. File contents are preserved in a special directory `.dejumblefs` that contains all the previous directory structure. This directory is not shown, not even with a `ls -a` but you can cd into it.
 
@@ -47,7 +42,7 @@ Not implemented yet:
   * `ISO9660` - Converts all filenames to short file names like 8.3 DOS names (SomeFile.ext -> SOMEFI~1.EXT).
 
 Not implemented yet:  
-  
+
   * `CaseInsensitive` - Treats all files names as case insensitive.
   * `Localization` - Uses a translation table to translate file names or directory names.
 
@@ -58,8 +53,4 @@ Not implemented yet:
   * python-fuse
   * PyDBLite
   * python-xesam (not yet, does this even exist?)
-
-==Known issues==
-
-  * When editing files in vim they appear as readonly (even though ls -l shows that they are writtable)
 

@@ -28,6 +28,8 @@ def addtrailingslash(path):
 def removeroot(realpath, root):
     if realpath.startswith(root):
         return realpath.replace(root, '', 1)
+    else:
+        raise Error()
 
 def ignoretag(filename):
     return not filename == '/..' and not filename == '/.' and not filename.startswith('/.dejumble')

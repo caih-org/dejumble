@@ -92,9 +92,9 @@ class Cache(Cacheable):
         """
 
         def __init__(self, path, flags, *mode):
-            realpath = dejumble_obj.organizer.realpath(path)
+            realpath = getserver().organizer.realpath(path)
             if not os.path.exists(realpath):
-                dejumble_obj.organizer.expirecache()
+                getserver().organizer.expirecache()
             f = os.open(realpath, flags, *mode)
             self.file = os.fdopen(f, flags2mode(flags))
             self.fd = self.file.fileno()
