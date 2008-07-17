@@ -35,6 +35,13 @@ class Cache(Cacheable):
         for realpath in self.filter.filelist():
             self.files.insert(realpath)
 
+    def deletefromcache(self, realpath):
+        for r in self.files._realpath[realpath]:
+            del self.files[r['__id__']]
+
+    def addtocache(self, realpath):
+        self.files.insert(realpath)
+
     def filelist(self):
         self.refreshcache()
         [ (yield r['realpath']) for r in self.files ]
@@ -92,9 +99,8 @@ class Cache(Cacheable):
         """
 
         def __init__(self, path, flags, *mode):
+            getserver().organizer.addtocache(path)
             realpath = getserver().organizer.realpath(path)
-            if not os.path.exists(realpath):
-                getserver().organizer.expirecache()
             f = os.open(realpath, flags, *mode)
             self.file = os.fdopen(f, flags2mode(flags))
             self.fd = self.file.fileno()

@@ -37,9 +37,10 @@ Not implemented yet:
 
   * `Original` - Shows the same directory structure as the original files.
   * `Flat` - Just shows the list of files provided all in one directory.
+  * `ISO9660` - Converts all filenames to short file names like 8.3 DOS names (SomeFile.ext -> SOMEFI~1.EXT).
+
   * `Documents` - Organizes the files on folders by filetype.
   * `Date` - Organizes de files on folders by date.
-  * `ISO9660` - Converts all filenames to short file names like 8.3 DOS names (SomeFile.ext -> SOMEFI~1.EXT).
 
 Not implemented yet:  
 

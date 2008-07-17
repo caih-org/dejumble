@@ -133,12 +133,13 @@ class DejumbleFS(Fuse):
     def unlink(self, path):
         logger.debug('unlink(%s)' % path)
         self.organizer.cache.unlink(self.organizer.realpath(path))
-        self.organizer.expirecache()
+        self.organizer.deletefromcache(path)
 
     def rename(self, path, pathdest):
         logger.debug('rename(%s, %s)' % (path, pathdest))
         self.organizer.cache.rename(self.organizer.realpath(path), self.organizer.realpath(pathdest))
-        self.organizer.expirecache()
+        self.organizer.deletefromcache(path)
+        self.organizer.addtocache(pathdest)
 
     def chmod(self, path, mode):
         logger.debug('chmod(%s, %s)' % (path, mode))
