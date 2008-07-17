@@ -11,7 +11,6 @@ import fuse
 from fuse import Fuse
 
 import dejumble.fs
-from dejumble.fs import *
 
 gettext.install('dejumble')
 
@@ -22,44 +21,19 @@ dejumble: presents the content of a directory in an organized structure.
 
 """ + Fuse.fusage
 
-    server = DejumbleFS(version="%prog " + fuse.__version__, 
+    server = dejumble.fs.DejumbleFS(version="%prog " + fuse.__version__, 
                                usage=usage, 
                                dash_s_do='setsingle')
-
-    server.parser.add_option(mountopt="root",
-                             metavar="ROOT",
-                             default='./',
-                             help=_("root for all file operations (can be absolute or relative to the mountpoint) [default: %default]"))
-    server.parser.add_option(mountopt="conf",
-                             metavar="CONF",
-                             default='~/.dejumblefs/default.xml',
-                             help=_("read configuration from CONF file [default: %default]"))        
-    server.parser.add_option(mountopt="filter",
-                             metavar="FILTER",
-                             default='OriginalDirectory',
-                             help=_("use FILTER to handle QUERY [default: %default]"))
-    server.parser.add_option(mountopt="cache",
-                             metavar="CACHE",
-                             default='PassThrough',
-                             help=_("use CACHE to handle caching [default: %default]"))
-    server.parser.add_option(mountopt="organizer",
-                             metavar="ORGANIZER",
-                             default='Original',
-                             help=_("use ORGANIZER [default: %default]"))
-    server.parser.add_option(mountopt="query",
-                             metavar="QUERY",
-                             default='',
-                             help=_("execute QUERY [default: %default]"))
-
+    server.setoptions()
     server.parse(values=server, errex=1)
 
-    setserver(server)
+    dejumble.fs.setserver(server)
 
     server.main()
 
 
 if __name__ == '__main__':
-    #psyco.full()
+    psyco.full()
     logging.config.fileConfig(pkg_resources.resource_filename('dejumble', 'conf/logging.conf'))
 
     # redirect stdout to a disk file

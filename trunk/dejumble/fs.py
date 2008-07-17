@@ -25,11 +25,15 @@ fuse.fuse_python_api = (0, 2)
 
 logger = logging.getLogger('dejumble.DejumbleFS')
 
-dejumble_obj = None
+_server = None
 
 def setserver(server):
-    global dejumble_obj
-    dejumble_obj = server
+    global _server
+    _server = server
+
+def getserver():
+    global _server
+    return _server
 
 class DejumbleFS(Fuse):
     def main(self, *a, **kw):
@@ -42,11 +46,55 @@ class DejumbleFS(Fuse):
         except fuse.FuseError:
             result = -errno.ENOENT
             logger.warn(_('Finalizing dejumblefs'))
+        except Error:
+            logger.error('ERROR!!!')
         os.close(self.originaldir)
         return result
 
+    def setoptions(self):
+        self.conf = self.root = self.filter = self.query = self.cache = self.organizer = None     
+
+        self.parser.add_option(mountopt="conf",
+                               metavar="CONF",
+                               default='~/.dejumblefs/default.xml',
+                               help=_("read configuration from CONF file [default: %default]"))        
+        self.parser.add_option(mountopt="root",
+                               metavar="ROOT",
+                               default='.',
+                               help=_("root for all file operations (can be absolute or relative to the mountpoint) [default: %default]"))
+        self.parser.add_option(mountopt="filter",
+                               metavar="FILTER",
+                               default='OriginalDirectory',
+                               help=_("use FILTER to handle QUERY [default: %default]"))
+        self.parser.add_option(mountopt="query",
+                               metavar="QUERY",
+                               default='',
+                               help=_("execute QUERY [default: %default]"))
+        self.parser.add_option(mountopt="cache",
+                               metavar="CACHE",
+                               default='PassThrough',
+                               help=_("use CACHE to handle caching [default: %default]"))
+        self.parser.add_option(mountopt="organizer",
+                               metavar="ORGANIZER",
+                               default='Original',
+                               help=_("use ORGANIZER [default: %default]"))
+
     def setup_organizer(self):
-        # TODO: remove trailing slash from root if present
+        # HACK: set defaults since fuse is not doing that
+        defaults = self.parser.get_default_values()
+        logger.debug(defaults)
+        
+        if not self.conf: self.conf = defaults.conf
+        if not self.root: self.root = defaults.root
+        if not self.filter: self.filter = defaults.filter
+        if not self.query: self.query = defaults.query
+        if not self.cache: self.cache = defaults.cache
+        if not self.organizer: self.organizer = defaults.organizer
+        # end HACK
+        
+        if self.root.endswith('/'):
+            self.root = self.root[:-1]
+        
         filter_ = self._loadclass('filters', 'FileListFilter', self.filter)(self.query, self.root)
         cache = self._loadclass('caches', 'Cache', self.cache)(filter_)
         self.organizer = self._loadclass('organizers', 'Organizer', self.organizer)(cache)

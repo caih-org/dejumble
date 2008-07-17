@@ -19,6 +19,9 @@ DB_FILE_TAGS = './.dejumbledb_tags'
 
 increase_regex = re.compile('^(.*)\((\d+)\)$')
 
+logger = logging.getLogger('dejumble.Organizer')
+
+
 class Organizer(Cacheable):
     """
     This is the base class for organizers
