@@ -8,6 +8,8 @@ from PyDbLite import Base
 
 import dejumble.util
 from dejumble.util import *
+import dejumble.fs
+from dejumble.fs import *
 
 DB_FILES = './.dejumbledb'
 
@@ -90,10 +92,9 @@ class Cache(Cacheable):
         """
 
         def __init__(self, path, flags, *mode):
-            #global server
-            realpath = server.organizer.realpath(path)
+            realpath = dejumble_obj.organizer.realpath(path)
             if not os.path.exists(realpath):
-                server.organizer.expirecache()
+                dejumble_obj.organizer.expirecache()
             f = os.open(realpath, flags, *mode)
             self.file = os.fdopen(f, flags2mode(flags))
             self.fd = self.file.fileno()

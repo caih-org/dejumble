@@ -60,7 +60,7 @@ class Organizer(Cacheable):
         """
         Generates a real path for a inexistent path. Default implementation.
         """
-        return os.path.join(self.cache.filter.root, os.path.basename(path))
+        return os.path.join(self.cache.filter.root, path)
 
 	############################################
 	# General functions

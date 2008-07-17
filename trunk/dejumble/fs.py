@@ -25,6 +25,11 @@ fuse.fuse_python_api = (0, 2)
 
 logger = logging.getLogger('dejumble.DejumbleFS')
 
+dejumble_obj = None
+
+def setserver(server):
+    global dejumble_obj
+    dejumble_obj = server
 
 class DejumbleFS(Fuse):
     def main(self, *a, **kw):
