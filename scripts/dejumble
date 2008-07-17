@@ -15,9 +15,8 @@ from dejumble.fs import *
 
 gettext.install('dejumble')
 
-def main():
-    global server
 
+def main():
     usage = """
 dejumble: presents the content of a directory in an organized structure.
 
@@ -53,6 +52,8 @@ dejumble: presents the content of a directory in an organized structure.
                              help=_("execute QUERY [default: %default]"))
 
     server.parse(values=server, errex=1)
+
+    setserver(server)
 
     server.main()
 
