@@ -76,6 +76,12 @@ class Cacheable:
     def updatecache(self):
     	None
 
+    def deletefromcache(self):
+        None
+
+    def addtocache(self):
+        None
+
 ############################################
 # Configuration functions
 

@@ -44,6 +44,16 @@ class Organizer(Cacheable):
     def updatecache(self):
         self.generateallpaths()
 
+    def deletefromcache(self, path):
+        for r in self.transformed._path[path]:
+            self.cache.deletefromcache(r['realpath'])
+            del self.transformed[r['__id__']]
+
+    def addtocache(self, path):
+        realpath = self.realpath(path)
+        self.cache.addtocache(realpath)
+        self.addfile(realpath)
+
 	############################################
 	# Overwritable functions
 
@@ -63,7 +73,7 @@ class Organizer(Cacheable):
         """
         Generates a real path for a inexistent path. Default implementation.
         """
-        return os.path.join(self.cache.filter.root, path)
+        return os.path.join(self.cache.filter.root, path[1:])
 
 	############################################
 	# General functions
@@ -158,17 +168,21 @@ class Organizer(Cacheable):
         self.refreshcache()
         realpaths = [ r['realpath'] for r in self.transformed._path[path] ]
 
-        if realpaths:
-            return realpaths[0]
+        realpath = None
 
-        if path == '/':
-            return self.cache.filter.root
+        if realpaths:
+            realpath = realpaths[0]
+        elif path == '/':
+            realpath = self.cache.filter.root
         elif path == addtrailingslash(ORIGINAL_DIR):
-            return '.'
+            realpath = '.'
         elif pathparts(path)[0] == ORIGINAL_DIR:
-            return os.path.join('.', '/'.join(pathparts(path)[1:]))
+            realpath = os.path.join('.', '/'.join(pathparts(path)[1:]))
         else:
-            return self.generaterealpath(path)
+            realpath = self.generaterealpath(path)
+        
+        logger.debug('realpath(%s) = %s' % (path, realpath))
+        return realpath
 
 	############################################
 	# File system functions
@@ -181,16 +195,17 @@ class Organizer(Cacheable):
 
     def readdir(self, path, offset):
         logger.debug('readdir(%s)' % path)
+        [ (yield f) for f in getbasefilelist() ]
         for filename in self._filelist(path):
             yield fuse.Direntry(filename)
 
     def _filelist(self, path):
         if path == addtrailingslash(ORIGINAL_DIR):
-            return getbasefilelist() + os.listdir('.')
+            [ (yield d) for d in os.listdir('.') ]
         elif pathparts(path)[0] == ORIGINAL_DIR:
-            return getbasefilelist() + os.listdir(self.realpath(path))
+            [ (yield d) for d in os.listdir(self.realpath(path)) ]
         elif self.filelist != Organizer.filelist:
-            return self.filelist(path)
+            [ (yield d) for d in self.filelist(path) ]
 
 
 class TagOrganizer(Organizer):
@@ -201,12 +216,21 @@ class TagOrganizer(Organizer):
 
     def reset(self):
         self.tags.create('realpath', 'category', 'tag', mode = 'override')
+        self.tags.create_index('realpath')
         self.tags.create_index('category')
         Organizer.reset(self)
 
     def updatecache(self):
         self.generatetags()
         Organizer.updatecache(self)
+
+    def deletefromcache(self, path):
+        for r in self.tags._realpath[self.realpath(path)]:
+            del self.tags[r['__id__']]
+
+    def addtocache(self, realpath):
+        # FIXME: implement, new files won't have tags
+        None
 
     def generatepaths(self, realpath):
         [ (yield os.path.join(tag, os.path.basename(realpath))) for tag in [ r['tag'] for r in self.tags._realpath[realpath] ] ]
