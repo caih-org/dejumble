@@ -12,9 +12,17 @@ from dejumble.filters.completedirectory import *
 
 class CompleteDirectoryFileListFilterTestCase(BaseFileListFilterTestCase):
     def testfilelist(self):
-        original_file = tempfile.mkstemp('', '', self.original_dir)
+        original_file1 = tempfile.mkstemp('', '', self.original_dir)
+        original_file2 = tempfile.mkstemp('', '', self.original_dir)
+        original_subdir = tempfile.mkdtemp('', '', self.original_dir)
+        original_file3 = tempfile.mkstemp('', '', original_subdir)
+
         filter = CompleteDirectoryFileListFilter('', self.original_dir)
         filelist = list(filter.filelist())
-        self.assertEqual(len(filelist), 1)
-        self.assertEqual(filelist[0], original_file[1])
+
+        self.assertEqual(len(filelist), 4)
+        self.assertTrue(original_file1[1] in filelist)
+        self.assertTrue(original_file2[1] in filelist)
+        self.assertTrue(original_subdir in filelist)
+        self.assertTrue(original_file3[1] in filelist)
 

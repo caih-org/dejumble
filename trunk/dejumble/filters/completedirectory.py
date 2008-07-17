@@ -6,16 +6,19 @@ import os.path
 import dejumble.filter
 from dejumble.filter import *
 
+logger = logging.getLogger('dejumble.Filter')
+
 
 class CompleteDirectoryFileListFilter(FileListFilter):
     def filelist(self):
-        return self._filelist(self.root, self.root)
+        return list(self._generatefilelist(self.root))
 
-    def _filelist(self, dir, currentpath):
+    def _generatefilelist(self, dir):
         for path in os.listdir(dir):
+            path = os.path.join(dir, path)
             if os.path.isdir(path) and not os.path.islink(path):
-                for realpath in self._filelist(path, os.path.join(path, dir)):
+                for realpath in self._generatefilelist(path):
                     yield realpath 
-            else:
-                yield os.path.join(currentpath, path)
+            
+            yield path
 

@@ -31,10 +31,10 @@ class UtilTestCase(unittest.TestCase):
         self.assertEquals(addtrailingslash(''), '/')
     
     def testignoretag(self):
-        self.assertTrue(ignoretag('abc'))
-        self.assertFalse(ignoretag('..'))
-        self.assertFalse(ignoretag('.'))
-        self.assertFalse(ignoretag('.dejumble'))
+        self.assertTrue(ignoretag('/abc'))
+        self.assertFalse(ignoretag('/..'))
+        self.assertFalse(ignoretag('/.'))
+        self.assertFalse(ignoretag('/.dejumble'))
     
     def testgetbasefilelist(self):
         self.assertTrue('..' in getbasefilelist())

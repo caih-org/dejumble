@@ -14,7 +14,7 @@ logger = logging.getLogger('dejumble.Organizer')
 
 class ISO9660Organizer(Organizer):
     def generatepaths(self, realpath):
-        parts = pathparts(realpath.replace(self.cache.filter.root, '', 1))
+        parts = pathparts(removeroot(realpath, self.cache.filter.root))
 
         if len(parts) <= 1:
             yield addtrailingslash(self._path(parts[0]))
