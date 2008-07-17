@@ -25,11 +25,15 @@ def addtrailingslash(path):
     else:
         return '%s%s' % (os.sep, path)
 
+def removeroot(realpath, root):
+    if realpath.startswith(root):
+        return realpath.replace(root, '', 1)
+
 def ignoretag(filename):
-    return not filename == '..' and not filename == '.' and not filename.startswith('.dejumble')
+    return not filename == '/..' and not filename == '/.' and not filename.startswith('/.dejumble')
 
 def extensionregex(extension):
-    return re.compile('%s$' % extension);
+    return re.compile('%s$' % extension)
 
 def getbasefilelist():
     return [ '..', '.' ]

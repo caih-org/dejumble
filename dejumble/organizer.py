@@ -19,8 +19,6 @@ DB_FILE_TAGS = './.dejumbledb_tags'
 
 increase_regex = re.compile('^(.*)\((\d+)\)$')
 
-logger = logging.getLogger('dejumble.Organizer')
-
 class Organizer(Cacheable):
     """
     This is the base class for organizers
@@ -56,7 +54,7 @@ class Organizer(Cacheable):
         """
         Generates paths for a given real path. A file can have more than one transformed path. Default implementation.
         """
-        yield addtrailingslash(realpath.replace(self.cache.filter.root, '', 1))
+        yield addtrailingslash(removeroot(realpath, self.cache.filter.root))
 
     def generaterealpath(self, path):
         """
@@ -76,7 +74,7 @@ class Organizer(Cacheable):
                 # Add all sub-directories first
                 currentpath = self.cache.filter.root
                 
-                for pathpart in pathparts(realpath.replace(self.cache.filter.root, '', 1)):
+                for pathpart in pathparts(removeroot(realpath, self.cache.filter.root)):
                     currentpath = os.path.join(currentpath, pathpart)
                     self.addfile(currentpath)
             else:
@@ -88,13 +86,17 @@ class Organizer(Cacheable):
         file in the proxy file system 
         """
         logger.debug('addfile(%s)' % realpath)
+        if not ignoretag(removeroot(realpath, self.cache.filter.root)):
+            return [ ]
+
         self.refreshcache()
         transformed = self.transformed._realpath[realpath]
 
         if transformed:
-            return [ r for r in transformed ]
+            return [ r['path'] for r in transformed ]
         else:
             paths = [ ]
+
             for path in self.paths(realpath):
                 while self.transformed._path[path]:
                     path = self.increasefilename(path)
@@ -104,7 +106,7 @@ class Organizer(Cacheable):
                 self.transformed.insert(realpath=realpath, path=path, dir=dir)
                 paths.append(path)
 
-        return paths
+            return paths
 
     def increasefilename(self, filename):
         """

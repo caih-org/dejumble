@@ -90,7 +90,7 @@ class Cache(Cacheable):
         """
 
         def __init__(self, path, flags, *mode):
-            global server
+            #global server
             realpath = server.organizer.realpath(path)
             if not os.path.exists(realpath):
                 server.organizer.expirecache()
