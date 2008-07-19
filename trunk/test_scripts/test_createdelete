@@ -1,0 +1,58 @@
+#!/bin/bash
+
+TEST_DIR_1=$1
+TEST_DIR_2=$2
+BASE_DIR=`pwd`
+BIN_PATH=$BASE_DIR/`dirname $0`
+DATE_MS=$BIN_PATH/date_ms
+
+function log {
+	echo `$BIN_PATH/date_ms` $@
+}
+
+function createdelete {
+	NUM=$1
+
+	cd $TEST_DIR_1 || exit 1
+	START=`$DATE_MS`
+	for i in `seq 0 $NUM`;
+	do
+		touch $i.txt
+	done 
+	for i in `seq 0 $NUM`;
+	do
+		rm $i.txt
+	done
+	TIME_1=`$DATE_MS "$START"`
+
+	cd $TEST_DIR_2 || exit 1
+	START=`$DATE_MS`
+	for i in `seq 0 $NUM`;
+	do
+		touch $i.txt
+	done 
+	for i in `seq 0 $NUM`;
+	do
+		rm $i.txt
+	done
+	TIME_2=`$DATE_MS "$START"`
+
+	cd $BASE_DIR
+
+	echo $NUM\;$TIME_1\;$TIME_2
+}
+
+log Starting tests
+
+createdelete 50
+createdelete 100
+createdelete 150
+createdelete 200
+createdelete 250
+createdelete 300
+createdelete 350
+createdelete 400
+createdelete 450
+createdelete 500
+
+log Done

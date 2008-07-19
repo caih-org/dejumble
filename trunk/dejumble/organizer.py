@@ -50,9 +50,10 @@ class Organizer(Cacheable):
             del self.transformed[r['__id__']]
 
     def addtocache(self, path):
-        realpath = self.realpath(path)
-        self.cache.addtocache(realpath)
-        self.addfile(realpath)
+        if not self.transformed._path[path]:
+            realpath = self.realpath(path)
+            self.cache.addtocache(realpath)
+            self.addfile(realpath)
 
 	############################################
 	# Overwritable functions

@@ -46,7 +46,7 @@ class DejumbleFS(Fuse):
         except fuse.FuseError:
             result = -errno.ENOENT
             logger.warn(_('Finalizing dejumblefs'))
-        os.close(self.originaldir)
+        logger.debug('done with main() =============================')
         return result
 
     def setoptions(self):
@@ -59,7 +59,8 @@ class DejumbleFS(Fuse):
         self.parser.add_option(mountopt="root",
                                metavar="ROOT",
                                default='.',
-                               help=_("root for all file operations (can be absolute or relative to the mountpoint) [default: %default]"))
+                               help=_("root for all file operations (can be absolute or relative " +
+                                      "to the mountpoint) [default: %default]"))
         self.parser.add_option(mountopt="filter",
                                metavar="FILTER",
                                default='OriginalDirectory',
@@ -114,9 +115,14 @@ class DejumbleFS(Fuse):
     # Filesystem functions
 
     def fsinit(self):
-        os.fchdir(self.originaldir)
+        if self.filter == 'OriginalDirectory':
+            os.fchdir(self.originaldir)
+        os.close(self.originaldir)
         self.organizer.reset()
         logger.info(_('dejumblefs initialized!'))
+
+    def fsdestroy(self):
+        logger.debug('fsdestroy() =============================')
 
     def getattr(self, path):
         logger.debug('getattr(%s) =============================' % path)

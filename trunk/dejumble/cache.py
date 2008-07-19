@@ -3,6 +3,7 @@
 import time
 import errno
 import logging
+import os
 
 from PyDbLite import Base
 
@@ -99,22 +100,26 @@ class Cache(Cacheable):
         """
 
         def __init__(self, path, flags, *mode):
-            getserver().organizer.addtocache(path)
+            logger.debug('DejumbleFile.__init__(%s, %s)' % (path, flags))
+            if flags & os.O_CREAT:
+                getserver().organizer.addtocache(path)
             realpath = getserver().organizer.realpath(path)
-            f = os.open(realpath, flags, *mode)
-            self.file = os.fdopen(f, flags2mode(flags))
-            self.fd = self.file.fileno()
+            self.fd = os.open(realpath, flags, *mode)
+            self.file = os.fdopen(self.fd, flags2mode(flags))
 
         def read(self, length, offset):
+            logger.debug('DejumbleFile.read(%s, %s)' % (length, offset))
             self.file.seek(offset)
             return self.file.read(length)
 
         def write(self, buf, offset):
+            logger.debug('DejumbleFile.write(%s, %s)' % (len(buf), offset))
             self.file.seek(offset)
             self.file.write(buf)
             return len(buf)
 
         def release(self, flags):
+            logger.debug('DejumbleFile.release(%s)' % flags)
             self.file.close()
 
         def _fflush(self):
@@ -122,6 +127,7 @@ class Cache(Cacheable):
                 self.file.flush()
 
         def fsync(self, isfsyncfile):
+            logger.debug('DejumbleFile.fsync(%s)' % isfsyncfile)
             self._fflush()
             if isfsyncfile and hasattr(os, 'fdatasync'):
                 os.fdatasync(self.fd)
@@ -129,12 +135,15 @@ class Cache(Cacheable):
                 os.fsync(self.fd)
 
         def flush(self):
+            logger.debug('DejumbleFile.flush()')
             self._fflush()
             os.close(os.dup(self.fd))
 
         def fgetattr(self):
+            logger.debug('DejumbleFile.fgetattr()')
             return os.fstat(self.fd)
 
         def ftruncate(self, len):
+            logger.debug('DejumbleFile.ftruncate()')
             self.file.truncate(len)
 
