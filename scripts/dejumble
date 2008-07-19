@@ -34,21 +34,28 @@ dejumble: presents the content of a directory in an organized structure.
 
 if __name__ == '__main__':
     psyco.full()
-    logging.config.fileConfig(pkg_resources.resource_filename('dejumble', 'conf/logging.conf'))
+    dolog = False
 
-    # redirect stdout to a disk file
-    saveout = sys.stdout
-    saveerr = sys.stderr
-    outfile = open('/tmp/log.txt', 'a+')
-    sys.stdout = outfile
-    sys.stderr = outfile
+    if dolog:
+	    logging.config.fileConfig(pkg_resources.resource_filename('dejumble', 'conf/logging.conf'))
+	
+	    # redirect stdout to a disk file
+	    saveout = sys.stdout
+	    saveerr = sys.stderr
+	    outfile = open('/tmp/log.txt', 'a+')
+	    sys.stdout = outfile
+	    sys.stderr = outfile
+	
+    else:
+	    logging.disable(logging.CRITICAL)
 
     # output stuff
     main()
 
-    # restore stdout
-    outfile.flush()
-    outfile.close()
-    sys.stdout = saveout
-    sys.stderr = saveerr
+    if dolog:
+	    # restore stdout
+	    outfile.flush()
+	    outfile.close()
+	    sys.stdout = saveout
+	    sys.stderr = saveerr
 

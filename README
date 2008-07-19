@@ -49,6 +49,7 @@ Not implemented yet:
 ==Requirements==
 
   * python
+  * python-setuptools
   * psyco
   * python-fuse
   * PyDBLite

@@ -1,0 +1,129 @@
+%input macros (i.e. write your own macros file called MacroFile1.tex)
+%\include{Macros/MacroFile1}
+
+\documentclass[oneside,12pt,a4paper,spanish,english]{style/CUEDthesisPSnPDF}
+
+\selectlanguage{spanish}%
+\usepackage{setspace}%
+\usepackage{verbatim}%
+\usepackage[left=3cm,top=3cm,bottom=3.0cm,right=2.5cm]{geometry}
+%\ifpdf
+ %   \pdfinfo { /Title  ()
+ %              /Creator (TeX)
+ %              /Producer (pdfTeX)
+ %              /Author (César Izurieta cesar@ecuarock.net)
+ %              /CreationDate (D:20030101000000)  %format D:YYYYMMDDhhmmss
+ %              /ModDate (D:20030815213532)
+ %              /Subject ()
+ %              /Keywords (PhD, Thesis)}
+ %   \pdfcatalog { /PageMode (/UseOutlines)
+ %                 /OpenAction (fitbh)  }
+%\fi
+
+\title{Sistemas de archivo Proxy}
+\author{César Andrés Izurieta Hidalgo}
+\university{UNIVERSIDAD SAN FRANCISCO DE QUITO}
+\collegeordept{Colegio PolitŽécnico}
+%
+%\renewcommand{\submittedtext}{change the default text here if needed}
+\degree{Ingeniero en Sistemas}
+\degreedate{Quito\\ Octubre 2008}
+
+% turn of those nasty overfull and underfull hboxes
+\hbadness=10000
+\hfuzz=50pt
+
+% Put all the style files you want in the directory StyleFiles and usepackage like this:
+\usepackage{style/watermark}
+
+\addto\captionsspanish{%
+  \renewcommand{\contentsname}{Índice General}%
+  \renewcommand{\listfigurename}{Índice de Figuras}%
+  \renewcommand{\listtablename}{Índice de Tablas}%
+}
+
+%\addto\captionsspanish{%
+%  \renewcommand{\listfigurename}{êndice de Figuras}%
+%}
+
+%hypenation problem -- palabras 
+\hyphenation{no-so-tros}
+
+\begin{document}
+
+%\language{english}
+
+\renewcommand\baselinestretch{1.2}
+\baselineskip=18pt plus1pt
+
+% A page with the abstract on including title and author etc may be
+% required to be handed in separately. If this is not so, then comment
+% the below 3 lines (between '\begin{abstractseparte}' and 
+% 'end{abstractseparate}'), normally like a declaration ... needs some more
+% work, mind as environment abstracts creates a new page!
+% \begin{abstractseparate}
+%   \input{abstract}
+% \end{abstractseparate}
+
+
+
+
+% Using the watermark package which is in StyleFiles/
+% and to remove DRAFT COPY ONLY appearing on the top of all pages comment out below line
+% \watermark{DRAFT COPY ONLY}
+
+
+\maketitle
+
+%set the number of sectioning levels that get number and appear in the contents
+\selectlanguage{spanish} %para colocar los elementos en espanol
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+\frontmatter
+\include{aprobacion}
+\include{copyrigth}
+\include{dedication}
+\include{acknowledgement}
+\include{abstract}
+\include{resumen}
+
+
+\tableofcontents
+\listoffigures
+\addcontentsline{toc}{chapter}{Índice de Figuras}
+\listoftables
+\addcontentsline{toc}{chapter}{Índice de Tablas}
+%\printglossary  %% Print the nomenclature
+%\addcontentsline{toc}{chapter}{Nomenclature}
+
+
+
+\mainmatter
+\doublespacing
+\input{intro}
+\input{base}
+\input{implementaciones}
+\input{pruebas}
+\input{conclusion}
+
+\bibliographystyle{amsplain}
+\addcontentsline{toc}{chapter}{Bibliograf’a}
+\singlespacing
+\bibliography{tesis}
+\appendix
+\include{manual_tecnico}
+\include{codfuente}
+%\include{manual_uso}
+
+
+%\bibliographystyle{style/CUEDbiblio}
+%\bibliographystyle{style/jmb}
+%\bibliographystyle{plainnat} %this works with package natbib
+%\bibliographystyle{amsplain} % bibliography style
+%\renewcommand{\bibname}{References} % changes default name Bibliography to References
+%\bibliography{tesis} % References file
+%\addcontentsline{toc}{chapter}{References} %adds References to contents page
+
+
+\end{document}
