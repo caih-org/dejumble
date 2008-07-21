@@ -1,7 +1,9 @@
 %input macros (i.e. write your own macros file called MacroFile1.tex)
-%\include{Macros/MacroFile1}
+\include{Macros/MacroFile1}
 
 \documentclass[oneside,12pt]{Classes/CUEDthesisPSnPDF}
+
+\usepackage[utf8]{inputenc}
 
 \ifpdf
     \pdfinfo { /Title  (CUED PhD and MPhil Thesis Classes)
@@ -10,25 +12,24 @@
                /Author (Harish Bhanderi harish.bhanderi@cantab.net)
                /CreationDate (D:20030101000000)  %format D:YYYYMMDDhhmmss
                /ModDate (D:20030815213532)
-               /Subject (Writing a PhD thesis in LaTeX)
-               /Keywords (PhD, Thesis)}
+               /Subject (Sistemas de archivo proxy)
+               /Keywords (Ingeneria, Thesis)}
     \pdfcatalog { /PageMode (/UseOutlines)
                   /OpenAction (fitbh)  }
 \fi
 
-\title{Sistemas de archivo proxy\\[1ex]
-        in \LaTeXe}
+\title{Sistemas de archivo proxy}
 
 \ifpdf
-  \author{\href{mailto:harish.bhanderi@cantab.net}{Harish Bhanderi}}
-  \collegeordept{\href{http://www.eng.cam.ac.uk}{Department of Engineering}}
-  \university{\href{http://www.cam.ac.uk}{University of Cambridge}}
+  \author{\href{mailto:cesar@ecuarock.net}{César Izurieta}}
+  \collegeordept{\href{http://www.usfq.edu.ec/programas_de_pregrado/ingenieria/sistemas.html}{Colegio de Ciencias e Ingenieria}}
+  \university{\href{http://www.usfq.edu.ec}{Universidad San Francisco de Quito}}
 % insert below the file name that contains the crest in-place of 'UnivShield'
   \crest{\includegraphics[width=30mm]{UnivShield}}
 \else
-  \author{Harish Bhanderi}
-  \collegeordept{Department of Engineering}
-  \university{University of Cambridge}
+  \author{César Izurieta}
+  \collegeordept{Colegio de Ciencias e Ingenieria}
+  \university{Universidad San Francisco de Quito}
 % insert below the file name that contains the crest in-place of 'UnivShield'
   \crest{\includegraphics[bb = 0 0 292 336, width=30mm]{UnivShield}}
 \fi
@@ -37,8 +38,8 @@
 % \crest{\IncludeGraphicsW{UnivShield}{40mm}{14 14 73 81}}
 %
 %\renewcommand{\submittedtext}{change the default text here if needed}
-\degree{Doctor of Philosophy}
-\degreedate{Yet to be decided}
+\degree{Ingeniero de Sistemas}
+\degreedate{A ser decidido}
 
 % turn of those nasty overfull and underfull hboxes
 \hbadness=10000

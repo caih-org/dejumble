@@ -39,7 +39,7 @@
 \usepackage[round, sort, numbers, authoryear]{natbib}
 \usepackage{ifthen}
 \usepackage{ifpdf}
-
+\usepackage[utf8]{inputenc}
 
 %Bibliography
 %uncomment next line to change bibliography name to references for Book document class
@@ -48,7 +48,7 @@
 
 
 % Nomenclature
-\usepackage{nomencl}
+\usepackage[compatible]{nomencl}
 \makeglossary
 \renewcommand\nomgroup[1]{%
   \ifthenelse{\equal{#1}{A}}{%
@@ -164,7 +164,7 @@
   \renewcommand{\headrulewidth}{0pt}
 }
 
-\newcommand{\submittedtext}{{A thesis submitted for the degree of}}
+\newcommand{\submittedtext}{{Tesis de grado presentada como requisito para la obtención del título de}}
 %
 %
 % DECLARATIONS
