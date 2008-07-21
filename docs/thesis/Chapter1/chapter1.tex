@@ -56,7 +56,7 @@ El organizador debe poder hacer un mapeo de los archivos en dos direcciones, es 
 En el archivo dejumble/organizer.py se encuentra una clase llamada Organizer. Esta clase implementa los métodos basicos para crear un organizador. Por un lado tenemos las funciones que son llamadas directamente desde el modulo de fuse: getattr y readdir. La implementacion básica de getattr funciones devuelve los mismos permisos del directorio donde fue montado el sistema de archivos proxy para el caso de directorios que no existen en el sistema original o devuelve los permisos tal y como estaban en el sistema original. La función readdir devuelve un lista de archivo para un directorio en especifico. Además de estas funciones existen varias funciones necesarias para generar un arbol de directorios nuevo basado en el arbol de directorios original y funciones para evitar conflictos en los nombres. Subclases deberían implementar dos funciones: paths y dirlist. paths devuelve una lista de paths dado un path en el sistema de archivos original. Esta funcion se llama cuando el sistema se inicializa o cuando el cache expira con todos los archivos que tiene la clase cache. dirlist devuelve una lista de archivos dado un directorio en el sistema de archivos proxy. Los directorios que devuelve dirlist deben ser solamente directorios que no existan en el sistema de archivos original pero que existan en el sistema de archivos proxy.
 
 
-\section{Funciones que son necesarias implementar}
+\section{Interfaz con FUSE}
 
 Existe un pequeño numero de funciones que son necesarias implementar para tener un sistema de archivos:
 

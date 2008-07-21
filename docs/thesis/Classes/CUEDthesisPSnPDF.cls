@@ -33,7 +33,7 @@
 \usepackage{graphics}
 \usepackage{fancyhdr}
 \usepackage{eucal}
-\usepackage[english]{babel}
+\usepackage[spanish]{babel}
 \usepackage[usenames, dvipsnames]{color}
 \usepackage[perpage]{footmisc}
 \usepackage[round, sort, numbers, authoryear]{natbib}
