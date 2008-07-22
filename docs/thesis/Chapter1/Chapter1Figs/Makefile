@@ -1,10 +1,14 @@
-OBJFILES := $(patsubst %.dia,%.png,$(wildcard *.dia))
+OBJFILES := $(patsubst %.dia,%.pdf,$(wildcard *.dia))
 
 all: $(OBJFILES)
 
-%.png: %.dia
+%.eps: %.dia
 	dia -e $@ $<
 
+%.pdf: %.eps
+	epstopdf $<
+	rm $< 
+
 clean:
-	rm *.png
+	rm *.pdf
 
