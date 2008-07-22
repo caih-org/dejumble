@@ -6,10 +6,6 @@ BASE_DIR=`pwd`
 BIN_PATH=$BASE_DIR/`dirname $0`
 DATE_MS=$BIN_PATH/date_ms
 
-function log {
-	echo `$BIN_PATH/date_ms` $@
-}
-
 function createdelete {
 	NUM=$1
 
@@ -42,8 +38,7 @@ function createdelete {
 	echo $NUM\;$TIME_1\;$TIME_2
 }
 
-log Starting tests
-
+echo ""	"DejumbleFS"	"Original (HFS+)"
 createdelete 50
 createdelete 100
 createdelete 150
@@ -55,4 +50,3 @@ createdelete 400
 createdelete 450
 createdelete 500
 
-log Done

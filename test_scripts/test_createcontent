@@ -6,10 +6,6 @@ BASE_DIR=`pwd`
 BIN_PATH=$BASE_DIR/`dirname $0`
 DATE_MS=$BIN_PATH/date_ms
 
-function log {
-	echo `$BIN_PATH/date_ms` $@
-}
-
 function createfile {
 	MB=$1
 
@@ -29,11 +25,10 @@ function createfile {
 
 	cd $BASE_DIR
 
-	echo $MB\;$TIME_1\;$TIME_2
+	echo $MB	$TIME_1	$TIME_2
 }
 
-log Starting tests
-
+echo ""	"DejumbleFS"	"Original (HFS+)"
 createfile 20
 createfile 40
 createfile 60
@@ -45,4 +40,3 @@ createfile 160
 createfile 180
 createfile 200
 
-log Done
