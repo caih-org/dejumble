@@ -55,3 +55,7 @@ Not implemented yet:
   * PyDBLite
   * python-xesam (not yet, does this even exist?)
 
+== Known issues ==
+
+  * Mac OS X doesn't let the fs access the original mount directory. See dejumble/fs.py function fsinit(self) for more information.
+
