@@ -38,8 +38,8 @@ class Organizer(Cacheable):
         self.transformed.create_index('realpath')
         self.transformed.create_index('path')
         self.transformed.create_index('dir')
-    	self.cache.reset()
-    	Cacheable.reset(self)
+        self.cache.reset()
+        Cacheable.reset(self)
 
     def updatecache(self):
         self.generateallpaths()
@@ -55,18 +55,20 @@ class Organizer(Cacheable):
             self.cache.addtocache(realpath)
             self.addfile(realpath)
 
-	############################################
-	# Overwritable functions
+    ############################################
+    # Overwritable functions
 
     def dirlist(self, path):
         """
-        Returns a list of (non-existent, generated, virtual) directories for a given path. Default implementation.
+        Returns a list of (non-existent, generated, virtual) directories for a given path.
+        Default implementation.
         """
         return [ ]
 
     def generatepaths(self, realpath):
         """
-        Generates paths for a given real path. A file can have more than one transformed path. Default implementation.
+        Generates paths for a given real path. A file can have more than one transformed path.
+        Default implementation.
         """
         yield addtrailingslash(removeroot(realpath, self.cache.filter.root))
 
@@ -76,8 +78,8 @@ class Organizer(Cacheable):
         """
         return os.path.join(self.cache.filter.root, path[1:])
 
-	############################################
-	# General functions
+    ############################################
+    # General functions
 
     def generateallpaths(self):
         """
@@ -187,8 +189,8 @@ class Organizer(Cacheable):
         logger.debug('realpath(%s) = %s' % (path, realpath))
         return realpath
 
-	############################################
-	# File system functions
+    ############################################
+    # File system functions
 
     def getattr(self, path):
         if removeroot(path, os.sep) in self.dirlist(os.path.dirname(path)):
@@ -235,7 +237,8 @@ class TagOrganizer(Organizer):
         Organizer.addtocache(self, realpath)
 
     def generatepaths(self, realpath):
-        [ (yield os.path.join(os.sep, tag, os.path.basename(realpath))) for tag in [ r['tag'] for r in self.tags._realpath[realpath] ] ]
+        [ (yield os.path.join(os.sep, tag, os.path.basename(realpath)))
+        	for tag in [ r['tag'] for r in self.tags._realpath[realpath] ] ]
 
     def dirlist(self, path):
         if path == '/':
@@ -243,8 +246,8 @@ class TagOrganizer(Organizer):
         else:
             return [ ]
 
-	############################################
-	# Tag functions
+    ############################################
+    # Tag functions
 
     def generatetags(self):
         None
@@ -255,7 +258,8 @@ class TagOrganizer(Organizer):
 
     def filelistbytags(self, category, tags):
         self.refreshcache()
-        [ (yield os.path.basename(r['realpath'])) for r in self.tags._category[category] if r['tag'] in tags ]
+        [ (yield os.path.basename(r['realpath'])) for r in self.tags._category[category]
+        	if r['tag'] in tags ]
 
     def taglist(self, category):
         self.refreshcache()

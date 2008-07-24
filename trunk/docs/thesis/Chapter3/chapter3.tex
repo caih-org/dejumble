@@ -10,22 +10,88 @@ En este capítulo se presentará los resultados de las pruebas de desempeño rea
 
 \section{Metodologia}
 
+Para estas realizar estas pruebas se utilizó scripts de bash que ejecutan un set de comandos tanto sobre el sistema de archivos original como sobre el sistema de archivos proxy montado. Estos scripts se los puede encontrar en test\_scripts/test\_*. Se utilizó una computadora MacBook Pro de 2.33 GHz Intel Core 2 Duo con 2 GB de RAM (667 MHz DDR2 SDRAM). Esta computadora corre Mac OS X 10.5.4 con todos los últimos patches. Además corre MacFUSE versión 1.7 y Python versión 2.5.1. Para realizar los gráficos se usó gnuplot versión 4.2 patchlevel 3. Todos los fuentes para la generación de los gráficos se encuentran en docs/thesis/Chapter3/Chapter3Figs/*.gnu. Los archivos de datos con los que se generó estos gráficos tambien están en el mismo directorio con la extensión .dat.
+
+Cada prueba se ejecutó 10 ocasiones. Se escogió una de las ejecuciones para graficarla. Además se calculó un porcentaje promedio de penalidad de usar el sistema tomando en cuenta todas las ejecuciones para cada una de las pruebas.
+
+\subsection{Prueba A}
+
+La prueba A consiste en crear y borrar un numero de archivos vacíos.
+
+\subsection{Prueba B}
+
+La prueba B consiste en crear y borrar un archivo de un tamaño determinado.
 
 
+\section{Resultados configuración 1}
 
-\section{Resultados}
+Para el primer set de resultados se usó lo siguientes ajustes al momento de montar el sistema de archivos proxy.
+
+\begin{itemize}
+\item[filter] = CompleteDirectory - Para acceder a un directorio completo
+\item[root] = /path - Este path apunta hacia un directorio vacio en el sistema de archivos original
+\item[cache] = PassThrough - Este es la opción por defecto
+\item[organizer] = Original - Este es la opción por defecto
+\end{itemize}
+
+\subsection{Prueba A}
+
+La media de penalización de usar esta configuración fue de aproximadamente 20\% con un factor de 1.182
+
+\InsertFig{\IncludeGraphicsH{pruebaA-1}{3in}{92 86 545 742}}{Resultados de la prueba A configuración 1}{pruebaA-1}
+
+\subsection{Prueba B}
+
+La media de penalización de usar esta configuración fue de aproximadamente 0\% con un factor de 1.004.
+
+\InsertFig{\IncludeGraphicsH{pruebaB-1}{3in}{92 86 545 742}}{Resultados de la prueba B configuración 1}{pruebaB-1}
 
 
+\section{Resultados configuración 2}
 
-\subsection{Prueba de creación y borrado de archivos}
+Para el primer set de resultados se usó lo siguientes ajustes al momento de montar el sistema de archivos proxy.
 
-\InsertFig{\IncludeGraphicsH{crearborrar}{3in}{92 86 545 742}}{Resultados de la prueba de crear y borrar archivos}{crearborrar}
+\begin{itemize}
+\item[filter] = CompleteDirectory - Para acceder a un directorio completo
+\item[root] = /path - Este path apunta hacia un directorio vacio en el sistema de archivos original
+\item[cache] = PassThrough - Este es la opción por defecto
+\item[organizer] = Original - Este es la opción por defecto
+\end{itemize}
 
+\subsection{Prueba A}
 
-\subsection{Prueba de creación de archivos de diferente tamaño}
+La media de penalización de usar esta configuración fue de aproximadamente 20\% con un factor de 1.182.
 
-\InsertFig{\IncludeGraphicsH{contenido}{3in}{92 86 545 742}}{Resultados de la prueba de crear archivos con contenido}{contenido}
+\InsertFig{\IncludeGraphicsH{pruebaA-2}{3in}{92 86 545 742}}{Resultados de la prueba A configuración 2}{pruebaA-2}
 
+\subsection{Prueba B}
+
+La media de penalización de usar esta configuración fue de aproximadamente 0\% con un factor de 1.004.
+
+\InsertFig{\IncludeGraphicsH{pruebaB-2}{3in}{92 86 545 742}}{Resultados de la prueba B configuración 2}{pruebaB-2}
+
+\section{Resultados configuración 3}
+
+Para el primer set de resultados se usó lo siguientes ajustes al momento de montar el sistema de archivos proxy.
+
+\begin{itemize}
+\item[filter] = CompleteDirectory - Para acceder a un directorio completo
+\item[root] = /path - Este path apunta hacia un directorio vacio en el sistema de archivos original
+\item[cache] = PassThrough - Este es la opción por defecto
+\item[organizer] = Original - Este es la opción por defecto
+\end{itemize}
+
+\subsection{Prueba A}
+
+La media de penalización de usar esta configuración fue de aproximadamente 20\% con un factor de 1.182
+
+\InsertFig{\IncludeGraphicsH{pruebaA-3}{3in}{92 86 545 742}}{Resultados de la prueba A configuración 3}{pruebaA-3}
+
+\subsection{Prueba B}
+
+La media de penalización de usar esta configuración fue de aproximadamente 0\% con un factor de 1.004.
+
+\InsertFig{\IncludeGraphicsH{pruebaB-3}{3in}{92 86 545 742}}{Resultados de la prueba B configuración 3}{pruebaB-3}
 
 % ------------------------------------------------------------------------
 
