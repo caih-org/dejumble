@@ -1,9 +1,9 @@
-OBJFILES := $(patsubst %.gnu,%.pdf,$(wildcard *.gnu))
+OBJFILES := $(patsubst %.dat,%.pdf,$(wildcard *.dat))
 
 all: $(OBJFILES)
 
-%.pdf: %.gnu
-	gnuplot $<
+%.pdf: %.dat
+	./prueba $< | gnuplot - > /dev/null
 
 clean:
 	rm *.pdf

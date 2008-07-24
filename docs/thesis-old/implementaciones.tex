@@ -1,77 +1,0 @@
-\chapter{Implementaciones}
-\label{implementaciones}
-
-En este capítulo se explicará como funcionan cada una de las implementaciones provistas.
-
-
-\section{Filtros}
-\label{filtros}
-
-\subsection{Directorio Completo}
-\label{directorio_completo}
-
-Este filtro se encuentra en el archivo dejumble/filters/completedirectory.py y la clase se llama CompleteDirectoryFilter. Simplemente pasa todos los archivos que se encuentran en el directorio determindo por la opcion root. Se debe usar explicitamente con la opcion nonempty al momento de montar.
-
-\subsection{Directorio Original}
-\label{directorio_original}
-
-Este filtro es la implementación por defecto. Se encuentra en el archivo dejumble/filters/originaldirectory.py y la clase se llama OriginalDirectoryFilter. Es exactamente igual al anterior pero pasa la lista de archivos existentes en el directorio donde se está montando.
-
-\subsection{Shell}
-\label{shell}
-
-Este filtro permite ejecutar un comando de shell y se pasa el resultado de esta ejecución. Se presupone que el resultado va a dar un archivo por linea. Se encuentra implementado en el archivo dejumble/filters/shell.py y la clase se llama ShellFilter.
-
-\subsection{Xesam}
-\label{xesam}
-
-Este filtro executa un query xesam y devuelve esta lista de archivos. El código de este organizador se encuentra en el archivo dejumble/filters/xesam.py y la clase se llama XesamFilter.
-
-\subsection{Nulo}
-\label{nulo}
-
-Este es un filtro de prueba. Solo pasa el archivo /dev/null. Se utiliza para hacer pruebas. Se encuentra en el archivo dejumble/filters/null.py y la clase se llama NullFilter.
-
-
-\section{Caches}
-\label{caches}
-
-\subsection{PassThrough}
-\label{passthrough}
-
-Este tipo de cache simplemente reenvia todos los comandos al sistema de archivos original. Se encuentra implementado en el archivo dejumble/caches/passthrough.py y la clase se llama PassThroughCache.
-
-\subsection{Sandbox}
-\label{sandbox}
-
-Este tipo de cache lee del disco una vez y guarda cualquier cambio solamente en memoria. Al desmontar el sistema de archivos proxy el sistema de archivos original queda sin cambios. El codigo para este cache se encuentra en el archivo dejumble/caches/sandbox.py y la clase se llama SandboxCache.
-
-
-\section{Organizadores}
-\label{organizadores}
-
-\subsection{Original}
-\label{original}
-
-Presenta los archivos en la misma estructura de directorios del sistema de archivos original. La implementacion se encuentra en el archivo dejumble/organizers/original.py y se llama OriginalOrganizer.
-
-\subsection{Plano}
-\label{plano}
-
-Este organizador presenta todos los archivos encontrados en un solo directorio. La implementacion se encuentra en el archivo dejumble/organizers/flat.py y se llama FlatOrganizer.
-
-\subsection{Fecha}
-\label{fecha}
-
-Este organizador extiende del organizador TagOrganizer. Asigna tags a los archivos dada su fecha de actualización. La implementacion se encuentra en el archivo dejumble/organizers/date.py y se llama DateOrganizer.
-
-\subsection{Documentos}
-\label{documentos}
-
-Este organizador extiende del organizador TagOrganizer. Asigna tags a los archivos dada su extensión. La implementacion se encuentra en el archivo dejumble/organizers/documents.py y se llama DocumentsOrganizer.
-
-\subsection{ISO 9660}
-\label{iso9660}
-
-Presenta los archivos de acuerdo al estandar ISO 9660 que es muy similar al estilo que usaba DOS de 8 caracteres el nombre y 3 la extensión.dejumble/organizers/iso9660.pyy se llama ISO9660.
-

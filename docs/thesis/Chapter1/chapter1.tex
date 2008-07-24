@@ -7,7 +7,6 @@
 
 En este capítulo se definirá cada una de las partes que tendrá un sistema de archivos proxy.
 
-
 \section{Descripción general del sistema}
 
 En Linux el sistema de archivos proxy se monta en una ruta dentro del VFS (Virtual File System). Cuando una aplicacion accede a esta ruta se llama atravez del kernel al módulo de FUSE que a su vez llama al sistema de archivos proxy instalado en el espacio de usuario. El sistema de archivos proxy accede al sistema de archivos original atravez del VFS.

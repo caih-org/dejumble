@@ -1,11 +1,5 @@
 #!/usr/bin/env python
 
-#    Copyright (C) 2006  Cesar Izurieta  <cesar@ecuarock.net>
-#
-#    This program can be distributed under the terms of the GNU LGPL.
-#    See the file COPYING.
-#
-
 import os
 import os.path
 import stat
@@ -122,7 +116,7 @@ class DejumbleFS(Fuse):
         # The side effects from this are various: from saving the cache file to the directory where
         # mount command was executed to not beign able to use the OriginalDirectory filter or any
         # command that access the original mount directory contents. Also the "special" directory
-        # .dejumblefs with the original contents doesn´t work either.
+        # .dejumblefs with the original contents doesn't work either.
         # Solutions include mounting the original directory at some temp location, chdiring there
         # and umounting when done with it.
 	import platform
