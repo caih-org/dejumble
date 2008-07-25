@@ -45,7 +45,9 @@ class Organizer(Cacheable):
         self.generateallpaths()
 
     def deletefromcache(self, path):
-        for r in self.transformed._path[path]:
+        realpath = self.realpath(path)
+        logger.debug("deletefromcache(%s)" % realpath)
+        for r in self.transformed._realpath[realpath]:
             self.cache.deletefromcache(r['realpath'])
             del self.transformed[r['__id__']]
 
@@ -224,17 +226,24 @@ class TagOrganizer(Organizer):
         Organizer.reset(self)
 
     def updatecache(self):
-        self.generatetags()
+        self._generatetags()
         Organizer.updatecache(self)
 
-    def deletefromcache(self, path):
-        for r in self.tags._realpath[self.realpath(path)]:
+    def _deletefromcache(self, path):
+        realpath = self.realpath(path)
+        logger.debug("_deletefromcache(%s)" % realpath)
+        for r in self.tags._realpath[realpath]:
             del self.tags[r['__id__']]
         Organizer.deletefromcache(self, path)
 
-    def addtocache(self, realpath):
-        # FIXME: implement, new files won't have tags
-        Organizer.addtocache(self, realpath)
+    def deletefromcache(self, path):
+        self._deletefromcache(path)
+        Organizer.deletefromcache(self, path)
+
+    def addtocache(self, path):
+        self._deletefromcache(path)
+        self.generatetags(self.realpath(path))
+        Organizer.addtocache(self, path)
 
     def generatepaths(self, realpath):
         [ (yield os.path.join(os.sep, tag, os.path.basename(realpath)))
@@ -249,10 +258,15 @@ class TagOrganizer(Organizer):
     ############################################
     # Tag functions
 
-    def generatetags(self):
+    def _generatetags(self):
+        for filename in filter(ignoretag, self.cache.filelist()):
+            self.generatetags(filename)
+
+    def generatetags(self, filename):
         None
 
     def tag(self, realpath, category, tag):
+        logger.debug('tag(%s, %s, %s)' % (realpath, category, tag))
         if not tag == None and not tag == '':
             self.tags.insert(realpath, category, tag)
 
