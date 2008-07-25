@@ -101,11 +101,11 @@ class Cache(Cacheable):
 
         def __init__(self, path, flags, *mode):
             logger.debug('DejumbleFile.__init__(%s, %s)' % (path, flags))
-            if flags & os.O_CREAT:
-                getserver().organizer.addtocache(path)
-            realpath = getserver().organizer.realpath(path)
+            realpath = getserver().organizer.generaterealpath(path)
             self.fd = os.open(realpath, flags, *mode)
             self.file = os.fdopen(self.fd, flags2mode(flags))
+            if flags & os.O_CREAT:
+                getserver().organizer.addtocache(path)
 
         def read(self, length, offset):
             logger.debug('DejumbleFile.read(%s, %s)' % (length, offset))

@@ -11,14 +11,13 @@ class DocumentsOrganizer(TagOrganizer):
         for filetype, extensions in self.filetypes.iteritems():
             self.filetypes[filetype] = map(extensionregex, extensions.split(','))
 
-    def generatetags(self):
-        for filename in filter(ignoretag, self.cache.filelist()):
-            hastag = False
-            for filetype, extensions in self.filetypes.iteritems():
-                for extension in extensions:
-                    if not extension.search(filename) == None:
-                        self.tag(filename, self.category, _(filetype))
-                        hastag = True
-            if not hastag:
-                self.tag(filename, self.category, _('Other'))
+    def generatetags(self, realpath):
+        hastag = False
+        for filetype, extensions in self.filetypes.iteritems():
+            for extension in extensions:
+                if not extension.search(filename) == None:
+                    self.tag(realpath, self.category, _(filetype))
+                    hastag = True
+        if not hastag:
+            self.tag(realpath, self.category, _('Other'))
 
