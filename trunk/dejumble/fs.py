@@ -108,7 +108,7 @@ class DejumbleFS(Fuse):
     # Filesystem functions
 
     def fsinit(self):
-        os.fchdir(self.originaldir)
+	os.fchdir(self.originaldir)
 
         # HACK: Mac OS X doesn't allow to umount if this (or any) process chdirs to the mount
         # directory so just change the current directory to /tmp if this system is running any
@@ -119,9 +119,9 @@ class DejumbleFS(Fuse):
         # .dejumblefs with the original contents doesn't work either.
         # Solutions include mounting the original directory at some temp location, chdiring there
         # and umounting when done with it.
-	import platform
+        import platform
         if platform.system() == 'Darwin':
-            os.fchdir("/tmp")
+            os.chdir("/tmp")
         # end HACK
 
         os.close(self.originaldir)
