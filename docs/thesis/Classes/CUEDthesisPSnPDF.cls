@@ -43,7 +43,7 @@
 
 %Bibliography
 %uncomment next line to change bibliography name to references for Book document class
-\renewcommand{\bibname}{References}
+\renewcommand{\bibname}{Referencias}
 % note that this doesn't do much if you later define another bibliography style 
 
 
@@ -245,7 +245,7 @@
 \begin{alwayssingle}
 \begin{center}
 \vspace*{1.5cm}
-{\Large \bfseries Acknowledgements}
+{\Large \bfseries Agradecimientos}
 \end{center}
 \vspace{0.5cm}
 \begin{quote}}
@@ -260,7 +260,7 @@
 \begin{alwayssingle}
 \begin{center}
 \vspace*{1.5cm}
-{\Large \bfseries Acknowledgements}
+{\Large \bfseries Agradecimientos}
 \end{center}
 \vspace{0.5cm}\begin{quote}}
 {\end{quote}\end{alwayssingle}}
@@ -296,6 +296,53 @@
 %on including title and author etc as required to be handed in separately
 
 \newenvironment{abstractseparate} {\begin{alwayssingle} \pagestyle{empty}
+  \vspace*{-1in}
+ \begin{center}
+    { \Large {\bfseries {\@title}} \par}
+    {{\large \vspace*{1ex} \@author} \par}
+{\large \vspace*{1ex}
+    {{\@collegeordept} \par}
+    {{\@university} \par}
+\vspace*{1ex}
+    {{\it \submittedtext} \par}
+    {\it {\@degree} \par}
+\vspace*{2ex}
+    {\@degreedate}}
+  \end{center}}
+{\end{alwayssingle}}
+
+
+%SUMMARY
+%
+%The summary environment puts a large, bold, centered "Abstract" label at
+%the top of the page. The abstract itself appears in a quote environment,
+%i.e. tabbed in at both sides, and on its own page.
+
+\newenvironment{summary} {\begin{alwayssingle} \pagestyle{empty}
+  \begin{center}
+  \vspace*{1.5cm}
+  {\Large \bfseries  Resumen}
+  \end{center}
+  \vspace{0.5cm}
+   \begin{quote}}
+{\end{quote}\end{alwayssingle}}
+
+%The summarylong environment puts a large, bold, centered "Abstract" label at
+%the top of the page. The abstract itself does not appears in a quote
+%environment so you can get more in.
+
+\newenvironment{summarylong} {\begin{alwayssingle} \pagestyle{empty}
+  \begin{center}
+  \vspace*{1.5cm}
+  {\Large \bfseries  Abstract}
+  \end{center}
+  \vspace{0.5cm} \begin{quote}}
+{\end{quote}\end{alwayssingle}}
+
+%The summaryseparate environment is for running of a page with the abstract
+%on including title and author etc as required to be handed in separately
+
+\newenvironment{summaryseparate} {\begin{alwayssingle} \pagestyle{empty}
   \vspace*{-1in}
  \begin{center}
     { \Large {\bfseries {\@title}} \par}

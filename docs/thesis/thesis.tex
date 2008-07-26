@@ -57,7 +57,7 @@
 
 %\language{spanish}
 
- \renewcommand\baselinestretch{1.2}
+\renewcommand\baselinestretch{1.2}
 \baselineskip=18pt plus1pt
 
 % A page with the abstract on including title and author etc may be
@@ -87,11 +87,12 @@
 \include{Dedication/dedication}
 \include{Acknowledgement/acknowledgement}
 \include{Abstract/abstract}
+\include{Summary/summary}
 
 \tableofcontents
 \listoffigures
-\printglossary  %% Print the nomenclature
-\addcontentsline{toc}{chapter}{Nomenclature}
+%\printglossary  %% Print the nomenclature
+%\addcontentsline{toc}{chapter}{Nomenclature}
 
 
 \mainmatter
@@ -112,9 +113,9 @@
 %\bibliographystyle{Classes/jmb}
 %\bibliographystyle{plainnat} %this works with package natbib
 \bibliographystyle{Classes/jmb} % bibliography style
-\renewcommand{\bibname}{References} % changes default name Bibliography to References
+\renewcommand{\bibname}{Referencias} % changes default name Bibliography to References
 \bibliography{References/references} % References file
-\addcontentsline{toc}{chapter}{References} %adds References to contents page
+\addcontentsline{toc}{chapter}{Referencias} %adds References to contents page
 
 
 \end{document}
