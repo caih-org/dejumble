@@ -2,7 +2,8 @@
 
 function print {
 	echo "\\section{$1}"
-	pygmentize -l python -f latex -P encoding=utf-8 $1
+	echo "\\label{$1}"
+	pygmentize -l $2 -f latex -P encoding=utf-8 $1
 	echo
 }
 
@@ -10,9 +11,9 @@ python generate_header.py
 
 cd ../code
 
-print "scripts/dejumble"
+print "scripts/dejumble" python
 for F in `find dejumble | sed -E "/\\.\\//s///" | egrep -v "(^build/|.svn|__init__|\\.pyc$)" | egrep "\\.py$"`
 do
-	print $F
+	print $F python
 done
 

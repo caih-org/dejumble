@@ -29,6 +29,10 @@ dejumble: presents the content of a directory in an organized structure.
 
     dejumble.fs.setserver(server)
 
+    if not server.fuse_args.mountpoint:
+        print(_("No mountpoint defined"))
+        return -1
+
     server.main()
 
 

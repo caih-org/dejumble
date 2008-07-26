@@ -17,7 +17,7 @@ Es por eso que este proyecto pretende presentar una alternativa con la cual se p
 
 \section{Historia de los sitemas de archivos}
 
-En el entorno UNIX, el primer sistema de archivos apareció en 1974 y se llamaba simplemente "FS" aunque generalmente se lo denominaba S5FS, que se refiere a System V FS. Este era un sistema de archivos basado en superbloques y inodes. Era muy lento, podía usar solamente entre el 2\% y el 5\% del ancho de banda del disco. Más adelante aparecieron sistemas de archivos como el Berkley File System en 1974 que daba hasta cerca de un 50\% de uso del ancho de banda del disco. Este sistema fue muy utilizado y actualizado varias veces. En 1991 se creo el Log-Structured File System que daba un 70\% de eficiencia en el uso del disco al momento de escribir. Fue de los primeros en usar un Log para evitar tener que revisar todo el disco en casos de fallos. En 1993 se inventó ext2, y mas adelante se actualizó a ext3. Estos sistemas usan hasta ahora un sistema de journaling y su efectividad de acceso al disco es muy alta. Más adelante aparecieron otros sistemas como XFS, JFS, ReiserFS. Pero realmente un salto en utilidad lo dió ZFS que permite creación de volumenes y discos en raid con muy poca configuración además de poder guardar instantaneas del disco en cualquier momento, es siempre consistente por lo que no necesita un programa para corrección de errores, puede cambiar su tamaño mientras el sistema está montado, etc. Pero aún así todos estos sistemas continuan usando los mismos conceptos de superbloque y inodes que usaba el S5FS al principio de los tiempos.
+En el entorno UNIX, el primer sistema de archivos apareció en 1974 y se llamaba simplemente ``FS'' aunque generalmente se lo denominaba S5FS, que se refiere a System V FS. Este era un sistema de archivos basado en superbloques y inodes. Era muy lento, podía usar solamente entre el 2\% y el 5\% del ancho de banda del disco. Más adelante aparecieron sistemas de archivos como el Berkley File System en 1974 que daba hasta cerca de un 50\% de uso del ancho de banda del disco. Este sistema fue muy utilizado y actualizado varias veces. En 1991 se creo el Log-Structured File System que daba un 70\% de eficiencia en el uso del disco al momento de escribir. Fue de los primeros en usar un Log para evitar tener que revisar todo el disco en casos de fallos. En 1993 se inventó ext2, y mas adelante se actualizó a ext3. Estos sistemas usan hasta ahora un sistema de journaling y su efectividad de acceso al disco es muy alta. Más adelante aparecieron otros sistemas como XFS, JFS, ReiserFS. Pero realmente un salto en utilidad lo dió ZFS que permite creación de volumenes y discos en raid con muy poca configuración además de poder guardar instantaneas del disco en cualquier momento, es siempre consistente por lo que no necesita un programa para corrección de errores, puede cambiar su tamaño mientras el sistema está montado, etc. Pero aún así todos estos sistemas continuan usando los mismos conceptos de superbloque y inodes que usaba el S5FS al principio de los tiempos.
 
 
 \section{Alcance}
@@ -31,11 +31,11 @@ A continuación se detallaran algunas de las tecnologias que se usarán para pod
 
 \subsection{Python}
 
-Como lenguaje base para la programación se escogió python (http://www.python.org).
+Como lenguaje base para la programación se escogió python (\url{http://www.python.org}).
 
 \subsection{Google Code}
 
-Para mantener el código de este proyecto se escogió usar los servicios de Google Code creando un proyecto llamado "dejumble" (http://code.google.com/p/dejumble) donde se podrá encontrar todo el código fuente del sistema así como el código fuente para generar esta tesis, todo publicado bajo una licencia GPLv3 (http://www.gnu.org/licenses/gpl.html).
+Para mantener el código de este proyecto se escogió usar los servicios de Google Code creando un proyecto llamado ``dejumble'' (\url{http://code.google.com/p/dejumble}) donde se podrá encontrar todo el código fuente del sistema así como el código fuente para generar esta tesis, todo publicado bajo una licencia GPLv3 (\url{http://www.gnu.org/licenses/gpl.html}).
 
 \subsection{FUSE}
 
