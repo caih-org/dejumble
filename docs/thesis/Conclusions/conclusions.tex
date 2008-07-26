@@ -6,9 +6,19 @@
     \graphicspath{{Conclusions/ConclusionsFigs/EPS/}{Conclusions/ConclusionsFigs/}}
 \fi
 
-\def\baselinestretch{1.66}
+Luego de implementar el sistema de archivos proxy ponerlo a prueba se puede concluir que es feacible la creación de sistemas de archivos proxy. Los resultados de las pruebas son mixtos con resultados excelentes en las pruebas de creación de archivos con contenido y resultados mixtos en la creación y borrado de múltiples archivos.
 
-Estas son mis conclusiones ...
+\section{Resultados de creación y borrado de archivos}
+
+Se puede observar claramente que el área en el que necesita mejorar en general es con el manejo de listas de archivos crecientes. Esto es más notable al usar cualquier Organizador que se base en TagOrganizer, el tiempo de respuesta del sistema de archivos crece exponencialmente en este caso. Para los otros casos el tiempo de respuesta se altera linealmente con respecto al tiempo de respuesta del sistema de archivos original.
+
+\section{Resultados de creación de archivos con contenido}
+
+En el caso de crear archivos con contenido la penalización que se sufre por usar el sistema de archivos proxy en todos los casos fue prácticamente nula. Esto se debe a que todas las operaciones se las pasa directamente al sistema de archivos original sin alteraciones.
+
+\section{Recomendaciones}
+
+Es necesario realizar un perfilado de la aplicación para averiguar cuales son las funciones que toman más tiempo en ejecutarse. De esta manera se puede empezar a optimizar el tiempo de procesamiento. Otro camino a seguir es crear más indices en las bases de datos en memoria de los archivos buscando una mayor optimización del tiempo de consulta con la desventaja de que esto probablemente haría que el sistema de archivos proxy use más memoria.
 
 %%% ----------------------------------------------------------------------
 

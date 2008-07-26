@@ -28,7 +28,7 @@ function createfile {
 	echo $MB	$TIME_1	$TIME_2
 }
 
-echo ""	"DejumbleFS"	"Original (HFS+)"
+echo '""	"DejumbleFS"	"Original (HFS+)"'
 createfile 20
 createfile 40
 createfile 60
