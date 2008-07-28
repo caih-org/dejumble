@@ -5,6 +5,7 @@ from ..organizer import TagOrganizer
 
 
 class DateOrganizer(TagOrganizer):
+
     def __init__(self, cache):
         TagOrganizer.__init__(self, cache, 'date')
 
@@ -20,4 +21,3 @@ class DateOrganizer(TagOrganizer):
         lastweek = time.localtime(time.time() - 7 * 24 * 60 * 60)
         if time.strftime('%Y%W', lastweek) == time.strftime('%Y%W', lastmod):
             self.tag(realpath, self.category, _('Last Week'))
-

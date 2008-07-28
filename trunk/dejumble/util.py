@@ -3,13 +3,14 @@ import re
 import time
 import copy
 
-from pkg_resources import resource_filename
+from pkg_resources import resource_filename #IGNORE:E0611
 
 ORIGINAL_DIR = '.dejumblefs'
 
 
 def pathparts(path):
     return path.split('/')[1:]
+
 
 def flags2mode(flags):
     filemode = {os.O_RDONLY: 'r', os.O_WRONLY: 'w', os.O_RDWR: 'w+'}
@@ -18,11 +19,13 @@ def flags2mode(flags):
         mode = mode.replace('w', 'a', 1)
     return mode
 
+
 def addtrailingslash(path):
     if path.startswith(os.sep):
         return path
     else:
         return '%s%s' % (os.sep, path)
+
 
 def removeroot(realpath, root):
     if realpath.startswith(root):
@@ -30,15 +33,19 @@ def removeroot(realpath, root):
     else:
         raise RuntimeError
 
+
 def ignoretag(filename):
     return (not filename == '/..' and not filename == '/.'
             and not filename.startswith('/.dejumble'))
 
+
 def extensionregex(extension):
     return re.compile('%s$' % extension)
 
+
 def getbasefilelist():
-    return [ '..', '.' ]
+    return ['..', '.']
+
 
 def unique(inlist, keepstr = True):
     inlist = copy.copy(inlist)
@@ -60,10 +67,12 @@ def unique(inlist, keepstr = True):
 ############################################
 # Cacheable class
 
+
 class Cacheable:
+
     def __init__(self):
         self.expiretime = time.time()
-        
+
     def reset(self):
         self.expirecache()
         self.refreshcache()
@@ -90,10 +99,11 @@ class Cacheable:
 
 _CONFIGURATION = {}
 
+
 def readconfig(name):
     if not name in _CONFIGURATION:
         defaultfilename = resource_filename('dejumble', #IGNORE:E1101
-                                            'conf/%s-default.conf'  % name)
+                                            'conf/%s-default.conf' % name)
         userfilename = os.path.expanduser('~/.dejumble/%s.conf' % name)
         currentdirfilename = './.dejumble/%s.conf' % name
         config = {}
@@ -104,6 +114,7 @@ def readconfig(name):
 
     return _CONFIGURATION[name]
 
+
 def readconfigfile(config, path):
     if os.path.isfile(path):
         ofile = open(path, 'r')
@@ -112,4 +123,3 @@ def readconfigfile(config, path):
             _CONFIGURATION[name] = value.strip()
 
     return config
-

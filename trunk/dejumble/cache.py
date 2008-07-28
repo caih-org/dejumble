@@ -4,6 +4,7 @@ import os
 
 from PyDbLite import Base
 
+import util
 from util import Cacheable
 from fs import getserver
 
@@ -17,9 +18,10 @@ class Cache(Cacheable):
     This is the base class for the caching system
     """
 
-    def __init__(self, filter):
-        self.filter = filter
+    def __init__(self, filter_):
+        self.filter = filter_
         self.files = None
+        Cacheable.__init__(self)
 
     def reset(self):
         if not self.files:
@@ -33,15 +35,16 @@ class Cache(Cacheable):
             self.files.insert(realpath)
 
     def deletefromcache(self, realpath):
-        for r in self.files._realpath[realpath]:
-            del self.files[r['__id__']]
+        for record in self.files.get_index('realpath')[realpath]:
+            del self.files[record['__id__']]
 
     def addtocache(self, realpath):
         self.files.insert(realpath)
 
     def filelist(self):
         self.refreshcache()
-        [ (yield r['realpath']) for r in self.files ]
+        for record in self.files:
+            yield record['realpath']
 
     ############################################
     # Original filesystem functions
@@ -74,9 +77,9 @@ class Cache(Cacheable):
 
     def truncate(self, realpath, length):
         logger.debug('truncate(%s, %s)' % (realpath, length))
-        file = open(realpath, 'a')
-        file.truncate(length)
-        file.close()
+        ofile = open(realpath, 'a')
+        ofile.truncate(length)
+        ofile.close()
 
     def utime(self, realpath, times):
         logger.debug('utime(%s, %s)' % (realpath, times))
@@ -98,8 +101,8 @@ class Cache(Cacheable):
         def __init__(self, path, flags, *mode):
             logger.debug('DejumbleFile.__init__(%s, %s)' % (path, flags))
             realpath = getserver().organizer.generaterealpath(path)
-            self.fd = os.open(realpath, flags, *mode)
-            self.file = os.fdopen(self.fd, flags2mode(flags))
+            self.fd = os.open(realpath, flags, *mode) #IGNORE:W0142
+            self.file = os.fdopen(self.fd, util.flags2mode(flags))
             if flags & os.O_CREAT:
                 getserver().organizer.addtocache(path)
 
@@ -139,7 +142,6 @@ class Cache(Cacheable):
             logger.debug('DejumbleFile.fgetattr()')
             return os.fstat(self.fd)
 
-        def ftruncate(self, len):
+        def ftruncate(self, length):
             logger.debug('DejumbleFile.ftruncate()')
-            self.file.truncate(len)
-
+            self.file.truncate(length)

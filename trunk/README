@@ -52,7 +52,7 @@ Not implemented yet:
   * python-setuptools
   * psyco
   * python-fuse
-  * PyDBLite
+  * PyDBLite (Use the one on the support folder which complies better with pylint)
   * python-xesam (not yet, does this even exist?)
 
 == Known issues ==

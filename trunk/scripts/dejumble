@@ -21,9 +21,9 @@ dejumble: presents the content of a directory in an organized structure.
 
 """ + Fuse.fusage
 
-    server = dejumble.fs.DejumbleFS(version="%prog " + fuse.__version__, 
-                               usage=usage, 
-                               dash_s_do='setsingle')
+    server = dejumble.fs.DejumbleFS(version="%%prog %s" % fuse.__version__,
+                                    usage=usage,
+                                    dash_s_do='setsingle')
     server.setoptions()
     server.parse(values=server, errex=1)
 
@@ -35,31 +35,28 @@ dejumble: presents the content of a directory in an organized structure.
 
     server.main()
 
-
 if __name__ == '__main__':
     psyco.full()
     dolog = False
 
     if dolog:
-	    logging.config.fileConfig(pkg_resources.resource_filename('dejumble', 'conf/logging.conf'))
-	
-	    # redirect stdout to a disk file
-	    saveout = sys.stdout
-	    saveerr = sys.stderr
-	    outfile = open('/tmp/log.txt', 'a+')
-	    sys.stdout = outfile
-	    sys.stderr = outfile
-	
+        logging.config.fileConfig(pkg_resources.resource_filename('dejumble',
+                                                          'conf/logging.conf'))
+        # redirect stdout to a disk file
+        saveout = sys.stdout
+        saveerr = sys.stderr
+        outfile = open('/tmp/log.txt', 'a+')
+        sys.stdout = outfile
+        sys.stderr = outfile
     else:
-	    logging.disable(logging.CRITICAL)
+        logging.disable(logging.CRITICAL)
 
     # output stuff
     main()
 
     if dolog:
-	    # restore stdout
-	    outfile.flush()
-	    outfile.close()
-	    sys.stdout = saveout
-	    sys.stderr = saveerr
-
+        # restore stdout
+        outfile.flush()
+        outfile.close()
+        sys.stdout = saveout
+        sys.stderr = saveerr

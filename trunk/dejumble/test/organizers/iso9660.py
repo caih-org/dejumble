@@ -4,12 +4,15 @@ from ...organizers.iso9660 import ISO9660Organizer
 
 
 class ISO9660OrganizerTestCase(unittest.TestCase):
+
     def setUp(self):
         self.organizer = ISO9660Organizer(None)
-    
+
     def testincreasefilename(self):
-        self.assertEquals(self.organizer.increasefilename("A.TXT"), "A~1.TXT")
-        self.assertEquals(self.organizer.increasefilename("A~1.TXT"), "A~2.TXT")
+        self.assertEquals(self.organizer.increasefilename("A.TXT"),
+                          "A~1.TXT")
+        self.assertEquals(self.organizer.increasefilename("A~1.TXT"),
+                          "A~2.TXT")
         self.assertEquals(self.organizer.increasefilename("123456~9.TXT"),
                           "12345~10.TXT")
 

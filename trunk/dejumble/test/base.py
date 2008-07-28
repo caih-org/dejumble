@@ -5,6 +5,7 @@ import os
 
 
 class BaseFileListFilterTestCase(unittest.TestCase):
+
     def setUp(self):
         self.original_dir = tempfile.mkdtemp()
         self.mount_dir = tempfile.mkdtemp()
@@ -13,4 +14,3 @@ class BaseFileListFilterTestCase(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(self.original_dir)
         shutil.rmtree(self.mount_dir)
-        

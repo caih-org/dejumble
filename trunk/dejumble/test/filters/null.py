@@ -3,6 +3,7 @@ from ...filters.null import NullFileListFilter
 
 
 class NullFileListFilterTestCase(BaseFileListFilterTestCase):
+
     def testfilelist(self):
         filelist = list(NullFileListFilter().filelist())
         self.assertEqual(len(filelist), 1)
