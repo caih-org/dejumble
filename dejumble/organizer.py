@@ -1,18 +1,19 @@
 import logging
 import os
 import os.path
+import re
 
 from PyDbLite import Base
 import fuse
-from fuse import Fuse
 
-from util import *
+import util
+from util import Cacheable
 
 
 DB_TRANSFORMED = './.dejumbledb_transformed'
 DB_FILE_TAGS = './.dejumbledb_tags'
 
-increase_regex = re.compile('^(.*)\((\d+)\)$')
+_INCREASE_REGEX = re.compile('^(.*)\((\d+)\)$')
 
 logger = logging.getLogger('dejumble.Organizer')
 
@@ -33,10 +34,10 @@ class Organizer(Cacheable):
     def reset(self):
         if not self.transformed:
             self.transformed = Base(DB_TRANSFORMED)
-        self.transformed.create('realpath', 'path', 'dir', mode='override')
+        self.transformed.create('realpath', 'path', 'dirname', mode='override')
         self.transformed.create_index('realpath')
         self.transformed.create_index('path')
-        self.transformed.create_index('dir')
+        self.transformed.create_index('dirname')
         self.cache.reset()
         Cacheable.reset(self)
 
@@ -46,12 +47,12 @@ class Organizer(Cacheable):
     def deletefromcache(self, path):
         realpath = self.realpath(path)
         logger.debug("deletefromcache(%s)" % realpath)
-        for r in self.transformed._realpath[realpath]:
-            self.cache.deletefromcache(r['realpath'])
-            del self.transformed[r['__id__']]
+        for record in self.transformed.get_index('realpath')[realpath]:
+            self.cache.deletefromcache(record['realpath'])
+            del self.transformed[record['__id__']]
 
     def addtocache(self, path):
-        if not self.transformed._path[path]:
+        if not self.transformed.get_index('path')[path]:
             realpath = self.realpath(path)
             self.cache.addtocache(realpath)
             self.addfile(realpath)
@@ -59,19 +60,20 @@ class Organizer(Cacheable):
     ############################################
     # Overwritable functions
 
-    def dirlist(self, path):
+    def dirlist(self, path): #IGNORE:W0613
         """
-        Returns a list of (non-existent, generated, virtual) directories for a given path.
-        Default implementation.
+        Returns a list of (non-existent, generated, virtual) directories for a
+        given path. Default implementation.
         """
-        return [ ]
+        return []
 
     def generatepaths(self, realpath):
         """
-        Generates paths for a given real path. A file can have more than one transformed path.
-        Default implementation.
+        Generates paths for a given real path. A file can have more than one
+        transformed path. Default implementation.
         """
-        yield addtrailingslash(removeroot(realpath, self.cache.filter.root))
+        yield util.addtrailingslash(util.removeroot(realpath,
+                                                    self.cache.filter.root))
 
     def generaterealpath(self, path):
         """
@@ -84,15 +86,16 @@ class Organizer(Cacheable):
 
     def generateallpaths(self):
         """
-        Generates paths for all the files given by the cache and stores them in self.transformed
+        Generates paths for all the files given by the cache and stores them
+        in self.transformed
         """
         for realpath in self.cache.filelist():
             if self.recursive:
                 # Add all sub-directories first
                 currentpath = self.cache.filter.root
-                
-                for pathpart in pathparts(removeroot(realpath,
-			self.cache.filter.root)):
+
+                for pathpart in util.pathparts(util.removeroot(realpath,
+                                                  self.cache.filter.root)):
                     currentpath = os.path.join(currentpath, pathpart)
                     self.addfile(currentpath)
             else:
@@ -100,48 +103,50 @@ class Organizer(Cacheable):
 
     def addfile(self, realpath):
         """
-        Stores a file in self.transformed if not there already and returns the paths for that
-        file in the proxy file system 
+        Stores a file in self.transformed if not there already and returns the
+        paths for that file in the proxy file system
         """
         logger.debug('addfile(%s)' % realpath)
-        if not ignoretag(removeroot(realpath, self.cache.filter.root)):
-            return [ ]
+        if not util.ignoretag(util.removeroot(realpath,
+                                              self.cache.filter.root)):
+            return []
 
         self.refreshcache()
-        transformed = self.transformed._realpath[realpath]
+        transformed = self.transformed.get_index('realpath')[realpath]
 
         if transformed:
-            return [ r['path'] for r in transformed ]
+            return [r['path'] for r in transformed]
         else:
-            paths = [ ]
+            paths = []
 
             for path in self.paths(realpath):
-                while self.transformed._path[path]:
+                while self.transformed.get_index('path')[path]:
                     path = self.increasefilename(path)
 
-                dir = os.path.dirname(path)
-                logger.debug('addfile(%s, %s, %s)' % (realpath, path, dir))
-                self.transformed.insert(realpath=realpath, path=path, dir=dir)
+                dirname = os.path.dirname(path)
+                logger.debug('addfile(%s, %s, %s)' % (realpath, path, dirname))
+                self.transformed.insert(realpath=realpath, path=path,
+                                        dirname=dirname)
                 paths.append(path)
 
             return paths
 
     def increasefilename(self, filename):
         """
-        Returns a new filename in sequence. Called if the current filename already exists.
-        This default implementation adds a "(1)" to the end if not present or increases that
-        number by one.
+        Returns a new filename in sequence. Called if the current filename
+        already exists. This default implementation adds a "(1)" to the end if
+        not present or increases that number by one.
         """
         root, ext = os.path.splitext(filename)
-    
+
         num = 1
-        m = increase_regex.match(root)
-    
-        if not m is None:
-            num = int(m.group(2)) + 1
-            filename = m.group(1)
-    
-        return '%s(%i)%s' % (root, num, ext)        
+        matches = _INCREASE_REGEX.match(root)
+
+        if not matches is None:
+            num = int(matches.group(2)) + 1
+            filename = matches.group(1)
+
+        return '%s(%i)%s' % (root, num, ext)
 
     ############################################
     # General functions that read the cache
@@ -152,21 +157,26 @@ class Organizer(Cacheable):
         """
         logger.debug('filelist(%s)' % path)
         self.refreshcache()
-        [ (yield d) for d in self.dirlist(path) ]
-        [ (yield os.path.basename(r['path'])) for r in
-		self.transformed._dir[path]  ]
+
+        for dirname in self.dirlist(path):
+            yield dirname
+
+        for record in self.transformed.get_index('dirname')[path]:
+            yield os.path.basename(record['path'])
 
     def paths(self, realpath):
         """
         Generates or returns paths from cache for a given real path
         """
         self.refreshcache()
-        paths = self.transformed._realpath[realpath]
+        paths = self.transformed.get_index('realpath')[realpath]
 
         if paths:
-            [ (yield path['path']) for path in paths ]
+            for path in paths:
+                yield path['path']
         else:
-            [ (yield path) for path in self.generatepaths(realpath) ]
+            for path in self.generatepaths(realpath):
+                yield path
 
     def realpath(self, path):
         """
@@ -174,7 +184,8 @@ class Organizer(Cacheable):
         """
         logger.debug('realpath(%s)' % path)
         self.refreshcache()
-        realpaths = [ r['realpath'] for r in self.transformed._path[path] ]
+        realpaths = [r['realpath']
+                     for r in self.transformed.get_index('path')[path]]
 
         realpath = None
 
@@ -182,13 +193,13 @@ class Organizer(Cacheable):
             realpath = realpaths[0]
         elif path == '/':
             realpath = self.cache.filter.root
-        elif path == addtrailingslash(ORIGINAL_DIR):
+        elif path == util.addtrailingslash(util.ORIGINAL_DIR):
             realpath = '.'
-        elif pathparts(path)[0] == ORIGINAL_DIR:
-            realpath = os.path.join('.', '/'.join(pathparts(path)[1:]))
+        elif util.pathparts(path)[0] == util.ORIGINAL_DIR:
+            realpath = os.path.join('.', os.sep.join(util.pathparts(path)[1:]))
         else:
             realpath = self.generaterealpath(path)
-        
+
         logger.debug('realpath(%s) = %s' % (path, realpath))
         return realpath
 
@@ -196,25 +207,34 @@ class Organizer(Cacheable):
     # File system functions
 
     def getattr(self, path):
-        if removeroot(path, os.sep) in self.dirlist(os.path.dirname(path)):
-            return self.cache.getattr(self.realpath(os.path.dirname(path)))
+        dirname = os.path.dirname(path)
+        if util.removeroot(path, os.sep) in self.dirlist(dirname):
+            return self.cache.getattr(self.realpath(dirname))
         else:
             return self.cache.getattr(self.realpath(path))
 
-    def readdir(self, path, offset):
-        [ (yield fuse.Direntry(f)) for f in getbasefilelist() ]
-        [ (yield fuse.Direntry(f)) for f in self._filelist(path) ]
+    def readdir(self, path, offset): #IGNORE:W0613
+        for filename in util.getbasefilelist():
+            yield fuse.Direntry(filename)
+
+        for filename in self._filelist(path):
+            yield fuse.Direntry(filename)
 
     def _filelist(self, path):
-        if path == addtrailingslash(ORIGINAL_DIR):
-            [ (yield d) for d in os.listdir('.') ]
-        elif pathparts(path)[0] == ORIGINAL_DIR:
-            [ (yield d) for d in os.listdir(self.realpath(path)) ]
+        filelist = []
+        if path == util.addtrailingslash(util.ORIGINAL_DIR):
+            filelist = os.listdir('.')
+        elif util.pathparts(path)[0] == util.ORIGINAL_DIR:
+            filelist = os.listdir(self.realpath(path))
         else:
-            [ (yield d) for d in self.filelist(path) ]
+            filelist = self.filelist(path)
+
+        for filename in filelist:
+            yield filename
 
 
 class TagOrganizer(Organizer):
+
     def __init__(self, cache, category=None):
         self.tags = None
         self.category = category
@@ -235,8 +255,8 @@ class TagOrganizer(Organizer):
     def _deletefromcache(self, path):
         realpath = self.realpath(path)
         logger.debug("_deletefromcache(%s)" % realpath)
-        for r in self.tags._realpath[realpath]:
-            del self.tags[r['__id__']]
+        for record in self.tags.get_index('realpath')[realpath]:
+            del self.tags[record['__id__']]
         Organizer.deletefromcache(self, path)
 
     def deletefromcache(self, path):
@@ -249,20 +269,22 @@ class TagOrganizer(Organizer):
         Organizer.addtocache(self, path)
 
     def generatepaths(self, realpath):
-        [ (yield os.path.join(os.sep, tag, os.path.basename(realpath)))
-        	for tag in [ r['tag'] for r in self.tags._realpath[realpath] ] ]
+        for record in self.tags.get_index('realpath')[realpath]:
+            yield os.path.join(os.sep, record['tag'],
+                               os.path.basename(realpath))
 
     def dirlist(self, path):
         if path == '/':
             return self.taglist(self.category)
         else:
-            return [ ]
+            return []
 
     ############################################
     # Tag functions
 
     def _generatetags(self):
-        for filename in filter(ignoretag, self.cache.filelist()):
+        for filename in filter(util.ignoretag, #IGNORE:W0141
+                               self.cache.filelist()):
             self.generatetags(filename)
 
     def generatetags(self, filename):
@@ -275,10 +297,11 @@ class TagOrganizer(Organizer):
 
     def filelistbytags(self, category, tags):
         self.refreshcache()
-        [ (yield os.path.basename(r['realpath'])) for r in
-		self.tags._category[category] if r['tag'] in tags ]
+        for record in self.tags.get_index('category')[category]:
+            if record['tag'] in tags:
+                yield os.path.basename(record['realpath'])
 
     def taglist(self, category):
         self.refreshcache()
-        return unique([ r['tag'] for r in self.tags._category[category] ])
-
+        return util.unique([record['tag'] for record in
+                            self.tags.get_index('category')[category]])

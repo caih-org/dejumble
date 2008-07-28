@@ -1,56 +1,72 @@
 import errno
 import logging
+import os
 
 import fuse
-from fuse import Fuse
-
-from .organizer import Organizer
-from util import *
 
 
 fuse.fuse_python_api = (0, 2)
 
 logger = logging.getLogger('dejumble.DejumbleFS')
 
-_server = None
+_SERVER = None
+
 
 def setserver(server):
-    global _server
-    _server = server
+    global _SERVER #IGNORE:W0603
+    _SERVER = server
+
 
 def getserver():
-    global _server
-    return _server
+    return _SERVER
 
-class DejumbleFS(Fuse):
+
+class DejumbleFS(fuse.Fuse):
+
+    def __init__(self, *a, **kw):
+        self.originaldir = None
+        self.conf = None
+        self.root = None
+        self.filter = None
+        self.query = None
+        self.cache = None
+        self.organizer = None
+        # HACK: To ignore pylint warnings
+        self.parser = None
+        self.fuse_args = None
+        self.file_class = None
+        # end HACK
+        fuse.Fuse.__init__(self, *a, **kw) #IGNORE:W0142
+
     def main(self, *a, **kw):
         logger.info(_('Initializing dejumblefs'))
         self.setup_organizer()
         self.file_class = self.organizer.cache.DejumbleFile
         self.originaldir = os.open(self.fuse_args.mountpoint, os.O_RDONLY)
         try:
-            result = Fuse.main(self, *a, **kw)
+            result = fuse.Fuse.main(self, *a, **kw) #IGNORE:W0142
         except fuse.FuseError:
             result = -errno.ENOENT
             logger.warn(_('Finalizing dejumblefs'))
         return result
 
     def setoptions(self):
-        self.conf = self.root = self.filter = self.query = self.cache = self.organizer = None     
-
         self.parser.add_option(mountopt="conf",
                                metavar="CONF",
                                default='~/.dejumblefs/default.xml',
-                               help=_("read configuration from CONF file [default: %default]"))        
+                               help=_("read configuration from CONF file " +
+                                      "[default: %default]"))
         self.parser.add_option(mountopt="root",
                                metavar="ROOT",
                                default='.',
-                               help=_("root for all file operations (can be absolute or relative " +
-                                      "to the mountpoint) [default: %default]"))
+                               help=_("root for all file operations " +
+                                      "(can be absolute or relative to the " +
+                                      "mountpoint) [default: %default]"))
         self.parser.add_option(mountopt="filter",
                                metavar="FILTER",
                                default='OriginalDirectory',
-                               help=_("use FILTER to handle QUERY [default: %default]"))
+                               help=_("use FILTER to handle QUERY" +
+                                      "[default: %default]"))
         self.parser.add_option(mountopt="query",
                                metavar="QUERY",
                                default='',
@@ -58,7 +74,8 @@ class DejumbleFS(Fuse):
         self.parser.add_option(mountopt="cache",
                                metavar="CACHE",
                                default='PassThrough',
-                               help=_("use CACHE to handle caching [default: %default]"))
+                               help=_("use CACHE to handle caching " +
+                                      "[default: %default]"))
         self.parser.add_option(mountopt="organizer",
                                metavar="ORGANIZER",
                                default='Original',
@@ -67,21 +84,29 @@ class DejumbleFS(Fuse):
     def setup_organizer(self):
         # HACK: set defaults since fuse is not doing that
         defaults = self.parser.get_default_values()
-        
-        if not self.conf: self.conf = defaults.conf
-        if not self.root: self.root = defaults.root
-        if not self.filter: self.filter = defaults.filter
-        if not self.query: self.query = defaults.query
-        if not self.cache: self.cache = defaults.cache
-        if not self.organizer: self.organizer = defaults.organizer
+
+        if not self.conf:
+            self.conf = defaults.conf
+        if not self.root:
+            self.root = defaults.root
+        if not self.filter:
+            self.filter = defaults.filter
+        if not self.query:
+            self.query = defaults.query
+        if not self.cache:
+            self.cache = defaults.cache
+        if not self.organizer:
+            self.organizer = defaults.organizer
         # end HACK
-        
+
         if self.root.endswith('/'):
             self.root = self.root[:-1]
 
-        filter_ = self._loadclass('filters', 'FileListFilter', self.filter)(self.query, self.root)
+        filter_ = self._loadclass('filters', 'FileListFilter',
+                                  self.filter)(self.query, self.root)
         cache = self._loadclass('caches', 'Cache', self.cache)(filter_)
-        self.organizer = self._loadclass('organizers', 'Organizer', self.organizer)(cache)
+        self.organizer = self._loadclass('organizers', 'Organizer',
+                                         self.organizer)(cache)
         logger.info(_('Done loading modules'))
 
     def _loadclass(self, moduleprefix, classsuffix, name):
@@ -122,8 +147,7 @@ class DejumbleFS(Fuse):
 
     def readdir(self, path, offset):
         logger.debug('readdir(%s, %s)' % (path, offset))
-        # FIXME: convert to list from generator to bring up errors
-        return list(self.organizer.readdir(path, offset))
+        return self.organizer.readdir(path, offset)
 
     def readlink(self, path):
         logger.debug('readlink(%s)' % path)
@@ -136,7 +160,8 @@ class DejumbleFS(Fuse):
 
     def rename(self, path, pathdest):
         logger.debug('rename(%s, %s)' % (path, pathdest))
-        self.organizer.cache.rename(self.organizer.realpath(path), self.organizer.realpath(pathdest))
+        self.organizer.cache.rename(self.organizer.realpath(path),
+                                    self.organizer.realpath(pathdest))
         self.organizer.deletefromcache(path)
         self.organizer.addtocache(pathdest)
 

@@ -3,11 +3,13 @@ from ..organizer import TagOrganizer
 
 
 class DocumentsOrganizer(TagOrganizer):
+
     def __init__(self, cache):
         TagOrganizer.__init__(self, cache, 'filetype')
         self.filetypes = util.readconfig('filetypes')
         for filetype, extensions in self.filetypes.iteritems():
-            self.filetypes[filetype] = map(util.extensionregex, extensions.split(','))
+            self.filetypes[filetype] = map(util.extensionregex, #IGNORE:W0141
+                                           extensions.split(','))
 
     def generatetags(self, realpath):
         hastag = False
@@ -18,4 +20,3 @@ class DocumentsOrganizer(TagOrganizer):
                     hastag = True
         if not hastag:
             self.tag(realpath, self.category, _('Other'))
-
