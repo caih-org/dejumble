@@ -1,10 +1,4 @@
-#!/usr/bin/env python
-
-import os
-import os.path
-
-import dejumble.filters.completedirectory
-from dejumble.filters.completedirectory import *
+from ..filters.completedirectory import CompleteDirectoryFileListFilter
 
 
 class OriginalDirectoryFileListFilter(CompleteDirectoryFileListFilter):

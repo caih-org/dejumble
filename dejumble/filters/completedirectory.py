@@ -1,12 +1,7 @@
-#!/usr/bin/env python
-
 import os
 import os.path
 
-import dejumble.filter
-from dejumble.filter import *
-
-logger = logging.getLogger('dejumble.Filter')
+from ..filter import FileListFilter
 
 
 class CompleteDirectoryFileListFilter(FileListFilter):

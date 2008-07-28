@@ -1,11 +1,5 @@
-#!/usr/bin/env python
-
-import unittest
-
-import dejumble.test.base
-from dejumble.test.base import *
-import dejumble.filters.null
-from dejumble.filters.null import *
+from ..base import BaseFileListFilterTestCase
+from ...filters.null import NullFileListFilter
 
 
 class NullFileListFilterTestCase(BaseFileListFilterTestCase):

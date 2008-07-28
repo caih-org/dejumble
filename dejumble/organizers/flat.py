@@ -1,9 +1,6 @@
-#!/usr/bin/env python
-
 import os.path
 
-import dejumble.organizer
-from dejumble.organizer import *
+from ..organizer import Organizer
 
 
 class FlatOrganizer(Organizer):

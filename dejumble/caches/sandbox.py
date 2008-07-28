@@ -1,7 +1,4 @@
-#!/usr/bin/env python
-
-import dejumble.cache
-from dejumble.cache import *
+from ..cache import Cache
 
 class SandboxCache(Cache):
     # TODO: implement

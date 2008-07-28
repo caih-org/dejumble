@@ -1,10 +1,7 @@
-#!/usr/bin/env python
-
 import commands
 import errno
 
-import dejumble.filter
-from dejumble.filter import *
+from ..filter import FileListFilter
 
 
 class ShellFileListFilter(FileListFilter):
