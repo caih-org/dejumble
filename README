@@ -57,5 +57,5 @@ Not implemented yet:
 
 == Known issues ==
 
-  * Mac OS X doesn't let the fs access the original mount directory. See dejumble/fs.py function fsinit(self) for more information.
+  * umount on Mac OS X is problematic. See http://code.google.com/p/dejumble/issues/detail?id=1
 

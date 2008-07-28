@@ -31,7 +31,8 @@ class Organizer(Cacheable):
         self.cache = cache
         self.recursive = recursive
         self.transformed = Base(DB_TRANSFORMED)
-        # Do not call reset here, it is called from fs.py when the fs is already started
+        # Do not call reset here, it is called from fs.py when the fs is
+	# already started
 
     def reset(self):
         self.transformed.create('realpath', 'path', 'dir', mode='override')
@@ -92,7 +93,8 @@ class Organizer(Cacheable):
                 # Add all sub-directories first
                 currentpath = self.cache.filter.root
                 
-                for pathpart in pathparts(removeroot(realpath, self.cache.filter.root)):
+                for pathpart in pathparts(removeroot(realpath,
+			self.cache.filter.root)):
                     currentpath = os.path.join(currentpath, pathpart)
                     self.addfile(currentpath)
             else:
@@ -153,7 +155,8 @@ class Organizer(Cacheable):
         logger.debug('filelist(%s)' % path)
         self.refreshcache()
         [ (yield d) for d in self.dirlist(path) ]
-        [ (yield os.path.basename(r['path'])) for r in self.transformed._dir[path]  ]
+        [ (yield os.path.basename(r['path'])) for r in
+		self.transformed._dir[path]  ]
 
     def paths(self, realpath):
         """
@@ -272,8 +275,8 @@ class TagOrganizer(Organizer):
 
     def filelistbytags(self, category, tags):
         self.refreshcache()
-        [ (yield os.path.basename(r['realpath'])) for r in self.tags._category[category]
-        	if r['tag'] in tags ]
+        [ (yield os.path.basename(r['realpath'])) for r in
+		self.tags._category[category] if r['tag'] in tags ]
 
     def taglist(self, category):
         self.refreshcache()

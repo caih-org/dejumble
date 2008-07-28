@@ -9,7 +9,7 @@ function print {
 
 python generate_header.py
 
-cd ../code
+cd ../../../
 
 print "scripts/dejumble" python
 for F in `find dejumble | sed -E "/\\.\\//s///" | egrep -v "(^build/|.svn|__init__|\\.pyc$)" | egrep "\\.py$"`

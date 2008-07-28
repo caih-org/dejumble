@@ -76,11 +76,11 @@ class Cache(Cacheable):
         logger.debug('chown(%s, %s, %s)' % (realpath, user, group))
         os.chown(realpath, user, group)
 
-    def truncate(self, realpath, len):
-        logger.debug('truncate(%s, %s)' % (realpath, len))
-        f = open(realpath, 'a')
-        f.truncate(len)
-        f.close()
+    def truncate(self, realpath, length):
+        logger.debug('truncate(%s, %s)' % (realpath, length))
+        file = open(realpath, 'a')
+        file.truncate(length)
+        file.close()
 
     def utime(self, realpath, times):
         logger.debug('utime(%s, %s)' % (realpath, times))
