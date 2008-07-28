@@ -78,7 +78,7 @@ class DejumbleFS(Fuse):
         
         if self.root.endswith('/'):
             self.root = self.root[:-1]
-        
+
         filter_ = self._loadclass('filters', 'FileListFilter', self.filter)(self.query, self.root)
         cache = self._loadclass('caches', 'Cache', self.cache)(filter_)
         self.organizer = self._loadclass('organizers', 'Organizer', self.organizer)(cache)

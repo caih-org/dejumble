@@ -19,10 +19,11 @@ class Cache(Cacheable):
 
     def __init__(self, filter):
         self.filter = filter
-        self.files = Base(DB_FILES)
-        self.reset()
+        self.files = None
 
     def reset(self):
+        if not self.files:
+            self.files = Base(DB_FILES)
         self.files.create('realpath', mode = 'override')
         self.files.create_index('realpath')
         Cacheable.reset(self)

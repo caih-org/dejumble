@@ -26,11 +26,13 @@ class Organizer(Cacheable):
         Cacheable.__init__(self)
         self.cache = cache
         self.recursive = recursive
-        self.transformed = Base(DB_TRANSFORMED)
+        self.transformed = None
         # Do not call reset here, it is called from fs.py when the fs is
-	# already started
+        # already started
 
     def reset(self):
+        if not self.transformed:
+            self.transformed = Base(DB_TRANSFORMED)
         self.transformed.create('realpath', 'path', 'dir', mode='override')
         self.transformed.create_index('realpath')
         self.transformed.create_index('path')
@@ -214,11 +216,13 @@ class Organizer(Cacheable):
 
 class TagOrganizer(Organizer):
     def __init__(self, cache, category=None):
-        self.tags = Base(DB_FILE_TAGS)
+        self.tags = None
         self.category = category
         Organizer.__init__(self, cache, False)
 
     def reset(self):
+        if not self.tags:
+            self.tags = Base(DB_FILE_TAGS)
         self.tags.create('realpath', 'category', 'tag', mode = 'override')
         self.tags.create_index('realpath')
         self.tags.create_index('category')
