@@ -1,7 +1,4 @@
-#!/usr/bin/env python
-
-import dejumble.organizer
-from dejumble.organizer import *
+from ..organizer import Organizer
 
 logger = logging.getLogger('dejumble.Organizer')
 

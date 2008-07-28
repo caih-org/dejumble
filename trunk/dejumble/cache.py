@@ -1,16 +1,11 @@
-#!/usr/bin/env python
-
-import time
 import errno
 import logging
 import os
 
 from PyDbLite import Base
 
-import dejumble.util
-from dejumble.util import *
-import dejumble.fs
-from dejumble.fs import *
+from util import Cacheable
+from fs import getserver
 
 DB_FILES = './.dejumbledb'
 
@@ -130,7 +125,7 @@ class Cache(Cacheable):
             logger.debug('DejumbleFile.fsync(%s)' % isfsyncfile)
             self._fflush()
             if isfsyncfile and hasattr(os, 'fdatasync'):
-                os.fdatasync(self.fd)
+                getattr(os, 'fdatasync')(self.fd)
             else:
                 os.fsync(self.fd)
 

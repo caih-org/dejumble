@@ -1,18 +1,13 @@
-#!/usr/bin/env python
-
 import logging
 import os
 import os.path
-import time
 
 from PyDbLite import Base
 import fuse
 from fuse import Fuse
 
-import dejumble.filter
-from dejumble.filter import *
-import dejumble.util
-from dejumble.util import *
+from util import *
+
 
 DB_TRANSFORMED = './.dejumbledb_transformed'
 DB_FILE_TAGS = './.dejumbledb_tags'
@@ -28,6 +23,7 @@ class Organizer(Cacheable):
     """
 
     def __init__(self, cache, recursive=True):
+        Cacheable.__init__(self)
         self.cache = cache
         self.recursive = recursive
         self.transformed = Base(DB_TRANSFORMED)
@@ -266,7 +262,7 @@ class TagOrganizer(Organizer):
             self.generatetags(filename)
 
     def generatetags(self, filename):
-        None
+        pass
 
     def tag(self, realpath, category, tag):
         logger.debug('tag(%s, %s, %s)' % (realpath, category, tag))

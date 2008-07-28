@@ -1,15 +1,13 @@
-#!/usr/bin/env python
-
-import dejumble.organizer
-from dejumble.organizer import *
+from .. import util
+from ..organizer import TagOrganizer
 
 
 class DocumentsOrganizer(TagOrganizer):
     def __init__(self, cache):
         TagOrganizer.__init__(self, cache, 'filetype')
-        self.filetypes = readconfig('filetypes')
+        self.filetypes = util.readconfig('filetypes')
         for filetype, extensions in self.filetypes.iteritems():
-            self.filetypes[filetype] = map(extensionregex, extensions.split(','))
+            self.filetypes[filetype] = map(util.extensionregex, extensions.split(','))
 
     def generatetags(self, realpath):
         hastag = False

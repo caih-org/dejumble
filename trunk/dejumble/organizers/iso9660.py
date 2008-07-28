@@ -1,11 +1,10 @@
-#!/usr/bin/env python
-
 import os
 import os.path
 import math
+import re
+import logging
 
-import dejumble.organizer
-from dejumble.organizer import *
+from ..organizer import Organizer
 
 iso9660_increase_regex = re.compile('^(.*)~(\d+)$')
 
@@ -17,7 +16,7 @@ class ISO9660Organizer(Organizer):
         parts = pathparts(removeroot(realpath, self.cache.filter.root))
 
         if len(parts) <= 1:
-            yield addtrailingslash(self._path(parts[0]))
+            yield addtrailingslash(self.convertpath(parts[0]))
         else:
             currentpath = os.sep
             currentrealpath = self.cache.filter.root
@@ -27,21 +26,21 @@ class ISO9660Organizer(Organizer):
                 part = list(self.paths(currentrealpath))[0]
                 currentpath = os.path.join(currentpath, part)
 
-            yield os.path.join(currentpath, self._path(parts[-1:][0]))
+            yield os.path.join(currentpath, self.convertpath(parts[-1:][0]))
 
     def increasefilename(self, filename):
         root, ext = os.path.splitext(filename)
     
         num = 1
-        m = iso9660_increase_regex.match(root)
+        matches = iso9660_increase_regex.match(root)
     
-        if not m is None:
-            num = int(m.group(2)) + 1
-            root = m.group(1)
+        if not matches is None:
+            num = int(matches.group(2)) + 1
+            root = matches.group(1)
 
-        return self._path("%s%s" % (root, ext), num)
+        return self.convertpath("%s%s" % (root, ext), num)
 
-    def _path(self, filename, num=0):
+    def convertpath(self, filename, num=0):
         root, ext = os.path.splitext(filename)
 
         # TODO: exclude all non valid characters

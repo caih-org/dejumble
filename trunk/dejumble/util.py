@@ -1,23 +1,22 @@
-#!/usr/bin/env python
-
 import os
-import logging
 import re
-import pkg_resources
 import time
 import copy
 
+from pkg_resources import resource_filename
+
 ORIGINAL_DIR = '.dejumblefs'
+
 
 def pathparts(path):
     return path.split('/')[1:]
 
 def flags2mode(flags):
-    md = {os.O_RDONLY: 'r', os.O_WRONLY: 'w', os.O_RDWR: 'w+'}
-    m = md[flags & (os.O_RDONLY | os.O_WRONLY | os.O_RDWR)]
+    filemode = {os.O_RDONLY: 'r', os.O_WRONLY: 'w', os.O_RDWR: 'w+'}
+    mode = filemode[flags & (os.O_RDONLY | os.O_WRONLY | os.O_RDWR)]
     if flags & os.O_APPEND:
-        m = m.replace('w', 'a', 1)
-    return m
+        mode = mode.replace('w', 'a', 1)
+    return mode
 
 def addtrailingslash(path):
     if path.startswith(os.sep):
@@ -32,7 +31,8 @@ def removeroot(realpath, root):
         raise RuntimeError
 
 def ignoretag(filename):
-    return not filename == '/..' and not filename == '/.' and not filename.startswith('/.dejumble')
+    return (not filename == '/..' and not filename == '/.'
+            and not filename.startswith('/.dejumble'))
 
 def extensionregex(extension):
     return re.compile('%s$' % extension)
@@ -49,7 +49,7 @@ def unique(inlist, keepstr = True):
     while i < len(inlist):
         try:
             del inlist[inlist.index(inlist[i], i + 1)]
-        except:
+        except ValueError:
             i += 1
     if not typ in (str, unicode):
         inlist = typ(inlist)
@@ -61,6 +61,9 @@ def unique(inlist, keepstr = True):
 # Cacheable class
 
 class Cacheable:
+    def __init__(self):
+        self.expiretime = time.time()
+        
     def reset(self):
         self.expirecache()
         self.refreshcache()
@@ -74,38 +77,39 @@ class Cacheable:
             self.updatecache()
 
     def updatecache(self):
-        None
+        pass
 
-    def deletefromcache(self, string):
-        None
+    def deletefromcache(self, string): #IGNORE:W0613
+        pass
 
-    def addtocache(self, string):
-        None
+    def addtocache(self, string): #IGNORE:W0613
+        pass
 
 ############################################
 # Configuration functions
 
-_configuration = {}
+_CONFIGURATION = {}
 
 def readconfig(name):
-    if not name in _configuration:
-        defaultfilename = pkg_resources.resource_filename('dejumble', 'conf/%s-default.conf' % name)
+    if not name in _CONFIGURATION:
+        defaultfilename = resource_filename('dejumble', #IGNORE:E1101
+                                            'conf/%s-default.conf'  % name)
         userfilename = os.path.expanduser('~/.dejumble/%s.conf' % name)
         currentdirfilename = './.dejumble/%s.conf' % name
         config = {}
         readconfigfile(config, defaultfilename)
         readconfigfile(config, userfilename)
         readconfigfile(config, currentdirfilename)
-        _configuration[name] = config
+        _CONFIGURATION[name] = config
 
-    return _configuration[name]
+    return _CONFIGURATION[name]
 
 def readconfigfile(config, path):
     if os.path.isfile(path):
-        file = open(path, 'r')
-        for line in file.readlines():
+        ofile = open(path, 'r')
+        for line in ofile.readlines():
             name, value = line.split('=', 1)
-            config[name] = value.strip()
+            _CONFIGURATION[name] = value.strip()
 
     return config
 

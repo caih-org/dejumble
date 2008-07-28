@@ -1,14 +1,8 @@
-#!/usr/bin/env python
-
-import os
 import tempfile
-import unittest
-import shutil
 
-import dejumble.test.base
-from dejumble.test.base import *
-import dejumble.filters.completedirectory
-from dejumble.filters.completedirectory import *
+from ..base import BaseFileListFilterTestCase
+from ...filters.completedirectory import CompleteDirectoryFileListFilter
+
 
 class CompleteDirectoryFileListFilterTestCase(BaseFileListFilterTestCase):
     def testfilelist(self):

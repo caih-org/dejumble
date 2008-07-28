@@ -1,16 +1,9 @@
-#!/usr/bin/env python
-
-import os
 import tempfile
-import unittest
-import shutil
 
-import dejumble.util
-from dejumble.util import *
-import dejumble.test.base
-from dejumble.test.base import *
-import dejumble.filters.originaldirectory
-from dejumble.filters.originaldirectory import *
+from ... import util
+from ..base import BaseFileListFilterTestCase
+from ...filters.originaldirectory import OriginalDirectoryFileListFilter
+
 
 class OriginalDirectoryFileListFilterTestCase(BaseFileListFilterTestCase):
     def testfilelist(self):
@@ -23,6 +16,6 @@ class OriginalDirectoryFileListFilterTestCase(BaseFileListFilterTestCase):
         filelist = list(filter.filelist())
 
         self.assertEqual(len(filelist), 3)
-        self.assertTrue('.%s' % removeroot(original_file1[1], self.mount_dir) in filelist)
-        self.assertTrue('.%s' % removeroot(original_file2[1], self.mount_dir) in filelist)
-        self.assertTrue('.%s' % removeroot(original_file3[1], self.mount_dir) in filelist)
+        self.assertTrue('.%s' % util.removeroot(original_file1[1], self.mount_dir) in filelist)
+        self.assertTrue('.%s' % util.removeroot(original_file2[1], self.mount_dir) in filelist)
+        self.assertTrue('.%s' % util.removeroot(original_file3[1], self.mount_dir) in filelist)

@@ -1,19 +1,12 @@
-#!/usr/bin/env python
-
-import os
-import os.path
-import stat
 import errno
 import logging
-import time
 
 import fuse
 from fuse import Fuse
 
-import dejumble.organizer
-from dejumble.organizer import *
-import dejumble.util
-from dejumble.util import *
+from .organizer import Organizer
+from util import *
+
 
 fuse.fuse_python_api = (0, 2)
 

@@ -1,10 +1,7 @@
-#!/usr/bin/env python
-
 import os
 import time
 
-import dejumble.organizer
-from dejumble.organizer import *
+from ..organizer import TagOrganizer
 
 
 class DateOrganizer(TagOrganizer):

@@ -1,4 +1,3 @@
-#!/usr/bin/env python 
 # -*- coding: utf-8 -*-
 
 """dejumble: presents an organized view of the contents of a directory.

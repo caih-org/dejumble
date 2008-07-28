@@ -1,7 +1,4 @@
-#!/usr/bin/env python
-
-import dejumble.filter
-from dejumble.filter import *
+from ..filter import FileListFilter
 
 
 class XesamFileListFilter(FileListFilter):
