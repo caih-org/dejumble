@@ -108,17 +108,9 @@ class DejumbleFS(Fuse):
     # Filesystem functions
 
     def fsinit(self):
-	os.fchdir(self.originaldir)
+        os.fchdir(self.originaldir)
 
-        # HACK: Mac OS X doesn't allow to umount if this (or any) process chdirs to the mount
-        # directory so just change the current directory to /tmp if this system is running any
-        # Darwin derivative. I don't know if this happens on BSD or other unixes.
-        # The side effects from this are various: from saving the cache file to the directory where
-        # mount command was executed to not beign able to use the OriginalDirectory filter or any
-        # command that access the original mount directory contents. Also the "special" directory
-        # .dejumblefs with the original contents doesn't work either.
-        # Solutions include mounting the original directory at some temp location, chdiring there
-        # and umounting when done with it.
+        # HACK: see http://code.google.com/p/dejumble/issues/detail?id=1
         import platform
         if platform.system() == 'Darwin':
             os.chdir("/tmp")
@@ -163,9 +155,9 @@ class DejumbleFS(Fuse):
         logger.debug('chown(%s, %s, %s)' % (path, user, group))
         self.organizer.cache.chown(self.organizer.realpath(path), user, group)
 
-    def truncate(self, path, len):
-        logger.debug('truncate(%s, %s)' % (path, len))
-        self.organizer.cache.truncate(self.organizer.realpath(path), len)
+    def truncate(self, path, length):
+        logger.debug('truncate(%s, %s)' % (path, length))
+        self.organizer.cache.truncate(self.organizer.realpath(path), length)
 
     def utime(self, path, times):
         logger.debug('utime(%s, %s)' % (path, times))

@@ -9,17 +9,17 @@ En este capítulo se definirá cada una de las partes que tendrá un sistema de 
 
 \section{Descripción general del sistema}
 
-En Linux el sistema de archivos proxy se monta en una ruta dentro del VFS (Virtual File System). Cuando una aplicacion accede a esta ruta se llama atravez del kernel al módulo de FUSE que a su vez llama al sistema de archivos proxy instalado en el espacio de usuario. El sistema de archivos proxy accede al sistema de archivos original atravez del VFS.
+En Linux el sistema de archivos proxy se monta en una ruta dentro del VFS (Virtual File System). Cuando una aplicacion accede a esta ruta se llama atravez del kernel al módulo de FUSE que a su vez llama al sistema de archivos proxy instalado en el espacio de usuario. El sistema de archivos proxy accede al sistema de archivos original atravez del VFS como se puede ver en la figura~(\ref{kernel}).
 
-\InsertFig{\IncludeGraphicsH{kernel}{2in}{92 86 545 742}}{Comunicación con el kernel}{Kernel}
+\InsertFig{\IncludeGraphicsH{kernel}{2in}{92 86 545 742}}{Comunicación con el kernel}{kernel}
 
-El sistema de archivos proxy, entoces, se situa en medio de el sistema de archivos original y la aplicaciones de usuario.
+El sistema de archivos proxy, entoces, se situa en medio de el sistema de archivos original y la aplicaciones de usuario como en la siguiente figura~(\ref{proxy}).
 
-\InsertFig{\IncludeGraphicsH{proxy}{1.5in}{92 86 545 742}}{Sistema proxy}{Proxy}
+\InsertFig{\IncludeGraphicsH{proxy}{1.5in}{92 86 545 742}}{Sistema proxy}{proxy}
 
-Para poder permitir una mayor modularización de un sistema de archivos proxy, se ha dividido este en varios componentes. Estos componentes son, en general, independientes unos de otros para permitir usarlos en diversas combinaciones.
+Para poder permitir una mayor modularización de un sistema de archivos proxy, se ha dividido este en varios componentes. Estos componentes son, en general, independientes unos de otros para permitir usarlos en diversas combinaciones~(\ref{general}).
 
-\InsertFig{\IncludeGraphicsH{general}{3.5in}{92 86 545 742}}{Diseño general}{General}
+\InsertFig{\IncludeGraphicsH{general}{3.5in}{92 86 545 742}}{Diseño general}{general}
 
 En este gráfico se definen dos areas dentro del sistema de archivos proxy. La primera se define como ``Espacio de nombres original''. En esta área todos los componentes tratan a los archivos con sus nombres y rutas tal y como están en el sistema de archivos original. La segunda área se denomina``Espacio de nombres transformad''. En esta área se referencia a los archivos por su nombres y rutas una vez convertidas por el organizador.
 

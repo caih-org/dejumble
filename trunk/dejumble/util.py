@@ -29,7 +29,7 @@ def removeroot(realpath, root):
     if realpath.startswith(root):
         return realpath.replace(root, '', 1)
     else:
-        raise Error()
+        raise RuntimeError
 
 def ignoretag(filename):
     return not filename == '/..' and not filename == '/.' and not filename.startswith('/.dejumble')
@@ -74,12 +74,12 @@ class Cacheable:
             self.updatecache()
 
     def updatecache(self):
-    	None
-
-    def deletefromcache(self):
         None
 
-    def addtocache(self):
+    def deletefromcache(self, string):
+        None
+
+    def addtocache(self, string):
         None
 
 ############################################

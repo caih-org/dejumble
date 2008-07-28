@@ -15,7 +15,7 @@ class DocumentsOrganizer(TagOrganizer):
         hastag = False
         for filetype, extensions in self.filetypes.iteritems():
             for extension in extensions:
-                if not extension.search(filename) == None:
+                if not extension.search(realpath) == None:
                     self.tag(realpath, self.category, _(filetype))
                     hastag = True
         if not hastag:
