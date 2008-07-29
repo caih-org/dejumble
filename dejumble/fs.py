@@ -44,7 +44,15 @@ class DejumbleFS(fuse.Fuse):
         self.file_class = self.organizer.cache.DejumbleFile
         self.originaldir = os.open(self.fuse_args.mountpoint, os.O_RDONLY)
         try:
+            profile = False
+            if profile:
+                import hotshot
+                prof = hotshot.Profile("dejumblefs.stats")
+                prof.start()
             result = fuse.Fuse.main(self, *a, **kw) #IGNORE:W0142
+            if profile:
+                prof.stop()
+                prof.close()
         except fuse.FuseError:
             result = -errno.ENOENT
             logger.warn(_('Finalizing dejumblefs'))

@@ -1,7 +1,6 @@
 import os
 import re
 import time
-import copy
 
 from pkg_resources import resource_filename #IGNORE:E0611
 
@@ -47,22 +46,8 @@ def getbasefilelist():
     return ['..', '.']
 
 
-def unique(inlist, keepstr = True):
-    inlist = copy.copy(inlist)
-    typ = type(inlist)
-    if not typ == list:
-        inlist = list(inlist)
-    i = 0
-    while i < len(inlist):
-        try:
-            del inlist[inlist.index(inlist[i], i + 1)]
-        except ValueError:
-            i += 1
-    if not typ in (str, unicode):
-        inlist = typ(inlist)
-    elif keepstr:
-        inlist = ''.join(inlist)
-    return inlist
+def unique(s):
+    return set(s)
 
 ############################################
 # Cacheable class
