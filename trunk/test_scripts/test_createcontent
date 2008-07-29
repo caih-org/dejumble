@@ -25,7 +25,7 @@ function createfile {
 
 	cd $BASE_DIR
 
-	echo $MB	$TIME_1	$TIME_2
+	echo "$MB	$TIME_1	$TIME_2"
 }
 
 echo '""	"DejumbleFS"	"Original (HFS+)"'

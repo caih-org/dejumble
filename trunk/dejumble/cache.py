@@ -103,6 +103,8 @@ class Cache(Cacheable):
             realpath = getserver().organizer.generaterealpath(path)
             self.fd = os.open(realpath, flags, *mode) #IGNORE:W0142
             self.file = os.fdopen(self.fd, util.flags2mode(flags))
+            self.keep_cache = False
+            self.direct_io = False
             if flags & os.O_CREAT:
                 getserver().organizer.addtocache(path)
 
