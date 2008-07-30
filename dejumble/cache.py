@@ -35,8 +35,7 @@ class Cache(Cacheable):
             self.files.insert(realpath)
 
     def deletefromcache(self, realpath):
-        for record in self.files.get_index('realpath')[realpath]:
-            del self.files[record['__id__']]
+        self.files.delete(self.files.get_index('realpath')[realpath])
 
     def addtocache(self, realpath):
         self.files.insert(realpath)

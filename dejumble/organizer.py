@@ -47,9 +47,8 @@ class Organizer(Cacheable):
     def deletefromcache(self, path):
         realpath = self.realpath(path)
         logger.debug("deletefromcache(%s)" % realpath)
-        for record in self.transformed.get_index('realpath')[realpath]:
-            self.cache.deletefromcache(record['realpath'])
-            del self.transformed[record['__id__']]
+        self.cache.deletefromcache(realpath)
+        self.transformed.delete(self.transformed.get_index('realpath')[realpath])
 
     def addtocache(self, path):
         if not self.transformed.get_index('path')[path]:
