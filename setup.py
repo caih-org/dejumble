@@ -28,7 +28,7 @@ from distutils.core import setup
 doclines = __doc__.splitlines()
 
 setup(name='dejumblefs',
-      version = '0.7',
+      version = '0.8',
       packages = ['dejumblefs', 'dejumblefs.filters', 'dejumblefs.caches',
                   'dejumblefs.organizers'],
       package_dir = {'': ''},
