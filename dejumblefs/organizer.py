@@ -6,8 +6,8 @@ import re
 from PyDbLite import Base
 import fuse
 
-import util
-from util import Cacheable
+from . import util
+from .util import Cacheable
 
 
 DB_TRANSFORMED = './.dejumblefs_transformed.pydblite'
@@ -48,7 +48,8 @@ class Organizer(Cacheable):
         realpath = self.realpath(path)
         logger.debug("deletefromcache(%s)" % realpath)
         self.cache.deletefromcache(realpath)
-        self.transformed.delete(self.transformed.get_index('realpath')[realpath])
+        items = self.transformed.get_index('realpath')[realpath]
+        self.transformed.delete(items)
 
     def addtocache(self, path):
         if not self.transformed.get_index('path')[path]:
@@ -114,7 +115,7 @@ class Organizer(Cacheable):
         transformed = self.transformed.get_index('realpath')[realpath]
 
         if transformed:
-            return [r['path'] for r in transformed]
+            return (record['path'] for record in transformed)
         else:
             paths = []
 
@@ -171,11 +172,9 @@ class Organizer(Cacheable):
         paths = self.transformed.get_index('realpath')[realpath]
 
         if paths:
-            for path in paths:
-                yield path['path']
+            return (path['path'] for path in paths)
         else:
-            for path in self.generatepaths(realpath):
-                yield path
+            return (path for path in self.generatepaths(realpath))
 
     def realpath(self, path):
         """

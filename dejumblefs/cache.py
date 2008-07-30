@@ -4,9 +4,9 @@ import os
 
 from PyDbLite import Base
 
-import util
-from util import Cacheable
-from fs import getserver
+from . import util
+from .util import Cacheable
+from .fs import getserver
 
 DB_FILES = './.dejumblefs_cache.pydblite'
 
