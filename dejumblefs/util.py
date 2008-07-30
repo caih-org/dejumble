@@ -35,7 +35,7 @@ def removeroot(realpath, root):
 
 def ignoretag(filename):
     return (not filename == '/..' and not filename == '/.'
-            and not filename.startswith('/.dejumble'))
+            and not filename.startswith('/.dejumblefs'))
 
 
 def extensionregex(extension):
@@ -87,10 +87,10 @@ _CONFIGURATION = {}
 
 def readconfig(name):
     if not name in _CONFIGURATION:
-        defaultfilename = resource_filename('dejumble', #IGNORE:E1101
+        defaultfilename = resource_filename('dejumblefs', #IGNORE:E1101
                                             'conf/%s-default.conf' % name)
-        userfilename = os.path.expanduser('~/.dejumble/%s.conf' % name)
-        currentdirfilename = './.dejumble/%s.conf' % name
+        userfilename = os.path.expanduser('~/.dejumblefs/%s.conf' % name)
+        currentdirfilename = './.dejumblefs/%s.conf' % name
         config = {}
         readconfigfile(config, defaultfilename)
         readconfigfile(config, userfilename)

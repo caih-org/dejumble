@@ -33,7 +33,7 @@ class UtilTestCase(unittest.TestCase):
         self.assertTrue(util.ignoretag('/abc'))
         self.assertFalse(util.ignoretag('/..'))
         self.assertFalse(util.ignoretag('/.'))
-        self.assertFalse(util.ignoretag('/.dejumble'))
+        self.assertFalse(util.ignoretag('/.dejumblefs'))
 
     def testgetbasefilelist(self):
         self.assertTrue('..' in util.getbasefilelist())

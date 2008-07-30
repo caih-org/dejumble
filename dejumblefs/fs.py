@@ -7,7 +7,7 @@ import fuse
 
 fuse.fuse_python_api = (0, 2)
 
-logger = logging.getLogger('dejumble.DejumbleFS')
+logger = logging.getLogger('dejumblefs.DejumbleFS')
 
 _SERVER = None
 
@@ -118,7 +118,7 @@ class DejumbleFS(fuse.Fuse):
         logger.info(_('Done loading modules'))
 
     def _loadclass(self, moduleprefix, classsuffix, name):
-        modulename = 'dejumble.%s.%s' % (moduleprefix, name.lower())
+        modulename = 'dejumblefs.%s.%s' % (moduleprefix, name.lower())
         classname = '%s%s' % (name, classsuffix)
         logger.info('Loading %s.%s' % (modulename, classname))
         return getattr(self._import(modulename), classname)

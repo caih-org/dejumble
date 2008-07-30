@@ -10,12 +10,12 @@ import util
 from util import Cacheable
 
 
-DB_TRANSFORMED = './.dejumbledb_transformed'
-DB_FILE_TAGS = './.dejumbledb_tags'
+DB_TRANSFORMED = './.dejumblefs_transformed.pydblite'
+DB_FILE_TAGS = './.dejumblefs_tags.pydblite'
 
 _INCREASE_REGEX = re.compile('^(.*)\((\d+)\)$')
 
-logger = logging.getLogger('dejumble.Organizer')
+logger = logging.getLogger('dejumblefs.Organizer')
 
 
 class Organizer(Cacheable):

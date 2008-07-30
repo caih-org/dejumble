@@ -32,7 +32,7 @@ Un filtro se encarga de escoger que partes del sistema de archivos original ser�
 
 \subsection{Detalles de la Implementación}
 
-Los filtros se encuentran en el archivo \path{dejumble/filter.py}~(\ref{dejumble/filter.py}). Existe una clase base llamada FileListFilter que tiene un solo método público: filelist. Este método devuelve una lista de archivos y es únicamente llamado desde el cache. La lista que devuelve contiene items con el path completo dentro del VFS o un path relativo que comienza con ``./'' si el archivo se encuentra en el directorio original donde se montó el sistema de archivos proxy. Esto es necesario ya que una vez montado el sistema de archivos proxy cualquier llamada a su propio directorio accedería al sistema de archivos proxy y no al sistema original. Además recibe un parametro al momento de inicializarse: query. Este parámetro se lo define al momento de montar y puede ser usado por cualquier implementacion como información adicional para realizar el filtrado.
+Los filtros se encuentran en el archivo \path{dejumblefs/filter.py}~(\ref{dejumblefs/filter.py}). Existe una clase base llamada FileListFilter que tiene un solo método público: filelist. Este método devuelve una lista de archivos y es únicamente llamado desde el cache. La lista que devuelve contiene items con el path completo dentro del VFS o un path relativo que comienza con ``./'' si el archivo se encuentra en el directorio original donde se montó el sistema de archivos proxy. Esto es necesario ya que una vez montado el sistema de archivos proxy cualquier llamada a su propio directorio accedería al sistema de archivos proxy y no al sistema original. Además recibe un parametro al momento de inicializarse: query. Este parámetro se lo define al momento de montar y puede ser usado por cualquier implementacion como información adicional para realizar el filtrado.
 
 
 \section{Cache}
@@ -41,7 +41,7 @@ El cache se encarga de guardar o escribir los cambios en el sistema de archivos 
 
 \subsection{Detalles de la Implementación}
 
-El código para este módulo se encuentra en el archivo \path{dejumble/cache.py}~(\ref{dejumble/cache.py}). Consiste en una clase base llamada Cache que provee un set de funciones para almacenar la lista de archivos que se encuentran en el sistema de archivos proxy. Además la implemetación por default provee todas las funciones necesarias para acceder al sistema de archivos original y a sus archivos. 
+El código para este módulo se encuentra en el archivo \path{dejumblefs/cache.py}~(\ref{dejumblefs/cache.py}). Consiste en una clase base llamada Cache que provee un set de funciones para almacenar la lista de archivos que se encuentran en el sistema de archivos proxy. Además la implemetación por default provee todas las funciones necesarias para acceder al sistema de archivos original y a sus archivos. 
 
 
 \section{Organizador}
@@ -52,7 +52,7 @@ El organizador debe poder hacer un mapeo de los archivos en dos direcciones, es 
 
 \subsection{Detalles de la Implementación}
 
-En el archivo \path{dejumble/organizer.py}~(\ref{dejumble/organizer.py}) se encuentra una clase llamada Organizer. Esta clase implementa los métodos basicos para crear un organizador. Por un lado tenemos las funciones que son llamadas directamente desde el modulo de fuse: getattr y readdir. La implementacion básica de getattr funciones devuelve los mismos permisos del directorio donde fue montado el sistema de archivos proxy para el caso de directorios que no existen en el sistema original o devuelve los permisos tal y como estaban en el sistema original. La función readdir devuelve un lista de archivo para un directorio en especifico. Además de estas funciones existen varias funciones necesarias para generar un arbol de directorios nuevo basado en el arbol de directorios original y funciones para evitar conflictos en los nombres. Subclases deberían implementar dos funciones: paths y dirlist. paths devuelve una lista de paths dado un path en el sistema de archivos original. Esta funcion se llama cuando el sistema se inicializa o cuando el cache expira con todos los archivos que tiene la clase cache. dirlist devuelve una lista de archivos dado un directorio en el sistema de archivos proxy. Los directorios que devuelve dirlist deben ser solamente directorios que no existan en el sistema de archivos original pero que existan en el sistema de archivos proxy.
+En el archivo \path{dejumblefs/organizer.py}~(\ref{dejumblefs/organizer.py}) se encuentra una clase llamada Organizer. Esta clase implementa los métodos basicos para crear un organizador. Por un lado tenemos las funciones que son llamadas directamente desde el modulo de fuse: getattr y readdir. La implementacion básica de getattr funciones devuelve los mismos permisos del directorio donde fue montado el sistema de archivos proxy para el caso de directorios que no existen en el sistema original o devuelve los permisos tal y como estaban en el sistema original. La función readdir devuelve un lista de archivo para un directorio en especifico. Además de estas funciones existen varias funciones necesarias para generar un arbol de directorios nuevo basado en el arbol de directorios original y funciones para evitar conflictos en los nombres. Subclases deberían implementar dos funciones: paths y dirlist. paths devuelve una lista de paths dado un path en el sistema de archivos original. Esta funcion se llama cuando el sistema se inicializa o cuando el cache expira con todos los archivos que tiene la clase cache. dirlist devuelve una lista de archivos dado un directorio en el sistema de archivos proxy. Los directorios que devuelve dirlist deben ser solamente directorios que no existan en el sistema de archivos original pero que existan en el sistema de archivos proxy.
 
 
 \section{Interfaz con FUSE}
@@ -60,7 +60,7 @@ En el archivo \path{dejumble/organizer.py}~(\ref{dejumble/organizer.py}) se encu
 Existe un pequeño numero de funciones que son necesarias implementar para tener un sistema de archivos:
 
 \begin{itemize}
-\item[fsinit] Inicializa el sistema de archivos. En este paso es necesario guardar un puntero al directorio donde estamos montando para poder acceder a esos datos en caso de que se necesite. Esta implementada en el archivo \path{dejumble/fs.py}~(\ref{dejumble/fs.py})
+\item[fsinit] Inicializa el sistema de archivos. En este paso es necesario guardar un puntero al directorio donde estamos montando para poder acceder a esos datos en caso de que se necesite. Esta implementada en el archivo \path{dejumblefs/fs.py}~(\ref{dejumblefs/fs.py})
 \item[getattr] Obtiene los atributos del archivo o directorio. Estos simplemente son pasados tal como los tiene el archivo o directorio original cuando se usa el cache por defecto.
 \item[readdir] Obtiene una lista de archivos dado una ruta. Esta lista de archivos la tiene que devolver el organizador.
 \item[readlink] Lee un link	y devuelve el path real.
