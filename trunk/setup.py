@@ -4,7 +4,7 @@
 """
 dejumble: presents an organized view of the contents of a directory.
 
-dejumble is a FUSE that lets the user mount a virtual directory with the
+dejumblefs is a FUSE that lets the user mount a virtual directory with the
 contents of the original directory, or the results of filtering the original
 filesystem. Files can be presented to the user organized by filetype, access
 time, metadata, etc. This search an be a shell script (find, locate, etc) or
@@ -27,13 +27,13 @@ from distutils.core import setup
 
 doclines = __doc__.splitlines()
 
-setup(name='dejumble',
+setup(name='dejumblefs',
       version = '0.7',
-      packages = ['dejumble', 'dejumble.filters', 'dejumble.caches',
-                  'dejumble.organizers'],
+      packages = ['dejumblefs', 'dejumblefs.filters', 'dejumblefs.caches',
+                  'dejumblefs.organizers'],
       package_dir = {'': ''},
-      package_data = {'dejumble': ['conf/*.conf', 'conf/*.sql'],
-                      'dejumble.testdata': ['*.*']},
+      package_data = {'dejumblefs': ['conf/*.conf', 'conf/*.sql'],
+                      'dejumblefs.testdata': ['*.*']},
       scripts = ['scripts/dejumble'],
       maintainer = 'César Izurieta',
       maintainer_email = 'cesar@caih.org',

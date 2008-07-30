@@ -9,7 +9,7 @@ from ..organizer import Organizer
 
 _ISO9660_INCREASE_REGEX = re.compile('^(.*)~(\d+)$')
 
-logger = logging.getLogger('dejumble.Organizer')
+logger = logging.getLogger('dejumblefs.Organizer')
 
 
 class ISO9660Organizer(Organizer):

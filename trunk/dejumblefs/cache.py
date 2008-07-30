@@ -8,9 +8,9 @@ import util
 from util import Cacheable
 from fs import getserver
 
-DB_FILES = './.dejumbledb'
+DB_FILES = './.dejumblefs_cache.pydblite'
 
-logger = logging.getLogger('dejumble.Cache')
+logger = logging.getLogger('dejumblefs.Cache')
 
 
 class Cache(Cacheable):
