@@ -1,0 +1,42 @@
+#!/bin/bash
+
+TEST_DIR_1=$1
+TEST_DIR_2=$2
+BASE_DIR=`pwd`
+BIN_PATH=$BASE_DIR/`dirname $0`
+DATE_MS=$BIN_PATH/date_ms
+
+function createfile {
+	MB=$1
+
+	cd $TEST_DIR_1 || exit 1
+	touch test
+	START=`$DATE_MS`
+	dd if=/dev/zero of=test bs=1024 count=0 seek=$[1024*$MB] 2> /dev/null
+	TIME_1=`$DATE_MS "$START"`
+	rm test
+
+	cd $TEST_DIR_2 || exit 1
+	touch test
+	START=`$DATE_MS`
+	dd if=/dev/zero of=test bs=1024 count=0 seek=$[1024*$MB] 2> /dev/null
+	TIME_2=`$DATE_MS "$START"`
+	rm test
+
+	cd $BASE_DIR
+
+	echo "$MB	$TIME_1	$TIME_2"
+}
+
+echo '""	"DejumbleFS"	"Original (HFS+)"'
+createfile 20
+createfile 40
+createfile 60
+createfile 80
+createfile 100
+createfile 120
+createfile 140
+createfile 160
+createfile 180
+createfile 200
+

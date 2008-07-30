@@ -1,0 +1,102 @@
+\chapter{Pruebas de desempeño}
+\ifpdf
+    \graphicspath{{Chapter3/Chapter3Figs/PNG/}{Chapter3/Chapter3Figs/PDF/}{Chapter3/Chapter3Figs/}}
+\else
+    \graphicspath{{Chapter3/Chapter3Figs/EPS/}{Chapter3/Chapter3Figs/}}
+\fi
+
+En este capítulo se presentará los resultados de las pruebas de desempeño realizadas sobre el sistema de archivos proxy usando diferentes combinaciones de modulos.
+
+
+\section{Metodologia}
+
+Para estas realizar estas pruebas se utilizó scripts de bash que ejecutan un set de comandos tanto sobre el sistema de archivos original como sobre el sistema de archivos proxy montado. Estos scripts se los puede encontrar en \path{test_scripts/test_*}. Se utilizó una computadora MacBook Pro de 2.33 GHz Intel Core 2 Duo con 2 GB de RAM (667 MHz DDR2 SDRAM). Esta computadora corre Mac OS X 10.5.4 con todos los últimos patches. Además corre MacFUSE versión 1.7 y Python versión 2.5.1. Para realizar los gráficos se usó gnuplot versión 4.2 patchlevel 3. Todos los fuentes para la generación de los gráficos se encuentran en \path{docs/thesis/Chapter3/Chapter3Figs/*.gnu}. Los archivos de datos con los que se generó estos gráficos tambien están en el mismo directorio con la extensión \path{.dat}.
+
+Cada prueba se ejecutó 10 ocasiones. Se escogió una de las ejecuciones para graficarla. Además se calculó un porcentaje promedio de penalidad de usar el sistema tomando en cuenta todas las ejecuciones para cada una de las pruebas.
+
+\subsection{Prueba A}
+
+La prueba A consiste en crear y borrar un numero de archivos vacíos.
+
+\subsection{Prueba B}
+
+La prueba B consiste en crear y borrar un archivo de un tamaño determinado.
+
+
+\section{Resultados configuración 1}
+
+Para el primer set de resultados se usó lo siguientes ajustes al momento de montar el sistema de archivos proxy.
+
+\begin{itemize}
+\item[filter] = CompleteDirectory - Para acceder a un directorio completo
+\item[root] = /path - Este path apunta hacia un directorio vacio en el sistema de archivos original
+\item[cache] = PassThrough - Este es la opción por defecto
+\item[organizer] = Original - Este es la opción por defecto
+\end{itemize}
+
+\subsection{Prueba A}
+
+La media de penalización de usar esta configuración fue de aproximadamente 20\% con un factor lineal de 1.182 y el resultado esta graficado en la figura~(\ref{pruebaA-1}).
+
+\InsertFig{\IncludeGraphicsH{pruebaA-1}{3in}{92 86 545 742}}{Resultados de la prueba A configuración 1}{pruebaA-1}
+
+\subsection{Prueba B}
+
+La media de penalización de usar esta configuración fue de aproximadamente 0\% con un factor lineal de 1.004 y el resultado esta graficado en la figura~(\ref{pruebaB-1}).
+
+\InsertFig{\IncludeGraphicsH{pruebaB-1}{3in}{92 86 545 742}}{Resultados de la prueba B configuración 1}{pruebaB-1}
+
+
+\section{Resultados configuración 2}
+
+Para el primer set de resultados se usó lo siguientes ajustes al momento de montar el sistema de archivos proxy.
+
+\begin{itemize}
+\item[filter] = CompleteDirectory - Para acceder a un directorio completo
+\item[root] = /path - Este path apunta hacia un directorio vacio en el sistema de archivos original
+\item[cache] = PassThrough - Este es la opción por defecto
+\item[organizer] = Date - Esta opción extiende de TagOrganizer igual que Documents
+\end{itemize}
+
+\subsection{Prueba A}
+
+La media de penalización de usar esta configuración dio como resultado un factor exponencial de 1.401 y el resultado esta graficado en la figura~(\ref{pruebaA-2}).
+
+\InsertFig{\IncludeGraphicsH{pruebaA-2}{3in}{92 86 545 742}}{Resultados de la prueba A configuración 2}{pruebaA-2}
+
+\subsection{Prueba B}
+
+La media de penalización de usar esta configuración fue de aproximadamente 1\% con un factor lineal de 1.014 y el resultado esta graficado en la figura~(\ref{pruebaB-2}).
+
+\InsertFig{\IncludeGraphicsH{pruebaB-2}{3in}{92 86 545 742}}{Resultados de la prueba B configuración 2}{pruebaB-2}
+
+\section{Resultados configuración 3}
+
+Para el primer set de resultados se usó lo siguientes ajustes al momento de montar el sistema de archivos proxy.
+
+\begin{itemize}
+\item[filter] = CompleteDirectory - Para acceder a un directorio completo
+\item[root] = /path - Este path apunta hacia un directorio vacio en el sistema de archivos original
+\item[cache] = PassThrough - Este es la opción por defecto
+\item[organizer] = ISO9660 - Esta opción no extiende de TagOrganizer
+\end{itemize}
+
+\subsection{Prueba A}
+
+La media de penalización de usar esta configuración fue de aproximadamente 98\% con un factor de 1.982 y el resultado esta graficado en la figura~(\ref{pruebaA-3}).
+
+\InsertFig{\IncludeGraphicsH{pruebaA-3}{3in}{92 86 545 742}}{Resultados de la prueba A configuración 3}{pruebaA-3}
+
+\subsection{Prueba B}
+
+La media de penalización de usar esta configuración fue de aproximadamente 1\% con un factor lineal de 1.010 y el resultado esta graficado en la figura~(\ref{pruebaB-3}).
+
+\InsertFig{\IncludeGraphicsH{pruebaB-3}{3in}{92 86 545 742}}{Resultados de la prueba B configuración 3}{pruebaB-3}
+
+% ------------------------------------------------------------------------
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../thesis"
+%%% End: 

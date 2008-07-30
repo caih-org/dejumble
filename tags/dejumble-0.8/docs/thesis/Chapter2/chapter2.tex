@@ -1,0 +1,72 @@
+\chapter{Implementaciones}
+\ifpdf
+    \graphicspath{{Chapter2/Chapter2Figs/PNG/}{Chapter2/Chapter2Figs/PDF/}{Chapter2/Chapter2Figs/}}
+\else
+    \graphicspath{{Chapter2/Chapter2Figs/EPS/}{Chapter2/Chapter2Figs/}}
+\fi
+
+En este capítulo se explicará como funcionan cada una de las implementaciones provistas.
+
+
+\section{Filtros}
+
+\subsection{Directorio Completo}
+
+Este filtro se encuentra en el archivo \path{dejumblefs/filters/completedirectory.py}~(\ref{dejumblefs/filters/completedirectory.py}) y la clase se llama CompleteDirectoryFilter. Simplemente pasa todos los archivos que se encuentran en el directorio determindo por la opcion root. Se debe usar explicitamente con la opcion nonempty al momento de montar.
+
+\subsection{Directorio Original}
+
+Este filtro es la implementación por defecto. Se encuentra en el archivo \path{dejumblefs/filters/originaldirectory.py}~(\ref{dejumblefs/filters/originaldirectory.py}) y la clase se llama OriginalDirectoryFilter. Es exactamente igual al anterior pero pasa la lista de archivos existentes en el directorio donde se está montando.
+
+\subsection{Shell}
+
+Este filtro permite ejecutar un comando de shell y se pasa el resultado de esta ejecución. Se presupone que el resultado va a dar un archivo por linea. Se encuentra implementado en el archivo \path{dejumblefs/filters/shell.py}~(\ref{dejumblefs/filters/shell.py}) y la clase se llama ShellFilter.
+
+\subsection{Xesam}
+
+Este filtro executa un query xesam y devuelve esta lista de archivos. El código de este organizador se encuentra en el archivo \path{dejumblefs/filters/xesam.py}~(\ref{dejumblefs/filters/xesam.py}) y la clase se llama XesamFilter.
+
+\subsection{Nulo}
+
+Este es un filtro de prueba. Solo pasa el archivo /dev/null. Se utiliza para hacer pruebas. Se encuentra en el archivo \path{dejumblefs/filters/null.py}~(\ref{dejumblefs/filters/null.py}) y la clase se llama NullFilter.
+
+
+\section{Caches}
+
+\subsection{PassThrough}
+
+Este tipo de cache simplemente reenvia todos los comandos al sistema de archivos original. Se encuentra implementado en el archivo \path{dejumblefs/caches/passthrough.py}~(\ref{dejumblefs/caches/passthrough.py}) y la clase se llama PassThroughCache.
+
+\subsection{Sandbox}
+
+Este tipo de cache lee del disco una vez y guarda cualquier cambio solamente en memoria. Al desmontar el sistema de archivos proxy el sistema de archivos original queda sin cambios. El codigo para este cache se encuentra en el archivo \path{dejumblefs/caches/sandbox.py}~(\ref{dejumblefs/caches/sandbox.py}) y la clase se llama SandboxCache.
+
+
+\section{Organizadores}
+
+\subsection{Original}
+
+Presenta los archivos en la misma estructura de directorios del sistema de archivos original. La implementacion se encuentra en el archivo \path{dejumblefs/organizers/original.py}~(\ref{dejumblefs/organizers/original.py}) y se llama OriginalOrganizer.
+
+\subsection{Plano}
+
+Este organizador presenta todos los archivos encontrados en un solo directorio. La implementacion se encuentra en el archivo \path{dejumblefs/organizers/flat.py}~(\ref{dejumblefs/organizers/flat.py}) y se llama FlatOrganizer.
+
+\subsection{Fecha}
+
+Este organizador extiende del organizador TagOrganizer. Asigna tags a los archivos dada su fecha de actualización. La implementacion se encuentra en el archivo \path{dejumblefs/organizers/date.py}~(\ref{dejumblefs/organizers/date.py}) y se llama DateOrganizer.
+
+\subsection{Documentos}
+
+Este organizador extiende del organizador TagOrganizer. Asigna tags a los archivos dada su extensión. La implementacion se encuentra en el archivo \path{dejumblefs/organizers/documents.py}~(\ref{dejumblefs/organizers/documents.py}) y se llama DocumentsOrganizer.
+
+\subsection{ISO 9660}
+
+Presenta los archivos de acuerdo al estandar ISO 9660 que es muy similar al estilo que usaba DOS de 8 caracteres el nombre y 3 la extensión. La implementacion se encuentra en el archivo \path{dejumblefs/organizers/iso9660.py}~(\ref{dejumblefs/organizers/iso9660.py}) y se llama ISO9660.
+
+% ------------------------------------------------------------------------
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../thesis"
+%%% End: 

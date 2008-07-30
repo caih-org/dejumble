@@ -1,0 +1,11 @@
+#!/bin/sh
+
+function copy {
+	cp ../trunk/$1 $1.wiki
+}
+
+copy README
+copy INSTALL
+copy TODO
+copy ChangeLog
+copy COPYING

@@ -1,0 +1,30 @@
+#!/usr/bin/env python
+
+## Type: String
+## Default: ""
+#
+# Command used for installation when running with a gui
+#
+INSTALL_COMMAND="gnomesu smart --gui install %1"
+
+## Type: String
+## Default: ""
+#
+# Command used for removing a package when running with a gui
+#
+REMOVE_COMMAND="gnomesu smart --gui remove %1"
+
+## Type: String
+## Default: ""
+#
+# Command used for installation when running on a terminal
+#
+CONSOLE_INSTALL_COMMAND="sudo smart install %1"
+
+## Type: String
+## Default: ""
+#
+# Command used for removing a package when running on a terminal
+#
+CONSOLE_REMOVE_COMMAND="sudo smart remove %1"
+

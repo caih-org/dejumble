@@ -1,0 +1,8 @@
+http://en.wikipedia.org/wiki/File_system
+http://fuse.sourceforge.net/
+http://xesam.org/
+http://www.valhenson.org/fs_slides.pdf
+http://www.unix.org/single_unix_specification/
+http://www.gnu.org/licenses/gpl.html
+
+

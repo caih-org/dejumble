@@ -1,0 +1,19 @@
+#/bin/sh
+
+function print {
+	echo "\\section{$1}"
+	echo "\\label{$1}"
+	pygmentize -l $2 -f latex -P encoding=utf-8 $1
+	echo
+}
+
+python generate_header.py
+
+cd ../../../
+
+print "scripts/dejumble" python
+for F in `find dejumblefs | sed -E "/\\.\\//s///" | egrep -v "(^build/|.svn|__init__|\\.pyc$)" | egrep "\\.py$"`
+do
+	print $F python
+done
+
