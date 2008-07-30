@@ -46,8 +46,8 @@ def getbasefilelist():
     return ['..', '.']
 
 
-def unique(s):
-    return set(s)
+def unique(string):
+    return set(string)
 
 ############################################
 # Cacheable class
@@ -73,10 +73,10 @@ class Cacheable:
     def updatecache(self):
         pass
 
-    def deletefromcache(self, string): #IGNORE:W0613
+    def deletefromcache(self, string):
         pass
 
-    def addtocache(self, string): #IGNORE:W0613
+    def addtocache(self, string):
         pass
 
 ############################################
@@ -87,7 +87,7 @@ _CONFIGURATION = {}
 
 def readconfig(name):
     if not name in _CONFIGURATION:
-        defaultfilename = resource_filename('dejumblefs', #IGNORE:E1101
+        defaultfilename = resource_filename('dejumblefs',
                                             'conf/%s-default.conf' % name)
         userfilename = os.path.expanduser('~/.dejumblefs/%s.conf' % name)
         currentdirfilename = './.dejumblefs/%s.conf' % name

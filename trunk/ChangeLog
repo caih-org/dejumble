@@ -1,3 +1,11 @@
+dejumble 0.8 - Aug 3, 2007 
+
+	- A lot of optimizations
+	- ISO9660 organizer implemented
+	- Original organizer implemented
+	- CompleteDirectory filter implemented
+	- Some documentation (in spanish) in the docs folder
+
 dejumble 0.6 - Aug 3, 2007 
 
 	- Two organizers implemented, DocumentsOrganizer and DateOrganizer
