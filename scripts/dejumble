@@ -6,7 +6,6 @@ import logging.config
 import pkg_resources
 import gettext
 
-import psyco
 import fuse
 from fuse import Fuse
 
@@ -36,8 +35,7 @@ dejumble: presents the content of a directory in an organized structure.
     server.main()
 
 if __name__ == '__main__':
-    psyco.full()
-    dolog = False
+    dolog = True
 
     if dolog:
         logging.config.fileConfig(pkg_resources.resource_filename('dejumblefs',
@@ -51,6 +49,12 @@ if __name__ == '__main__':
     else:
         logging.disable(logging.CRITICAL)
 
+    try:
+        import psyco
+        psyco.full()
+    except ImportError:
+        pass
+    
     # output stuff
     main()
 
