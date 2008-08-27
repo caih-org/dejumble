@@ -48,8 +48,8 @@ class Organizer(Cacheable):
         realpath = self.realpath(path)
         logger.debug("deletefromcache(%s)" % realpath)
         self.cache.deletefromcache(realpath)
-        items = self.transformed.get_index('realpath')[realpath]
-        self.transformed.delete(items)
+        for item in self.transformed.get_index('realpath')[realpath]:
+            self.transformed.delete(item)
 
     def addtocache(self, path):
         if not self.transformed.get_index('path')[path]:
@@ -193,8 +193,11 @@ class Organizer(Cacheable):
             realpath = self.cache.filter.root
         elif path == util.addtrailingslash(util.ORIGINAL_DIR):
             realpath = '.'
-        elif util.pathparts(path)[0] == util.ORIGINAL_DIR:
-            realpath = os.path.join('.', os.sep.join(util.pathparts(path)[1:]))
+        elif util.pathparts(path)[0:2] == [util.ORIGINAL_DIR, "original"]:
+            realpath = os.path.join('.', os.sep.join(util.pathparts(path)[2:]))
+        elif util.pathparts(path)[0:2] == [util.ORIGINAL_DIR, "root"]:
+            realpath = os.path.join(self.cache.filter.root,
+                                    os.sep.join(util.pathparts(path)[2:]))
         else:
             realpath = self.generaterealpath(path)
 
@@ -221,6 +224,10 @@ class Organizer(Cacheable):
     def _filelist(self, path):
         filelist = []
         if path == util.addtrailingslash(util.ORIGINAL_DIR):
+            filelist = ['original', 'root']
+        elif path == os.path.join(util.ORIGINAL_DIR, 'root'):
+            filelist = os.listdir(self.cache.filter.root)
+        elif path == os.path.join(util.ORIGINAL_DIR, 'original'):
             filelist = os.listdir('.')
         elif util.pathparts(path)[0] == util.ORIGINAL_DIR:
             filelist = os.listdir(self.realpath(path))
@@ -253,9 +260,8 @@ class TagOrganizer(Organizer):
     def _deletefromcache(self, path):
         realpath = self.realpath(path)
         logger.debug("_deletefromcache(%s)" % realpath)
-        for record in self.tags.get_index('realpath')[realpath]:
-            del self.tags[record['__id__']]
-        Organizer.deletefromcache(self, path)
+        for tag in self.tags.get_index('realpath')[realpath]:
+            self.tags.delete(tag)
 
     def deletefromcache(self, path):
         self._deletefromcache(path)

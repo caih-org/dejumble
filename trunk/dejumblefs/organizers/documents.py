@@ -7,7 +7,7 @@ class DocumentsOrganizer(TagOrganizer):
     def __init__(self, cache):
         TagOrganizer.__init__(self, cache, 'filetype')
         self.filetypes = util.readconfig('filetypes')
-        for filetype, extensions in self.filetypes.iteritems():
+        for filetype, extensions in self.filetypes.items():
             self.filetypes[filetype] = map(util.extensionregex, #IGNORE:W0141
                                            extensions.split(','))
 

@@ -6,7 +6,7 @@ Some examples:
 dejumble /path/to/mount -o nonempty
 dejumble /path/to/mount -o filter="Null",nonempty
 dejumble /path/to/mount -o filter="OriginalDirectory",organizer="Documents",nonempty
-dejumble /path/to/mount -o query="find ~/Music/ -name *.mp3",filter="Shell",organizer="Flat",nonempty
+dejumble /path/to/mount -o root="~/Music",query="find ~/Music/ -name *.mp3",filter="Shell",organizer="Flat",nonempty
 }}}
 
 to unmount:
@@ -15,7 +15,7 @@ to unmount:
 fusermount -u /path/to/mount
 }}}
 
-The `nonempty` flag lets you mount over an existing directory. File contents are preserved in a special directory `.dejumblefs` that contains all the previous directory structure. This directory is not shown, not even with a `ls -a` but you can cd into it.
+The `nonempty` flag lets you mount over an existing directory. File contents are preserved in a special directory `.dejumblefs` that contains directories with all the previous directory structure and other information. This directory is not shown, not even with a `ls -a` but you can cd into it.
 
 ==Filters==
 

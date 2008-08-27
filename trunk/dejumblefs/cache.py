@@ -35,7 +35,8 @@ class Cache(Cacheable):
             self.files.insert(realpath)
 
     def deletefromcache(self, realpath):
-        self.files.delete(self.files.get_index('realpath')[realpath])
+        for file in self.files.get_index('realpath')[realpath]:
+            self.files.delete(file)
 
     def addtocache(self, realpath):
         self.files.insert(realpath)
@@ -99,7 +100,7 @@ class Cache(Cacheable):
 
         def __init__(self, path, flags, *mode):
             logger.debug('DejumbleFile.__init__(%s, %s)' % (path, flags))
-            realpath = getserver().organizer.generaterealpath(path)
+            realpath = getserver().organizer.realpath(path)
             self.fd = os.open(realpath, flags, *mode) #IGNORE:W0142
             self.file = os.fdopen(self.fd, util.flags2mode(flags))
             self.keep_cache = False

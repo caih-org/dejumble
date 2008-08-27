@@ -107,6 +107,8 @@ class DejumbleFS(fuse.Fuse):
             self.organizer = defaults.organizer
         # end HACK
 
+        self.root = os.path.expanduser(self.root)
+
         if self.root.endswith('/'):
             self.root = self.root[:-1]
 
@@ -139,7 +141,7 @@ class DejumbleFS(fuse.Fuse):
         # HACK: see http://code.google.com/p/dejumble/issues/detail?id=1
         import platform
         if platform.system() == 'Darwin':
-            os.chdir("/tmp")
+            os.chdir('/tmp')
         # end HACK
 
         os.close(self.originaldir)

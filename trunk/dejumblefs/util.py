@@ -1,10 +1,13 @@
 import os
 import re
 import time
+import logging
 
 from pkg_resources import resource_filename #IGNORE:E0611
 
 ORIGINAL_DIR = '.dejumblefs'
+
+logger = logging.getLogger('dejumblefs.DejumbleFS')
 
 
 def pathparts(path):
@@ -86,7 +89,7 @@ _CONFIGURATION = {}
 
 
 def readconfig(name):
-    if not name in _CONFIGURATION:
+    if name not in _CONFIGURATION:
         defaultfilename = resource_filename('dejumblefs',
                                             'conf/%s-default.conf' % name)
         userfilename = os.path.expanduser('~/.dejumblefs/%s.conf' % name)
@@ -105,6 +108,6 @@ def readconfigfile(config, path):
         ofile = open(path, 'r')
         for line in ofile.readlines():
             name, value = line.split('=', 1)
-            _CONFIGURATION[name] = value.strip()
+            config[name.strip()] = value.strip()
 
     return config
