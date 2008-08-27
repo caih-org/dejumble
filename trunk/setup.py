@@ -16,23 +16,20 @@ Development Status :: 4 - Beta
 Intended Audience :: Developers
 License :: OSI Approved :: GNU General Public License (GPL)
 Programming Language :: Python
-Topic :: Filesystems
+Topic :: System :: Filesystems
 Topic :: Software Development :: Libraries :: Python Modules
-Operating System :: Linux
-Operating System :: MacOS :: MacOS X
 Operating System :: POSIX
 """
 
 from distutils.core import setup
 
-doclines = __doc__.splitlines()
+doclines = __doc__.strip().splitlines()
 
 setup(name='dejumble',
       version = '0.9',
       packages = ['dejumblefs', 'dejumblefs.filters', 'dejumblefs.caches',
                   'dejumblefs.organizers'],
-      package_dir = {'': ''},
-      package_data = {'dejumblefs': ['conf/*.conf', 'conf/*.sql'],
+      package_data = {'dejumblefs': ['conf/*.conf'],
                       'dejumblefs.testdata': ['*.*']},
       scripts = ['scripts/dejumble'],
       maintainer = 'César Izurieta',
