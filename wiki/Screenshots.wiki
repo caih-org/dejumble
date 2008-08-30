@@ -1,4 +1,4 @@
 == Screenshots ==
 
-[http://dejumble.googlecode.com/svn/wiki/images/guiosx.png]
+[http://dejumble.googlecode.com/svn/wiki/screenshots/guiosx.png]
 
