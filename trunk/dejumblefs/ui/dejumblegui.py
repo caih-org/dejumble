@@ -1,16 +1,25 @@
 #!/usr/bin/env python
 
+from __future__ import with_statement
+
 import gettext
 import commands
 import sys
 import os.path
+import pickle
 
 import wx
 
-from .. import util
-
 gettext.install('dejumblefs')
 
+_TB_NEW = 1
+_TB_OPEN = 2
+_TB_SAVE = 3
+_TB_MOUNT = 4
+_TB_UMOUNT = 5
+_TITLE = _('DejumbleFS mounter')
+_EXTENSION = 'dfo'
+_DEJUMBLE_FILES = _('DejumbleFS options') + '(*.%s)|*.%s' % (_EXTENSION, _EXTENSION)
 
 class DejumbleFSUI(wx.App):
 
@@ -18,23 +27,22 @@ class DejumbleFSUI(wx.App):
         self.main = MainWindow()
         self.main.Show()
         self.SetTopWindow(self.main)
+
         return True
 
 
 class MainWindow(wx.Frame):
  
     def __init__(self):
-        wx.Frame.__init__(self, None, title=_('DejumbleFS mounter'),
+        wx.Frame.__init__(self, None, title=_TITLE,
                           style=wx.CAPTION|wx.CLOSE_BOX)
 
-        self._createtoolbar()
+        self.panel = wx.Panel(self)
 
         externalborder = 10
         internalborder = 3
 
-        self.panel = wx.Panel(self)
-
-        vbox = wx.BoxSizer(wx.VERTICAL)
+        self.vbox = vbox = wx.BoxSizer(wx.VERTICAL)
 
         ##################################
         # Mountpoint Options
@@ -43,7 +51,7 @@ class MainWindow(wx.Frame):
         label = wx.StaticText(self.panel, label=_('Mount point:'),
                               size=(100, -1), style=wx.ALIGN_RIGHT)
         self.mountpoint = wx.DirPickerCtrl(self.panel, size=(300, -1))
-        self.mountpoint.Refresh()
+        self.mountpoint.Bind(wx.EVT_DIRPICKER_CHANGED, self._setenabledall)
         sizer.Add(label, flag=wx.ALIGN_CENTER_VERTICAL)
         sizer.Add(self.mountpoint, flag=wx.ALL, border=internalborder)
 
@@ -113,10 +121,18 @@ class MainWindow(wx.Frame):
 
         vbox.Add(sizer, flag=wx.ALL, border=externalborder)
         
+        ##################################
+        # Layout and other
+
+        self._createtoolbar()
+
         hbox = wx.BoxSizer(wx.HORIZONTAL)
         hbox.Add(vbox, flag=wx.ALL, border=10)
         self.panel.SetSizer(hbox)
         hbox.Fit(self)
+        self._setenabledall()
+        
+        self.new()
 
     def _createtoolbar(self):
         self.ToolBar = wx.ToolBar(self, style=wx.TB_TEXT|wx.TB_HORIZONTAL|wx.TB_TOP)
@@ -135,28 +151,81 @@ class MainWindow(wx.Frame):
         self.ToolBar.AddLabelTool(5, _('Umount'), img)
         self.ToolBar.Realize()
 
-        self.Bind(wx.EVT_TOOL, self.new, id=1)
-        self.Bind(wx.EVT_TOOL, self.open, id=2)
-        self.Bind(wx.EVT_TOOL, self.save, id=3)
-        self.Bind(wx.EVT_TOOL, self.mount, id=4)
-        self.Bind(wx.EVT_TOOL, self.umount, id=5)
+        self.Bind(wx.EVT_TOOL, self.new, id=_TB_NEW)
+        self.Bind(wx.EVT_TOOL, self.open, id=_TB_OPEN)
+        self.Bind(wx.EVT_TOOL, self.save, id=_TB_SAVE)
+        self.Bind(wx.EVT_TOOL, self.mount, id=_TB_MOUNT)
+        self.Bind(wx.EVT_TOOL, self.umount, id=_TB_UMOUNT)
 
-    def new(self, event=None):
-        self.mountpoint.SetPath('')
-        self.nonempty.Value = False
-        self.noappledouble.Value = False
-        self.filter.Select(0)
-        self.root.SetPath('')
-        self.query.Value = ''
-        self.cache.Select(0)
-        self.organizer.Select(0)
-        pass
+    def new(self, event=None, mountpoint='', nonempty=False, noappledouble=False,
+            filter=None, root='', query='', cache=None, organizer=None, filename=None):
+        self.mountpoint.SetPath(mountpoint)
+        self.nonempty.Value = nonempty
+        self.noappledouble.Value = noappledouble
+        self.root.SetPath(root)
+        self.query.Value = query
+
+        if filter:
+            self.filter.Value = filter
+        else:
+            self.filter.Select(0) 
+
+        if cache:
+            self.cache.Value = cache
+        else:
+            self.cache.Select(0) 
+
+        if organizer:
+            self.organizer.Value = organizer
+        else:
+            self.organizer.Select(0) 
+
+        self.filename = filename
+        self._settitle()
 
     def open(self, event):
-        pass
+        dialog = wx.FileDialog(self, wildcard=_DEJUMBLE_FILES)
+        dialog.ShowModal()
+        filename = dialog.Path
+        if filename:
+            with open(filename, 'rb') as file:
+                result = pickle.load(file)
+            self.new(filename=filename, **result)
+            self._setenabledall()
 
     def save(self, event):
-        pass
+        if not self.filename:
+            dialog = wx.FileDialog(self, wildcard=_DEJUMBLE_FILES,
+                                   style=wx.FD_SAVE)
+            dialog.ShowModal()
+            filename = dialog.Path
+            if not filename:
+                return
+            if filename.endswith('.%s.' % _EXTENSION):
+                filename = filename[:-1]
+            if filename.endswith('.'):
+                filename = filename + _EXTENSION
+            elif not filename.endswith('.%s' % _EXTENSION):
+                filename = filename + '.%s' % _EXTENSION
+            self.filename = filename
+            self._settitle()
+
+        with open(self.filename, 'wb') as file:
+            values = {'mountpoint': self.mountpoint.Path,
+                      'nonempty': self.nonempty.Value,
+                      'noappledouble': self.noappledouble.Value,
+                      'filter': self.filter.Value,
+                      'root': self.root.Path,
+                      'query': self.query.Value,
+                      'organizer': self.organizer.Value}
+            pickle.dump(values, file)
+        
+
+    def _settitle(self):
+        if self.filename:
+            self.Title = '%s - %s' % (_TITLE, self.filename.split(os.path.sep)[-1])
+        else:
+            self.Title = '%s - %s' % (_TITLE, 'Untitled')
 
     def mount(self, event):
         flags = []
@@ -191,15 +260,14 @@ class MainWindow(wx.Frame):
 
         self._setenabledall()
 
-    def _setenabledall(self):
-        enable = not os.path.isdir(os.path.join(self.mountpoint.Path, util.ORIGINAL_DIR))
+    def _setenabledall(self, event=None):
+        enable = not os.path.isdir(os.path.join(self.mountpoint.Path, '.dejumblefs'))
 
-        for attr in ('mountpoint', 'root', 'query', 'filter', 'cache', 'organizer',
-                     'nonempty', 'noappledouble'):
-            getattr(self, attr).Enabled = enable
+        for child in self.Children:
+            child.Enabled = enable
 
-        self.ToolBar.EnableTool(4, enable)
-        self.ToolBar.EnableTool(5, not enable)
+        self.ToolBar.EnableTool(_TB_MOUNT, enable)
+        self.ToolBar.EnableTool(_TB_UMOUNT, not enable)
 
 
 def main():
@@ -208,4 +276,4 @@ def main():
 
 
 if __name__ == '__main__':
-    sys.exit(main())
+    main()
