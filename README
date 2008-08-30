@@ -1,23 +1,25 @@
-Please read the INSTALL file before running these commands.
 
-Some examples:
+==How to use==
 
-{{{
-dejumble /path/to/mount -o nonempty
-dejumble /path/to/mount -o filter="Null",nonempty
-dejumble /path/to/mount -o filter="OriginalDirectory",organizer="Documents",nonempty
-dejumble /path/to/mount -o root="~/Music",query="find ~/Music/ -name *.mp3",filter="Shell",organizer="Flat",nonempty
-}}}
+There are two ways to use this program. You can use a visual application or the command line.
+Look for a program called "DejumbleFS Mounter" to use the graphical application.
 
-to unmount:
+To use the command line you can run something like:
 
 {{{
-fusermount -u /path/to/mount
+dejumble [mountpoint] [options]
 }}}
 
-The `nonempty` flag lets you mount over an existing directory. File contents are preserved in a special directory `.dejumblefs` that contains directories with all the previous directory structure and other information. This directory is not shown, not even with a `ls -a` but you can cd into it.
+Run dejumble --help to see a list of detailed options.
 
-If you are using Mac OS X take a look at http://code.google.com/p/macfuse/wiki/OPTIONS to see more mount time options. Some of this also apply to other operating systems. The nonempty mount option does not work on OS X. See Known Issues at the bottom of this document.
+File contents are preserved in a special directory `.dejumblefs` that contains directories with all the previous directory structure and other information. This directory is not shown, not even with a `ls -a` but you can cd into it.
+
+==Flags==
+
+	* `nonempty` - Linux only. Lets you mount over an existing directory.
+	* `noappledouble` - OS X only. Ignores special Mac OS X files that may make the program create empty directories.
+
+If you are using Mac OS X take a look at http://code.google.com/p/macfuse/wiki/OPTIONS to see more mount time options. Some of this also apply to other operating systems. You'll need to use the command line to use some of this options.
 
 ==Filters==
 
@@ -62,3 +64,19 @@ Not implemented yet:
 
   * umount on Mac OS X is problematic. See http://code.google.com/p/dejumble/issues/detail?id=1
 
+==Examples==
+
+Some examples:
+
+{{{
+dejumble /path/to/mount -o nonempty
+dejumble /path/to/mount -o filter="Null",nonempty
+dejumble /path/to/mount -o filter="OriginalDirectory",organizer="Documents",nonempty
+dejumble /path/to/mount -o root="~/Music",query="find ~/Music/ -name *.mp3",filter="Shell",organizer="Flat",nonempty
+}}}
+
+to unmount:
+
+{{{
+umountdejumble /path/to/mount
+}}}

@@ -23,7 +23,7 @@ def main():
         psyco.full()
     except ImportError:
         pass
-    
+
     # output stuff
     usage = """
 dejumble: presents the content of a directory in an organized structure.
@@ -43,8 +43,9 @@ dejumble: presents the content of a directory in an organized structure.
         sys.exit(-errno.ENOENT)
 
     if dolog:
-        logging.config.fileConfig(pkg_resources.resource_filename('dejumblefs',
-                                                          'conf/logging.conf'))
+        filename = pkg_resources.resource_filename('dejumblefs',
+                                                   'conf/logging.conf')
+        logging.config.fileConfig(filename)
         # redirect stdout to a disk file
         saveout = sys.stdout
         saveerr = sys.stderr

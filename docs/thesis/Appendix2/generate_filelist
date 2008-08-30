@@ -11,7 +11,6 @@ python generate_header.py
 
 cd ../../../
 
-print "scripts/dejumble" python
 for F in `find dejumblefs | sed -E "/\\.\\//s///" | egrep -v "(^build/|.svn|__init__|\\.pyc$)" | egrep "\\.py$"`
 do
 	print $F python
