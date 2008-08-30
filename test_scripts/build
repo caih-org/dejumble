@@ -2,4 +2,7 @@
 
 rm -rf build
 
-python setup.py clean && python setup.py build && ! (PYTHONPATH=. proctorbatch dejumblefs/test) && sudo python setup.py install
+python setup.py clean &&
+python setup.py build &&
+!(PYTHONPATH=. proctorbatch dejumblefs/test) &&
+sudo python setup.py develop

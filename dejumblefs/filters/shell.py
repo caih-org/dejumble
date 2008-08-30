@@ -11,7 +11,7 @@ class ShellFileListFilter(FileListFilter):
     def filelist(self):
         status, output = commands.getstatusoutput(self.query)
 
-        if status == -1:
+        if status != 0:
             return -errno.ENOENT
 
         filenames = [re.sub('^%s' % os.getcwd(), '.', o)
