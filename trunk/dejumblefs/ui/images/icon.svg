@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="128px" height="128px">
+  <defs>
+    <mask id="mask990000"><circle cx="60" cy="56" r="51" fill="#ffffff"/></mask>
+    <mask id="mask990010"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask990020"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask990030"><circle cx="65" cy="60" r="51" fill="#ffffff"/></mask>
+    <mask id="mask990040"><circle cx="67" cy="66" r="51" fill="#ffffff"/></mask>
+    <mask id="mask990050"><circle cx="71" cy="60" r="51" fill="#ffffff"/></mask>
+    <mask id="mask990060"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask990070"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask990080"><circle cx="63" cy="65" r="51" fill="#ffffff"/></mask>
+    <mask id="mask990090"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask990100"><circle cx="65" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask990110"><circle cx="61" cy="61" r="51" fill="#ffffff"/></mask>
+    <mask id="mask990120"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask991000"><circle cx="60" cy="62" r="51" fill="#ffffff"/></mask>
+    <mask id="mask991010"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask991020"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask991030"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask991040"><circle cx="68" cy="62" r="51" fill="#ffffff"/></mask>
+    <mask id="mask991050"><circle cx="68" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask991060"><circle cx="60" cy="67" r="51" fill="#ffffff"/></mask>
+    <mask id="mask991070"><circle cx="65" cy="65" r="51" fill="#ffffff"/></mask>
+    <mask id="mask991080"><circle cx="64" cy="65" r="51" fill="#ffffff"/></mask>
+    <mask id="mask991090"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask991100"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask991110"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask991120"><circle cx="64" cy="61" r="51" fill="#ffffff"/></mask>
+    <mask id="mask992000"><circle cx="63" cy="63" r="51" fill="#ffffff"/></mask>
+    <mask id="mask992010"><circle cx="60" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask992020"><circle cx="63" cy="63" r="51" fill="#ffffff"/></mask>
+    <mask id="mask992030"><circle cx="68" cy="62" r="51" fill="#ffffff"/></mask>
+    <mask id="mask992040"><circle cx="63" cy="63" r="51" fill="#ffffff"/></mask>
+    <mask id="mask992050"><circle cx="64" cy="68" r="51" fill="#ffffff"/></mask>
+    <mask id="mask992060"><circle cx="66" cy="60" r="51" fill="#ffffff"/></mask>
+    <mask id="mask992070"><circle cx="64" cy="62" r="51" fill="#ffffff"/></mask>
+    <mask id="mask992080"><circle cx="63" cy="65" r="51" fill="#ffffff"/></mask>
+    <mask id="mask992090"><circle cx="62" cy="62" r="51" fill="#ffffff"/></mask>
+    <mask id="mask992100"><circle cx="60" cy="69" r="51" fill="#ffffff"/></mask>
+    <mask id="mask992110"><circle cx="63" cy="65" r="51" fill="#ffffff"/></mask>
+    <mask id="mask992120"><circle cx="67" cy="68" r="51" fill="#ffffff"/></mask>
+    <mask id="mask993000"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask993010"><circle cx="65" cy="65" r="51" fill="#ffffff"/></mask>
+    <mask id="mask993020"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask993030"><circle cx="60" cy="61" r="51" fill="#ffffff"/></mask>
+    <mask id="mask993040"><circle cx="65" cy="65" r="51" fill="#ffffff"/></mask>
+    <mask id="mask993050"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask993060"><circle cx="62" cy="63" r="51" fill="#ffffff"/></mask>
+    <mask id="mask993070"><circle cx="65" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask993080"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask993090"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask993100"><circle cx="64" cy="63" r="51" fill="#ffffff"/></mask>
+    <mask id="mask993110"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask993120"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask994000"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask994010"><circle cx="65" cy="61" r="51" fill="#ffffff"/></mask>
+    <mask id="mask994020"><circle cx="64" cy="65" r="51" fill="#ffffff"/></mask>
+    <mask id="mask994030"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask994040"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask994050"><circle cx="66" cy="60" r="51" fill="#ffffff"/></mask>
+    <mask id="mask994060"><circle cx="65" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask994070"><circle cx="65" cy="63" r="51" fill="#ffffff"/></mask>
+    <mask id="mask994080"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask994090"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask994100"><circle cx="63" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask994110"><circle cx="64" cy="61" r="51" fill="#ffffff"/></mask>
+    <mask id="mask994120"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask995000"><circle cx="66" cy="62" r="51" fill="#ffffff"/></mask>
+    <mask id="mask995010"><circle cx="62" cy="62" r="51" fill="#ffffff"/></mask>
+    <mask id="mask995020"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask995030"><circle cx="63" cy="65" r="51" fill="#ffffff"/></mask>
+    <mask id="mask995040"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask995050"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask995060"><circle cx="63" cy="63" r="51" fill="#ffffff"/></mask>
+    <mask id="mask995070"><circle cx="65" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask995080"><circle cx="65" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask995090"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask995100"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask995110"><circle cx="64" cy="63" r="51" fill="#ffffff"/></mask>
+    <mask id="mask995120"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask996000"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask996010"><circle cx="65" cy="63" r="51" fill="#ffffff"/></mask>
+    <mask id="mask996020"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask996030"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask996040"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask996050"><circle cx="65" cy="65" r="51" fill="#ffffff"/></mask>
+    <mask id="mask996060"><circle cx="63" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask996070"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask996080"><circle cx="65" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask996090"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask996100"><circle cx="63" cy="63" r="51" fill="#ffffff"/></mask>
+    <mask id="mask996110"><circle cx="63" cy="63" r="51" fill="#ffffff"/></mask>
+    <mask id="mask996120"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask997000"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask997010"><circle cx="64" cy="65" r="51" fill="#ffffff"/></mask>
+    <mask id="mask997020"><circle cx="63" cy="65" r="51" fill="#ffffff"/></mask>
+    <mask id="mask997030"><circle cx="65" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask997040"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask997050"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask997060"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask997070"><circle cx="65" cy="63" r="51" fill="#ffffff"/></mask>
+    <mask id="mask997080"><circle cx="65" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask997090"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask997100"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask997110"><circle cx="65" cy="63" r="51" fill="#ffffff"/></mask>
+    <mask id="mask997120"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask998000"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask998010"><circle cx="63" cy="65" r="51" fill="#ffffff"/></mask>
+    <mask id="mask998020"><circle cx="64" cy="63" r="51" fill="#ffffff"/></mask>
+    <mask id="mask998030"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask998040"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask998050"><circle cx="65" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask998060"><circle cx="63" cy="63" r="51" fill="#ffffff"/></mask>
+    <mask id="mask998070"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask998080"><circle cx="63" cy="65" r="51" fill="#ffffff"/></mask>
+    <mask id="mask998090"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask998100"><circle cx="65" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask998110"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask998120"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask999000"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask999010"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask999020"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask999030"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask999040"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask999050"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask999060"><circle cx="63" cy="63" r="51" fill="#ffffff"/></mask>
+    <mask id="mask999070"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask999080"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask999090"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask999100"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask999110"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask999120"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1000000"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1000010"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1000020"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1000030"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1000040"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1000050"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1000060"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1000070"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1000080"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1000090"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1000100"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1000110"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1000120"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1001000"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1001010"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1001020"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1001030"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1001040"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1001050"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1001060"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1001070"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1001080"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1001090"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1001100"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1001110"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1001120"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1002000"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1002010"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1002020"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1002030"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1002040"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1002050"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1002060"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1002070"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1002080"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1002090"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1002100"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1002110"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+    <mask id="mask1002120"><circle cx="64" cy="64" r="51" fill="#ffffff"/></mask>
+  </defs>
+  <g>
+    <rect style="fill:#0099cc" id="rect990000" width="10" height="10" x="-4" y="-9" mask="url(#mask990000)" />
+    <rect style="fill:#006699" id="rect990010" width="10" height="10" x="0" y="9" mask="url(#mask990010)" />
+    <rect style="fill:#0099cc" id="rect990020" width="10" height="10" x="0" y="19" mask="url(#mask990020)" />
+    <rect style="fill:#006699" id="rect990030" width="10" height="10" x="1" y="25" mask="url(#mask990030)" />
+    <rect style="fill:#0099cc" id="rect990040" width="10" height="10" x="3" y="41" mask="url(#mask990040)" />
+    <rect style="fill:#006699" id="rect990050" width="10" height="10" x="7" y="45" mask="url(#mask990050)" />
+    <rect style="fill:#0099cc" id="rect990060" width="10" height="10" x="0" y="59" mask="url(#mask990060)" />
+    <rect style="fill:#006699" id="rect990070" width="10" height="10" x="0" y="69" mask="url(#mask990070)" />
+    <rect style="fill:#0099cc" id="rect990080" width="10" height="10" x="-1" y="80" mask="url(#mask990080)" />
+    <rect style="fill:#006699" id="rect990090" width="10" height="10" x="0" y="89" mask="url(#mask990090)" />
+    <rect style="fill:#0099cc" id="rect990100" width="10" height="10" x="1" y="99" mask="url(#mask990100)" />
+    <rect style="fill:#006699" id="rect990110" width="10" height="10" x="-3" y="106" mask="url(#mask990110)" />
+    <rect style="fill:#0099cc" id="rect990120" width="10" height="10" x="0" y="119" mask="url(#mask990120)" />
+    <rect style="fill:#006699" id="rect991000" width="10" height="10" x="6" y="-3" mask="url(#mask991000)" />
+    <rect style="fill:#0099cc" id="rect991010" width="10" height="10" x="10" y="9" mask="url(#mask991010)" />
+    <rect style="fill:#006699" id="rect991020" width="10" height="10" x="10" y="19" mask="url(#mask991020)" />
+    <rect style="fill:#0099cc" id="rect991030" width="10" height="10" x="10" y="29" mask="url(#mask991030)" />
+    <rect style="fill:#006699" id="rect991040" width="10" height="10" x="14" y="37" mask="url(#mask991040)" />
+    <rect style="fill:#0099cc" id="rect991050" width="10" height="10" x="14" y="49" mask="url(#mask991050)" />
+    <rect style="fill:#006699" id="rect991060" width="10" height="10" x="6" y="62" mask="url(#mask991060)" />
+    <rect style="fill:#0099cc" id="rect991070" width="10" height="10" x="11" y="70" mask="url(#mask991070)" />
+    <rect style="fill:#006699" id="rect991080" width="10" height="10" x="10" y="80" mask="url(#mask991080)" />
+    <rect style="fill:#0099cc" id="rect991090" width="10" height="10" x="10" y="89" mask="url(#mask991090)" />
+    <rect style="fill:#006699" id="rect991100" width="10" height="10" x="10" y="99" mask="url(#mask991100)" />
+    <rect style="fill:#0099cc" id="rect991110" width="10" height="10" x="10" y="109" mask="url(#mask991110)" />
+    <rect style="fill:#006699" id="rect991120" width="10" height="10" x="10" y="116" mask="url(#mask991120)" />
+    <rect style="fill:#0099cc" id="rect992000" width="10" height="10" x="19" y="-2" mask="url(#mask992000)" />
+    <rect style="fill:#006699" id="rect992010" width="10" height="10" x="16" y="9" mask="url(#mask992010)" />
+    <rect style="fill:#0099cc" id="rect992020" width="10" height="10" x="19" y="18" mask="url(#mask992020)" />
+    <rect style="fill:#006699" id="rect992030" width="10" height="10" x="24" y="27" mask="url(#mask992030)" />
+    <rect style="fill:#0099cc" id="rect992040" width="10" height="10" x="19" y="38" mask="url(#mask992040)" />
+    <rect style="fill:#006699" id="rect992050" width="10" height="10" x="20" y="53" mask="url(#mask992050)" />
+    <rect style="fill:#0099cc" id="rect992060" width="10" height="10" x="22" y="55" mask="url(#mask992060)" />
+    <rect style="fill:#006699" id="rect992070" width="10" height="10" x="20" y="67" mask="url(#mask992070)" />
+    <rect style="fill:#0099cc" id="rect992080" width="10" height="10" x="19" y="80" mask="url(#mask992080)" />
+    <rect style="fill:#006699" id="rect992090" width="10" height="10" x="18" y="87" mask="url(#mask992090)" />
+    <rect style="fill:#0099cc" id="rect992100" width="10" height="10" x="16" y="104" mask="url(#mask992100)" />
+    <rect style="fill:#006699" id="rect992110" width="10" height="10" x="19" y="110" mask="url(#mask992110)" />
+    <rect style="fill:#0099cc" id="rect992120" width="10" height="10" x="23" y="123" mask="url(#mask992120)" />
+    <rect style="fill:#006699" id="rect993000" width="10" height="10" x="30" y="-1" mask="url(#mask993000)" />
+    <rect style="fill:#0099cc" id="rect993010" width="10" height="10" x="31" y="10" mask="url(#mask993010)" />
+    <rect style="fill:#006699" id="rect993020" width="10" height="10" x="30" y="19" mask="url(#mask993020)" />
+    <rect style="fill:#0099cc" id="rect993030" width="10" height="10" x="26" y="26" mask="url(#mask993030)" />
+    <rect style="fill:#006699" id="rect993040" width="10" height="10" x="31" y="40" mask="url(#mask993040)" />
+    <rect style="fill:#0099cc" id="rect993050" width="10" height="10" x="30" y="49" mask="url(#mask993050)" />
+    <rect style="fill:#006699" id="rect993060" width="10" height="10" x="28" y="58" mask="url(#mask993060)" />
+    <rect style="fill:#0099cc" id="rect993070" width="10" height="10" x="31" y="69" mask="url(#mask993070)" />
+    <rect style="fill:#006699" id="rect993080" width="10" height="10" x="30" y="79" mask="url(#mask993080)" />
+    <rect style="fill:#0099cc" id="rect993090" width="10" height="10" x="30" y="89" mask="url(#mask993090)" />
+    <rect style="fill:#006699" id="rect993100" width="10" height="10" x="30" y="98" mask="url(#mask993100)" />
+    <rect style="fill:#0099cc" id="rect993110" width="10" height="10" x="30" y="109" mask="url(#mask993110)" />
+    <rect style="fill:#006699" id="rect993120" width="10" height="10" x="30" y="119" mask="url(#mask993120)" />
+    <rect style="fill:#0099cc" id="rect994000" width="10" height="10" x="40" y="-1" mask="url(#mask994000)" />
+    <rect style="fill:#006699" id="rect994010" width="10" height="10" x="41" y="6" mask="url(#mask994010)" />
+    <rect style="fill:#0099cc" id="rect994020" width="10" height="10" x="40" y="20" mask="url(#mask994020)" />
+    <rect style="fill:#006699" id="rect994030" width="10" height="10" x="40" y="29" mask="url(#mask994030)" />
+    <rect style="fill:#0099cc" id="rect994040" width="10" height="10" x="40" y="39" mask="url(#mask994040)" />
+    <rect style="fill:#006699" id="rect994050" width="10" height="10" x="42" y="45" mask="url(#mask994050)" />
+    <rect style="fill:#0099cc" id="rect994060" width="10" height="10" x="41" y="59" mask="url(#mask994060)" />
+    <rect style="fill:#006699" id="rect994070" width="10" height="10" x="41" y="68" mask="url(#mask994070)" />
+    <rect style="fill:#0099cc" id="rect994080" width="10" height="10" x="40" y="79" mask="url(#mask994080)" />
+    <rect style="fill:#006699" id="rect994090" width="10" height="10" x="40" y="89" mask="url(#mask994090)" />
+    <rect style="fill:#0099cc" id="rect994100" width="10" height="10" x="39" y="99" mask="url(#mask994100)" />
+    <rect style="fill:#006699" id="rect994110" width="10" height="10" x="40" y="106" mask="url(#mask994110)" />
+    <rect style="fill:#0099cc" id="rect994120" width="10" height="10" x="40" y="119" mask="url(#mask994120)" />
+    <rect style="fill:#006699" id="rect995000" width="10" height="10" x="52" y="-3" mask="url(#mask995000)" />
+    <rect style="fill:#0099cc" id="rect995010" width="10" height="10" x="48" y="7" mask="url(#mask995010)" />
+    <rect style="fill:#006699" id="rect995020" width="10" height="10" x="50" y="19" mask="url(#mask995020)" />
+    <rect style="fill:#0099cc" id="rect995030" width="10" height="10" x="49" y="30" mask="url(#mask995030)" />
+    <rect style="fill:#006699" id="rect995040" width="10" height="10" x="50" y="39" mask="url(#mask995040)" />
+    <rect style="fill:#0099cc" id="rect995050" width="10" height="10" x="50" y="49" mask="url(#mask995050)" />
+    <rect style="fill:#006699" id="rect995060" width="10" height="10" x="49" y="58" mask="url(#mask995060)" />
+    <rect style="fill:#0099cc" id="rect995070" width="10" height="10" x="51" y="69" mask="url(#mask995070)" />
+    <rect style="fill:#006699" id="rect995080" width="10" height="10" x="51" y="79" mask="url(#mask995080)" />
+    <rect style="fill:#0099cc" id="rect995090" width="10" height="10" x="50" y="89" mask="url(#mask995090)" />
+    <rect style="fill:#006699" id="rect995100" width="10" height="10" x="50" y="99" mask="url(#mask995100)" />
+    <rect style="fill:#0099cc" id="rect995110" width="10" height="10" x="50" y="108" mask="url(#mask995110)" />
+    <rect style="fill:#006699" id="rect995120" width="10" height="10" x="50" y="119" mask="url(#mask995120)" />
+    <rect style="fill:#0099cc" id="rect996000" width="10" height="10" x="60" y="-1" mask="url(#mask996000)" />
+    <rect style="fill:#006699" id="rect996010" width="10" height="10" x="61" y="8" mask="url(#mask996010)" />
+    <rect style="fill:#0099cc" id="rect996020" width="10" height="10" x="60" y="19" mask="url(#mask996020)" />
+    <rect style="fill:#006699" id="rect996030" width="10" height="10" x="60" y="29" mask="url(#mask996030)" />
+    <rect style="fill:#0099cc" id="rect996040" width="10" height="10" x="60" y="39" mask="url(#mask996040)" />
+    <rect style="fill:#006699" id="rect996050" width="10" height="10" x="61" y="50" mask="url(#mask996050)" />
+    <rect style="fill:#0099cc" id="rect996060" width="10" height="10" x="59" y="59" mask="url(#mask996060)" />
+    <rect style="fill:#006699" id="rect996070" width="10" height="10" x="60" y="69" mask="url(#mask996070)" />
+    <rect style="fill:#0099cc" id="rect996080" width="10" height="10" x="61" y="79" mask="url(#mask996080)" />
+    <rect style="fill:#006699" id="rect996090" width="10" height="10" x="60" y="89" mask="url(#mask996090)" />
+    <rect style="fill:#0099cc" id="rect996100" width="10" height="10" x="59" y="98" mask="url(#mask996100)" />
+    <rect style="fill:#006699" id="rect996110" width="10" height="10" x="59" y="108" mask="url(#mask996110)" />
+    <rect style="fill:#0099cc" id="rect996120" width="10" height="10" x="60" y="119" mask="url(#mask996120)" />
+    <rect style="fill:#006699" id="rect997000" width="10" height="10" x="70" y="-1" mask="url(#mask997000)" />
+    <rect style="fill:#0099cc" id="rect997010" width="10" height="10" x="70" y="10" mask="url(#mask997010)" />
+    <rect style="fill:#006699" id="rect997020" width="10" height="10" x="69" y="20" mask="url(#mask997020)" />
+    <rect style="fill:#0099cc" id="rect997030" width="10" height="10" x="71" y="29" mask="url(#mask997030)" />
+    <rect style="fill:#006699" id="rect997040" width="10" height="10" x="70" y="39" mask="url(#mask997040)" />
+    <rect style="fill:#0099cc" id="rect997050" width="10" height="10" x="70" y="49" mask="url(#mask997050)" />
+    <rect style="fill:#006699" id="rect997060" width="10" height="10" x="70" y="59" mask="url(#mask997060)" />
+    <rect style="fill:#0099cc" id="rect997070" width="10" height="10" x="71" y="68" mask="url(#mask997070)" />
+    <rect style="fill:#006699" id="rect997080" width="10" height="10" x="71" y="79" mask="url(#mask997080)" />
+    <rect style="fill:#0099cc" id="rect997090" width="10" height="10" x="70" y="89" mask="url(#mask997090)" />
+    <rect style="fill:#006699" id="rect997100" width="10" height="10" x="70" y="99" mask="url(#mask997100)" />
+    <rect style="fill:#0099cc" id="rect997110" width="10" height="10" x="71" y="108" mask="url(#mask997110)" />
+    <rect style="fill:#006699" id="rect997120" width="10" height="10" x="70" y="119" mask="url(#mask997120)" />
+    <rect style="fill:#0099cc" id="rect998000" width="10" height="10" x="80" y="-1" mask="url(#mask998000)" />
+    <rect style="fill:#006699" id="rect998010" width="10" height="10" x="79" y="10" mask="url(#mask998010)" />
+    <rect style="fill:#0099cc" id="rect998020" width="10" height="10" x="80" y="18" mask="url(#mask998020)" />
+    <rect style="fill:#006699" id="rect998030" width="10" height="10" x="80" y="29" mask="url(#mask998030)" />
+    <rect style="fill:#0099cc" id="rect998040" width="10" height="10" x="80" y="39" mask="url(#mask998040)" />
+    <rect style="fill:#006699" id="rect998050" width="10" height="10" x="81" y="49" mask="url(#mask998050)" />
+    <rect style="fill:#0099cc" id="rect998060" width="10" height="10" x="79" y="58" mask="url(#mask998060)" />
+    <rect style="fill:#006699" id="rect998070" width="10" height="10" x="80" y="69" mask="url(#mask998070)" />
+    <rect style="fill:#0099cc" id="rect998080" width="10" height="10" x="79" y="80" mask="url(#mask998080)" />
+    <rect style="fill:#006699" id="rect998090" width="10" height="10" x="80" y="89" mask="url(#mask998090)" />
+    <rect style="fill:#0099cc" id="rect998100" width="10" height="10" x="81" y="99" mask="url(#mask998100)" />
+    <rect style="fill:#006699" id="rect998110" width="10" height="10" x="80" y="109" mask="url(#mask998110)" />
+    <rect style="fill:#0099cc" id="rect998120" width="10" height="10" x="80" y="119" mask="url(#mask998120)" />
+    <rect style="fill:#006699" id="rect999000" width="10" height="10" x="90" y="-1" mask="url(#mask999000)" />
+    <rect style="fill:#0099cc" id="rect999010" width="10" height="10" x="90" y="9" mask="url(#mask999010)" />
+    <rect style="fill:#006699" id="rect999020" width="10" height="10" x="90" y="19" mask="url(#mask999020)" />
+    <rect style="fill:#0099cc" id="rect999030" width="10" height="10" x="90" y="29" mask="url(#mask999030)" />
+    <rect style="fill:#006699" id="rect999040" width="10" height="10" x="90" y="39" mask="url(#mask999040)" />
+    <rect style="fill:#0099cc" id="rect999050" width="10" height="10" x="90" y="49" mask="url(#mask999050)" />
+    <rect style="fill:#006699" id="rect999060" width="10" height="10" x="89" y="58" mask="url(#mask999060)" />
+    <rect style="fill:#0099cc" id="rect999070" width="10" height="10" x="90" y="69" mask="url(#mask999070)" />
+    <rect style="fill:#006699" id="rect999080" width="10" height="10" x="90" y="79" mask="url(#mask999080)" />
+    <rect style="fill:#0099cc" id="rect999090" width="10" height="10" x="90" y="89" mask="url(#mask999090)" />
+    <rect style="fill:#006699" id="rect999100" width="10" height="10" x="90" y="99" mask="url(#mask999100)" />
+    <rect style="fill:#0099cc" id="rect999110" width="10" height="10" x="90" y="109" mask="url(#mask999110)" />
+    <rect style="fill:#006699" id="rect999120" width="10" height="10" x="90" y="119" mask="url(#mask999120)" />
+    <rect style="fill:#0099cc" id="rect1000000" width="10" height="10" x="100" y="-1" mask="url(#mask1000000)" />
+    <rect style="fill:#006699" id="rect1000010" width="10" height="10" x="100" y="9" mask="url(#mask1000010)" />
+    <rect style="fill:#0099cc" id="rect1000020" width="10" height="10" x="100" y="19" mask="url(#mask1000020)" />
+    <rect style="fill:#006699" id="rect1000030" width="10" height="10" x="100" y="29" mask="url(#mask1000030)" />
+    <rect style="fill:#0099cc" id="rect1000040" width="10" height="10" x="100" y="39" mask="url(#mask1000040)" />
+    <rect style="fill:#006699" id="rect1000050" width="10" height="10" x="100" y="49" mask="url(#mask1000050)" />
+    <rect style="fill:#0099cc" id="rect1000060" width="10" height="10" x="100" y="59" mask="url(#mask1000060)" />
+    <rect style="fill:#006699" id="rect1000070" width="10" height="10" x="100" y="69" mask="url(#mask1000070)" />
+    <rect style="fill:#0099cc" id="rect1000080" width="10" height="10" x="100" y="79" mask="url(#mask1000080)" />
+    <rect style="fill:#006699" id="rect1000090" width="10" height="10" x="100" y="89" mask="url(#mask1000090)" />
+    <rect style="fill:#0099cc" id="rect1000100" width="10" height="10" x="100" y="99" mask="url(#mask1000100)" />
+    <rect style="fill:#006699" id="rect1000110" width="10" height="10" x="100" y="109" mask="url(#mask1000110)" />
+    <rect style="fill:#0099cc" id="rect1000120" width="10" height="10" x="100" y="119" mask="url(#mask1000120)" />
+    <rect style="fill:#006699" id="rect1001000" width="10" height="10" x="110" y="-1" mask="url(#mask1001000)" />
+    <rect style="fill:#0099cc" id="rect1001010" width="10" height="10" x="110" y="9" mask="url(#mask1001010)" />
+    <rect style="fill:#006699" id="rect1001020" width="10" height="10" x="110" y="19" mask="url(#mask1001020)" />
+    <rect style="fill:#0099cc" id="rect1001030" width="10" height="10" x="110" y="29" mask="url(#mask1001030)" />
+    <rect style="fill:#006699" id="rect1001040" width="10" height="10" x="110" y="39" mask="url(#mask1001040)" />
+    <rect style="fill:#0099cc" id="rect1001050" width="10" height="10" x="110" y="49" mask="url(#mask1001050)" />
+    <rect style="fill:#006699" id="rect1001060" width="10" height="10" x="110" y="59" mask="url(#mask1001060)" />
+    <rect style="fill:#0099cc" id="rect1001070" width="10" height="10" x="110" y="69" mask="url(#mask1001070)" />
+    <rect style="fill:#006699" id="rect1001080" width="10" height="10" x="110" y="79" mask="url(#mask1001080)" />
+    <rect style="fill:#0099cc" id="rect1001090" width="10" height="10" x="110" y="89" mask="url(#mask1001090)" />
+    <rect style="fill:#006699" id="rect1001100" width="10" height="10" x="110" y="99" mask="url(#mask1001100)" />
+    <rect style="fill:#0099cc" id="rect1001110" width="10" height="10" x="110" y="109" mask="url(#mask1001110)" />
+    <rect style="fill:#006699" id="rect1001120" width="10" height="10" x="110" y="119" mask="url(#mask1001120)" />
+    <rect style="fill:#0099cc" id="rect1002000" width="10" height="10" x="120" y="-1" mask="url(#mask1002000)" />
+    <rect style="fill:#006699" id="rect1002010" width="10" height="10" x="120" y="9" mask="url(#mask1002010)" />
+    <rect style="fill:#0099cc" id="rect1002020" width="10" height="10" x="120" y="19" mask="url(#mask1002020)" />
+    <rect style="fill:#006699" id="rect1002030" width="10" height="10" x="120" y="29" mask="url(#mask1002030)" />
+    <rect style="fill:#0099cc" id="rect1002040" width="10" height="10" x="120" y="39" mask="url(#mask1002040)" />
+    <rect style="fill:#006699" id="rect1002050" width="10" height="10" x="120" y="49" mask="url(#mask1002050)" />
+    <rect style="fill:#0099cc" id="rect1002060" width="10" height="10" x="120" y="59" mask="url(#mask1002060)" />
+    <rect style="fill:#006699" id="rect1002070" width="10" height="10" x="120" y="69" mask="url(#mask1002070)" />
+    <rect style="fill:#0099cc" id="rect1002080" width="10" height="10" x="120" y="79" mask="url(#mask1002080)" />
+    <rect style="fill:#006699" id="rect1002090" width="10" height="10" x="120" y="89" mask="url(#mask1002090)" />
+    <rect style="fill:#0099cc" id="rect1002100" width="10" height="10" x="120" y="99" mask="url(#mask1002100)" />
+    <rect style="fill:#006699" id="rect1002110" width="10" height="10" x="120" y="109" mask="url(#mask1002110)" />
+    <rect style="fill:#0099cc" id="rect1002120" width="10" height="10" x="120" y="119" mask="url(#mask1002120)" />
+  </g>
+</svg>

@@ -7,8 +7,11 @@ import commands
 import sys
 import os.path
 import pickle
+import pkg_resources
 
 import wx
+
+from dejumblefs import util
 
 gettext.install('dejumblefs')
 
@@ -17,26 +20,32 @@ _TB_OPEN = 2
 _TB_SAVE = 3
 _TB_MOUNT = 4
 _TB_UMOUNT = 5
-_TITLE = _('DejumbleFS mounter')
+_TITLE = _('DejumbleFS Mounter')
 _EXTENSION = 'dfo'
-_DEJUMBLE_FILES = _('DejumbleFS options') + '(*.%s)|*.%s' % (_EXTENSION, _EXTENSION)
+_DEJUMBLE_FILES = _('DejumbleFS options') + '(*.%s)|*.%s' % (_EXTENSION,
+                                                             _EXTENSION)
+
 
 class DejumbleFSUI(wx.App):
 
     def OnInit(self):
         self.main = MainWindow()
         self.main.Show()
-        self.SetTopWindow(self.main)
+        self.TopWindow = self.main
 
         return True
 
 
 class MainWindow(wx.Frame):
- 
+
     def __init__(self):
         wx.Frame.__init__(self, None, title=_TITLE,
                           style=wx.CAPTION|wx.CLOSE_BOX)
 
+        # FIXME: set icon
+        #iconpath = pkg_resources.resource_filename('dejumblefs.ui',
+        #                                           'images/icon.png')
+        #self.Icon = wx.IconFromLocation(wx.IconLocation(iconpath))
         self.panel = wx.Panel(self)
 
         externalborder = 10
@@ -120,7 +129,7 @@ class MainWindow(wx.Frame):
         sizer.Add(self.organizer, flag=wx.ALL, border=internalborder)
 
         vbox.Add(sizer, flag=wx.ALL, border=externalborder)
-        
+
         ##################################
         # Layout and other
 
@@ -128,14 +137,16 @@ class MainWindow(wx.Frame):
 
         hbox = wx.BoxSizer(wx.HORIZONTAL)
         hbox.Add(vbox, flag=wx.ALL, border=10)
-        self.panel.SetSizer(hbox)
+        self.panel.Sizer = hbox
         hbox.Fit(self)
         self._setenabledall()
-        
+
         self.new()
+        self.Center()
 
     def _createtoolbar(self):
-        self.ToolBar = wx.ToolBar(self, style=wx.TB_TEXT|wx.TB_HORIZONTAL|wx.TB_TOP)
+        self.ToolBar = wx.ToolBar(self,
+                                  style=wx.TB_TEXT|wx.TB_HORIZONTAL|wx.TB_TOP)
 
         img = wx.ArtProvider.GetBitmap(wx.ART_NEW)
         self.ToolBar.AddLabelTool(1, _('New'), img)
@@ -157,28 +168,29 @@ class MainWindow(wx.Frame):
         self.Bind(wx.EVT_TOOL, self.mount, id=_TB_MOUNT)
         self.Bind(wx.EVT_TOOL, self.umount, id=_TB_UMOUNT)
 
-    def new(self, event=None, mountpoint='', nonempty=False, noappledouble=False,
-            filter=None, root='', query='', cache=None, organizer=None, filename=None):
-        self.mountpoint.SetPath(mountpoint)
+    def new(self, event=None, mountpoint='', nonempty=False,
+            noappledouble=False, filter=None, root='', query='',
+            cache=None, organizer=None, filename=None):
+        self.mountpoint.Path = mountpoint
         self.nonempty.Value = nonempty
         self.noappledouble.Value = noappledouble
-        self.root.SetPath(root)
+        self.root.Path = root
         self.query.Value = query
 
         if filter:
             self.filter.Value = filter
         else:
-            self.filter.Select(0) 
+            self.filter.Select(0)
 
         if cache:
             self.cache.Value = cache
         else:
-            self.cache.Select(0) 
+            self.cache.Select(0)
 
         if organizer:
             self.organizer.Value = organizer
         else:
-            self.organizer.Select(0) 
+            self.organizer.Select(0)
 
         self.filename = filename
         self._settitle()
@@ -219,11 +231,11 @@ class MainWindow(wx.Frame):
                       'query': self.query.Value,
                       'organizer': self.organizer.Value}
             pickle.dump(values, file)
-        
 
     def _settitle(self):
         if self.filename:
-            self.Title = '%s - %s' % (_TITLE, self.filename.split(os.path.sep)[-1])
+            self.Title = '%s - %s' % (_TITLE,
+                                      self.filename.split(os.path.sep)[-1])
         else:
             self.Title = '%s - %s' % (_TITLE, 'Untitled')
 
@@ -236,16 +248,17 @@ class MainWindow(wx.Frame):
         if self.noappledouble.Value:
             flags.append(",noappledouble")
 
-        command = 'dejumble "%s" -o root="%s",query="%s",filter="%s",cache="%s",organizer="%s"%s' %\
-            (self.mountpoint.Path, self.root.Path, self.query.Value,
-             self.filter.Value, self.cache.Value, self.organizer.Value,
-             ''.join(flags));
+        command = 'dejumble "%s" -o root="%s",query="%s",' \
+                  'filter="%s",cache="%s",organizer="%s"%s' % \
+                  (self.mountpoint.Path, self.root.Path, self.query.Value,
+                   self.filter.Value, self.cache.Value, self.organizer.Value,
+                   ''.join(flags))
 
         status, output = commands.getstatusoutput(command)
 
         if output:
-            wx.MessageDialog(self, "Error mounting: %s" % output, 'Error', wx.OK | 
-                             wx.ICON_ERROR).ShowModal()
+            wx.MessageDialog(self, "Error mounting: %s" % output, 'Error',
+                             wx.OK | wx.ICON_ERROR).ShowModal()
 
         self._setenabledall()
 
@@ -255,13 +268,14 @@ class MainWindow(wx.Frame):
         status, output = commands.getstatusoutput(command)
 
         if output:
-            wx.MessageDialog(None, 'Error umounting: %s' % output, 'Error', wx.OK | 
-                             wx.ICON_ERROR).ShowModal()
+            wx.MessageDialog(None, 'Error umounting: %s' % output, 'Error',
+                             wx.OK | wx.ICON_ERROR).ShowModal()
 
         self._setenabledall()
 
     def _setenabledall(self, event=None):
-        enable = not os.path.isdir(os.path.join(self.mountpoint.Path, '.dejumblefs'))
+        enable = not os.path.isdir(os.path.join(self.mountpoint.Path,
+                                                util.ORIGINAL_DIR))
 
         for child in self.Children:
             child.Enabled = enable

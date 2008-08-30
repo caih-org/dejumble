@@ -198,6 +198,8 @@ class Organizer(Cacheable):
         elif util.pathparts(path)[0:2] == [util.ORIGINAL_DIR, 'root']:
             realpath = os.path.join(self.cache.filter.root,
                                     os.sep.join(util.pathparts(path)[2:]))
+        elif path == util.addtrailingslash(os.path.join(util.ORIGINAL_DIR, 'command')):
+            realpath = '.'
         elif util.pathparts(path)[0:2] == [util.ORIGINAL_DIR, 'command']:
             realpath = '/dev/null'
         else:
@@ -227,10 +229,15 @@ class Organizer(Cacheable):
         filelist = []
         if path == util.addtrailingslash(util.ORIGINAL_DIR):
             filelist = ['original', 'root', 'command']
-        elif path == os.path.join(util.ORIGINAL_DIR, 'root'):
+        elif path == util.addtrailingslash(os.path.join(util.ORIGINAL_DIR,
+                                                        'root')):
             filelist = os.listdir(self.cache.filter.root)
-        elif path == os.path.join(util.ORIGINAL_DIR, 'original'):
+        elif path == util.addtrailingslash(os.path.join(util.ORIGINAL_DIR,
+                                                        'original')):
             filelist = os.listdir('.')
+        elif path == util.addtrailingslash(os.path.join(util.ORIGINAL_DIR,
+                                                        'command')):
+            filelist = ['umount']
         elif util.pathparts(path)[0] == util.ORIGINAL_DIR:
             filelist = os.listdir(self.realpath(path))
         else:
