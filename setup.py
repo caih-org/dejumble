@@ -44,7 +44,7 @@ setup(name='dejumblefs',
       description=doclines[0],
       classifiers=filter(None, classifiers.splitlines()),
       long_description='\n'.join(doclines[2:]),
-      app=['scripts/dejumblegui.py'],
+      app=['dejumblefs/ui/dejumblegui.py'],
       install_requires=['psyco>=1.6',
                         'fuse-python>=0.2',
                         'PyDbLite==2.0_pep8']

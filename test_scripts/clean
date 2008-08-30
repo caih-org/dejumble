@@ -1,0 +1,8 @@
+#!/bin/sh
+
+sudo rm -rf build
+sudo rm -rf *.egg-info
+sudo rm -rf dist
+sudo rm -rf /Library/Python/2.5/site-packages/dejumble*
+sudo rm -rf /usr/local/bin/dejumble*
+sudo rm -rf /usr/local/bin/umountdejumble*
