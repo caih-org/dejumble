@@ -22,22 +22,30 @@ Operating System :: POSIX
 """
 
 from distutils.core import setup
+import py2app
 
 doclines = __doc__.strip().splitlines()
 
-setup(name='dejumble',
-      version = '0.9',
-      packages = ['dejumblefs', 'dejumblefs.filters', 'dejumblefs.caches',
-                  'dejumblefs.organizers'],
-      package_data = {'dejumblefs': ['conf/*.conf'],
-                      'dejumblefs.testdata': ['*.*']},
-      scripts = ['scripts/dejumble'],
-      maintainer = 'César Izurieta',
-      maintainer_email = 'cesar@caih.org',
-      url = 'http://code.google.com/p/dejumble',
-      license = 'http://www.gnu.org/copyleft/gpl.html',
-      platforms = ['unix', 'linux', 'mac'],
-      description = doclines[0],
-      classifiers = filter(None, classifiers.splitlines()),
-      long_description = '\n'.join(doclines[2:]),
+setup(name='dejumblefs',
+      version='0.9',
+      packages=['dejumblefs', 'dejumblefs.filters', 'dejumblefs.caches',
+                'dejumblefs.organizers', 'dejumblefs.ui'],
+      package_data={'dejumblefs': ['conf/*.conf'],
+                    'dejumblefs.testdata': ['*.*']},
+      entry_points={'console_scripts':
+                        ['dejumble = dejumblefs.ui.dejumble:main',
+                         'umountdejumble = dejumblefs.ui.umountdejumble:main'],
+                    'gui_scripts': ['dejumblegui = dejumblefs.ui.dejumblegui:main']},
+      maintainer='César Izurieta',
+      maintainer_email='cesar@caih.org',
+      url='http://code.google.com/p/dejumble',
+      license='http://www.gnu.org/copyleft/gpl.html',
+      platforms=['unix', 'linux', 'mac'],
+      description=doclines[0],
+      classifiers=filter(None, classifiers.splitlines()),
+      long_description='\n'.join(doclines[2:]),
+      app=['scripts/dejumblegui.py'],
+      install_requires=['psyco>=1.6',
+                        'fuse-python>=0.2',
+                        'PyDbLite==2.0_pep8']
 )

@@ -17,6 +17,8 @@ fusermount -u /path/to/mount
 
 The `nonempty` flag lets you mount over an existing directory. File contents are preserved in a special directory `.dejumblefs` that contains directories with all the previous directory structure and other information. This directory is not shown, not even with a `ls -a` but you can cd into it.
 
+If you are using Mac OS X take a look at http://code.google.com/p/macfuse/wiki/OPTIONS to see more mount time options. Some of this also apply to other operating systems. The nonempty mount option does not work on OS X. See Known Issues at the bottom of this document.
+
 ==Filters==
 
   * `CompleteDirectory` - Provides a list of files that contains all the files present in a directory.
@@ -48,11 +50,12 @@ Not implemented yet:
 
 ==Requirements==
 
-  * python
-  * python-setuptools
-  * psyco
-  * python-fuse
-  * PyDBLite (Use the one on the support folder which complies better with pylint)
+  * python==1.5
+  * python-setuptools>=0.6
+  * psyco>=1.6
+  * fuse-python>=0.2
+  * PyDBLite==2.0_pep8 (Use the one on the support/PyDbLite folder which complies better 
+    with pylint and pep8)
   * python-xesam (not yet, does this even exist?)
 
 == Known issues ==

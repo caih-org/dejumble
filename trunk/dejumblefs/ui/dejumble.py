@@ -5,6 +5,7 @@ import logging
 import logging.config
 import pkg_resources
 import gettext
+import errno
 
 import fuse
 from fuse import Fuse
@@ -15,6 +16,15 @@ gettext.install('dejumblefs')
 
 
 def main():
+    dolog = True
+
+    try:
+        import psyco
+        psyco.full()
+    except ImportError:
+        pass
+    
+    # output stuff
     usage = """
 dejumble: presents the content of a directory in an organized structure.
 
@@ -29,13 +39,8 @@ dejumble: presents the content of a directory in an organized structure.
     dejumblefs.fs.setserver(server)
 
     if not server.fuse_args.mountpoint:
-        print(_("No mountpoint defined"))
-        return -1
-
-    server.main()
-
-if __name__ == '__main__':
-    dolog = True
+        print >> sys.stderr, (_("No mountpoint defined"))
+        sys.exit(-errno.ENOENT)
 
     if dolog:
         logging.config.fileConfig(pkg_resources.resource_filename('dejumblefs',
@@ -49,14 +54,7 @@ if __name__ == '__main__':
     else:
         logging.disable(logging.CRITICAL)
 
-    try:
-        import psyco
-        psyco.full()
-    except ImportError:
-        pass
-    
-    # output stuff
-    main()
+    server.main()
 
     if dolog:
         # restore stdout
@@ -64,3 +62,7 @@ if __name__ == '__main__':
         outfile.close()
         sys.stdout = saveout
         sys.stderr = saveerr
+
+
+if __name__ == '__main__':
+    main()
