@@ -26,8 +26,7 @@ def main():
               (commandname, path)
         sys.exit(-errno.ENOENT)
 
-    # FIXME: do not 'ls' but 'touch'
-    status, output = commands.getstatusoutput('ls "%s"' % command_path)
+    status, output = commands.getstatusoutput('echo 1 > "%s"' % command_path)
 
     if status != 0:
         print >> sys.stderr, _('%s: %s') % (commandname, output)

@@ -6,7 +6,7 @@ from PyDbLite import Base
 
 from . import util
 from .util import Cacheable
-from .fs import getserver
+from .fs import getserver, CommandHandler
 
 DB_FILES = './.dejumblefs_cache.pydblite'
 
@@ -100,24 +100,32 @@ class Cache(Cacheable):
 
         def __init__(self, path, flags, *mode):
             logger.debug('DejumbleFile.__init__(%s, %s)' % (path, flags))
-            realpath = getserver().organizer.realpath(path)
-            self.fd = os.open(realpath, flags, *mode) #IGNORE:W0142
-            self.file = os.fdopen(self.fd, util.flags2mode(flags))
             self.keep_cache = False
             self.direct_io = False
+
+            if util.iscommand(path):
+                self.file = CommandHandler(path, *mode)
+            else:
+                self.file = self.getfile(path, flags, *mode)
+
             if flags & os.O_CREAT:
                 getserver().organizer.addtocache(path)
+
+        def getfile(self, path, flags, *mode):
+            realpath = getserver().organizer.realpath(path)
+            file = open(realpath, util.flags2mode(flags))
+            return file
 
         def read(self, length, offset):
             logger.debug('DejumbleFile.read(%s, %s)' % (length, offset))
             self.file.seek(offset)
             return self.file.read(length)
 
-        def write(self, buf, offset):
-            logger.debug('DejumbleFile.write(%s, %s)' % (len(buf), offset))
+        def write(self, data, offset):
+            logger.debug('DejumbleFile.write(%s, %s)' % (len(data), offset))
             self.file.seek(offset)
-            self.file.write(buf)
-            return len(buf)
+            self.file.write(data)
+            return len(data)
 
         def release(self, flags):
             logger.debug('DejumbleFile.release(%s)' % flags)
@@ -129,20 +137,23 @@ class Cache(Cacheable):
 
         def fsync(self, isfsyncfile):
             logger.debug('DejumbleFile.fsync(%s)' % isfsyncfile)
-            self._fflush()
-            if isfsyncfile and hasattr(os, 'fdatasync'):
-                getattr(os, 'fdatasync')(self.fd)
-            else:
-                os.fsync(self.fd)
+            if hasattr(self.file, 'fileno'):
+                self._fflush()
+                if isfsyncfile and hasattr(os, 'fdatasync'):
+                    os.fdatasync(self.file.fileno())
+                else:
+                    os.fsync(self.file.fileno())
 
         def flush(self):
             logger.debug('DejumbleFile.flush()')
             self._fflush()
-            os.close(os.dup(self.fd))
+            if hasattr(self.file, 'fileno'):
+                os.close(os.dup(self.file.fileno()))
 
         def fgetattr(self):
             logger.debug('DejumbleFile.fgetattr()')
-            return os.fstat(self.fd)
+            if hasattr(self.file, 'fileno'):
+                return os.fstat(self.file.fileno())
 
         def ftruncate(self, length):
             logger.debug('DejumbleFile.ftruncate()')

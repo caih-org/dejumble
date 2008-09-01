@@ -8,6 +8,7 @@ import fuse
 
 from . import util
 from .util import Cacheable
+from .fs import getserver, CommandHandler
 
 
 DB_TRANSFORMED = './.dejumblefs_transformed.pydblite'
@@ -193,15 +194,15 @@ class Organizer(Cacheable):
             realpath = self.cache.filter.root
         elif path == util.addtrailingslash(util.ORIGINAL_DIR):
             realpath = '.'
-        elif util.pathparts(path)[0:2] == [util.ORIGINAL_DIR, 'original']:
+        elif util.isspecial(path, 'original', True):
             realpath = os.path.join('.', os.sep.join(util.pathparts(path)[2:]))
-        elif util.pathparts(path)[0:2] == [util.ORIGINAL_DIR, 'root']:
+        elif util.isspecial(path, 'root', True):
             realpath = os.path.join(self.cache.filter.root,
                                     os.sep.join(util.pathparts(path)[2:]))
-        elif path == util.addtrailingslash(os.path.join(util.ORIGINAL_DIR, 'command')):
+        elif util.isspecial(path, 'commands'):
             realpath = '.'
-        elif util.pathparts(path)[0:2] == [util.ORIGINAL_DIR, 'command']:
-            realpath = '/dev/null'
+        elif util.iscommand(path):
+            realpath = getserver().tempfile.name
         else:
             realpath = self.generaterealpath(path)
 
@@ -228,18 +229,13 @@ class Organizer(Cacheable):
     def _filelist(self, path):
         filelist = []
         if path == util.addtrailingslash(util.ORIGINAL_DIR):
-            filelist = ['original', 'root', 'command']
-        elif path == util.addtrailingslash(os.path.join(util.ORIGINAL_DIR,
-                                                        'root')):
-            filelist = os.listdir(self.cache.filter.root)
-        elif path == util.addtrailingslash(os.path.join(util.ORIGINAL_DIR,
-                                                        'original')):
-            filelist = os.listdir('.')
-        elif path == util.addtrailingslash(os.path.join(util.ORIGINAL_DIR,
-                                                        'command')):
-            filelist = ['umount']
-        elif util.pathparts(path)[0] == util.ORIGINAL_DIR:
+            filelist = ['original', 'root', 'commands']
+        elif util.isspecial(path, 'root', True):
             filelist = os.listdir(self.realpath(path))
+        elif util.isspecial(path, 'original', True):
+            filelist = os.listdir(self.realpath(path))
+        elif util.isspecial(path, 'commands'):
+            filelist = CommandHandler.COMMANDS
         else:
             filelist = self.filelist(path)
 

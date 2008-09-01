@@ -52,6 +52,17 @@ def getbasefilelist():
 def unique(string):
     return set(string)
 
+
+def iscommand(path):
+    return pathparts(path)[0:2] == [ORIGINAL_DIR, 'command']
+
+
+def isspecial(path, dir, includesubdirs=False):
+    if includesubdirs:
+        return pathparts(path)[0:2] == [ORIGINAL_DIR, dir]
+    else:
+        return path == addtrailingslash(os.path.join(ORIGINAL_DIR, dir))
+
 ############################################
 # Cacheable class
 
