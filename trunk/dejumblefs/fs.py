@@ -1,6 +1,8 @@
 import errno
 import logging
 import os
+import platform
+from tempfile import NamedTemporaryFile
 
 import fuse
 
@@ -40,6 +42,7 @@ class DejumbleFS(fuse.Fuse):
 
     def main(self, *a, **kw):
         logger.info(_('Initializing dejumblefs'))
+        self.tempfile = NamedTemporaryFile()
         self.setup_organizer()
         self.file_class = self.organizer.cache.DejumbleFile
         self.originaldir = os.open(self.fuse_args.mountpoint, os.O_RDONLY)
@@ -132,6 +135,12 @@ class DejumbleFS(fuse.Fuse):
             mod = getattr(mod, comp)
         return mod
 
+    def umount(self):
+        logger.debug('umount()')
+        if platform.system() == 'Darwin':
+            # Change directory before umounting
+            os.chdir('/tmp')
+
     ############################################
     # Filesystem functions
 
@@ -139,7 +148,6 @@ class DejumbleFS(fuse.Fuse):
         os.fchdir(self.originaldir)
 
         # HACK: see http://code.google.com/p/dejumble/issues/detail?id=1
-        import platform
         if platform.system() == 'Darwin':
             os.chdir('/tmp')
         # end HACK
@@ -150,6 +158,7 @@ class DejumbleFS(fuse.Fuse):
 
     def fsdestroy(self):
         logger.debug('fsdestroy()')
+        self.tempfile.close()
 
     def getattr(self, path):
         logger.debug('getattr(%s)' % path)
@@ -194,3 +203,41 @@ class DejumbleFS(fuse.Fuse):
     def access(self, path, mode):
         logger.debug('access(%s, %s)' % (path, mode))
         self.organizer.cache.access(self.organizer.realpath(path), mode)
+
+
+class CommandHandler():
+
+    def __init__(self, path, *mode):
+        self.command = getattr(self, os.path.basename(path))
+        self.mode = mode
+
+    def seek(self, offset):
+        pass
+
+    def read(self, len):
+        return None
+
+    def write(self, data):
+        logger.debug('CommandHandler(%s).write(%s)' % (self.command, data))
+        self.command(data)
+        return len(data)
+
+    def flush(self):
+        pass
+
+    def truncate(self, len):
+        pass
+
+    def open(self):
+        pass
+
+    def close(self):
+        pass
+
+    ############################################
+    # Commands
+
+    COMMANDS = ['umount']
+
+    def umount(self, data):
+        getserver().umount()
