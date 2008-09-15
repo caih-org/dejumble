@@ -46,7 +46,7 @@ class ISO9660Organizer(Organizer):
     def convertpath(self, filename, num=0):
         root, ext = os.path.splitext(filename)
 
-        # TODO: exclude all non valid characters
+        # FIXME: exclude all non valid characters
         root = root.replace(' ', '')
         root = root.replace('+', '_')
 

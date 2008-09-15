@@ -14,29 +14,25 @@ import dejumblefs.fs
 
 gettext.install('dejumblefs')
 
+try:
+    import psyco
+    psyco.full()
+except ImportError:
+    pass
+
 
 def main():
-    dolog = True
-
-    try:
-        import psyco
-        psyco.full()
-    except ImportError:
-        pass
-
-    # output stuff
     usage = """
 dejumble: presents the content of a directory in an organized structure.
 
 """ + Fuse.fusage
 
+    dolog = True
+
     server = dejumblefs.fs.DejumbleFS(version="%%prog %s" % fuse.__version__,
-                                    usage=usage,
-                                    dash_s_do='setsingle')
+                                    usage=usage, dash_s_do='setsingle')
     server.setoptions()
     server.parse(values=server, errex=1)
-
-    dejumblefs.fs.setserver(server)
 
     if not server.fuse_args.mountpoint:
         print >> sys.stderr, (_("No mountpoint defined"))
@@ -55,6 +51,7 @@ dejumble: presents the content of a directory in an organized structure.
     else:
         logging.disable(logging.CRITICAL)
 
+    dejumblefs.fs.setserver(server)
     server.main()
 
     if dolog:

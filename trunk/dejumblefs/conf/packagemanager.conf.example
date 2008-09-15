@@ -27,4 +27,3 @@ CONSOLE_INSTALL_COMMAND="sudo smart install %1"
 # Command used for removing a package when running on a terminal
 #
 CONSOLE_REMOVE_COMMAND="sudo smart remove %1"
-

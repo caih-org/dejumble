@@ -96,18 +96,12 @@ class DejumbleFS(fuse.Fuse):
         # HACK: set defaults since fuse is not doing that
         defaults = self.parser.get_default_values()
 
-        if not self.conf:
-            self.conf = defaults.conf
-        if not self.root:
-            self.root = defaults.root
-        if not self.filter:
-            self.filter = defaults.filter
-        if not self.query:
-            self.query = defaults.query
-        if not self.cache:
-            self.cache = defaults.cache
-        if not self.organizer:
-            self.organizer = defaults.organizer
+        self.conf = self.conf or defaults.conf
+        self.root = self.root or defaults.root
+        self.filter = self.filter or defaults.filter
+        self.query = self.query or defaults.query
+        self.cache = self.cache or defaults.cache
+        self.organizer = self.organizer or defaults.organizer
         # end HACK
 
         self.root = os.path.expanduser(self.root)
@@ -218,7 +212,7 @@ class CommandHandler():
         return None
 
     def write(self, data):
-        logger.debug('CommandHandler(%s).write(%s)' % (self.command, data))
+        logger.debug('CommandHandler.%s.write(%s)' % (self.command, data))
         self.command(data)
         return len(data)
 
