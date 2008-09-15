@@ -24,8 +24,7 @@ class Cache(Cacheable):
         Cacheable.__init__(self)
 
     def reset(self):
-        if not self.files:
-            self.files = Base(DB_FILES)
+        self.files = self.files or Base(DB_FILES)
         self.files.create('realpath', mode = 'override')
         self.files.create_index('realpath')
         Cacheable.reset(self)

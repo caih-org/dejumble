@@ -54,7 +54,7 @@ def unique(string):
 
 
 def iscommand(path):
-    return pathparts(path)[0:2] == [ORIGINAL_DIR, 'command']
+    return pathparts(path)[0:2] == [ORIGINAL_DIR, 'commands']
 
 
 def isspecial(path, dir, includesubdirs=False):

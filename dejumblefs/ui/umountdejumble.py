@@ -19,7 +19,7 @@ def main():
         sys.exit(1)
 
     path = sys.argv[1]
-    command_path = os.path.join(path, util.ORIGINAL_DIR, 'command', 'umount')
+    command_path = os.path.join(path, util.ORIGINAL_DIR, 'commands', 'umount')
 
     if not os.path.isdir(os.path.join(path, util.ORIGINAL_DIR)):
         print >> sys.stderr, _('%s: %s: not a dejumble filesystem') % \
