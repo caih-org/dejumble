@@ -12,15 +12,38 @@ En este capítulo se presentará los resultados de las pruebas de desempeño rea
 
 Para estas realizar estas pruebas se utilizó scripts de bash que ejecutan un set de comandos tanto sobre el sistema de archivos original como sobre el sistema de archivos proxy montado. Estos scripts se los puede encontrar en \path{test_scripts/test_*}. Se utilizó una computadora MacBook Pro de 2.33 GHz Intel Core 2 Duo con 2 GB de RAM (667 MHz DDR2 SDRAM). Esta computadora corre Mac OS X 10.5.4 con todos los últimos patches disponibles al 1 de Septiembre del 2008. Además corre MacFUSE versión 1.7 y Python versión 2.5.1. Para realizar los gráficos se usó gnuplot versión 4.2 patchlevel 3. Todos los fuentes para la generación de los gráficos se encuentran en \path{docs/thesis/Chapter3/Chapter3Figs/*.gnu}. Los archivos de datos con los que se generó estos gráficos también están en el mismo directorio con la extensión \path{.dat}.
 
-Cada prueba se ejecutó 10 ocasiones. Se escogió una de las ejecuciones para graficarla. Además se calculó un porcentaje promedio de penalidad de usar el sistema tomando en cuenta todas las ejecuciones para cada una de las pruebas.
+Cada prueba se ejecutó 10 ocasiones.  Se calculó un porcentaje promedio de penalidad de usar el sistema. Se escogió una de las 10 ejecuciones y se uso como fuente para los gráficos. El método de cálculo del promedio fue el siguiente:
+
+Dados los resultados tanto para el sistema de archivos original (llamado \textit{a} en adelante), y los resultados del sistema proxy (llamado \textit{b} en adelante), se calculó un valor \textit{c} como la ecuación (\ref{eqC}) que representa el porcentaje de cambio del tiempo de ejecución de la prueba.
+
+\begin{equation}
+\label{eqC}
+c_{i} = \frac{b_{i}}{a_{i}}
+\end{equation}
+
+El porcentaje de cambio sería entonces lo expuesto en la ecuación (\ref{eqP}).
+
+\begin{equation}
+\label{eqC}
+porcentaje_{i} = 100(c_{i} - 1)
+\end{equation}
+
+Además se hizo una regresión lineal usando la ecuación (\ref{eqB}) entre \textit{c} y \textit{x}, que sería el valor que varió la prueba, sea el número de archivos o el tamaño del archivo.
+
+\begin{equation}
+\label{eqB}
+\hat{b} = \frac {\sum_{i=1}^{N}  (x_{i} - \bar{x})(c_{i} - \bar{c}) }  {\sum_{i=1}^{N} (x_{i} - \bar{x}) ^2}
+\end{equation}
+
+Debido a que este valor indica la pendiente de la curva del porcentaje de cambio de tiempo nos indica si existe un aumento dependiente del numero de archivos o del tamaño de los archivos en la prueba correspondiente. Para efectos de simplificación del problema se descarto este valor si era menor al 0.1\%. En tal caso suponemos que el uso del sistema de archivos proxy tiene una penalidad O(1) con respecto al uso del sistema original. De no ser así asumimos que el sistema de archivos proxy tiene una penalidad O(n) con respecto al sistema de archivos original.
 
 \subsection{Prueba A}
 
-La prueba A consiste en crear y borrar un numero de archivos vacíos.
+La prueba A consiste en crear y borrar un numero de archivos vacíos. En esta prueba se varió el numero de archivos entre 50 y 500 con incrementos de 50 archivos. Con esta prueba se intenta analizar el impacto que tiene el sistema de archivos proxy con el manejo de estructuras de directorios en general.
 
 \subsection{Prueba B}
 
-La prueba B consiste en crear y borrar un archivo de un tamaño determinado.
+La prueba B consiste en crear y borrar un archivo de un tamaño determinado. En esta prueba se varió el tamaño del archivo creado entre 20 y 200 MB con incrementos de 20 MB. Esta prueba tiene como finalidad analizar el impacto del sistema de archivos proxy en tiempo de acceso a disco con relación al sistema de archivos original.
 
 
 \section{Resultados configuración 1}
@@ -34,13 +57,13 @@ Para el primer set de resultados se usó lo siguientes ajustes al momento de mon
 \item[organizer] = Original - Este es la opción por defecto
 \end{itemize}
 
-\subsection{Prueba A}
+\subsection{Prueba A-1}
 
 La media de penalización de usar esta configuración fue de aproximadamente 20\% con un factor lineal de 1.182 y el resultado está graficado en la figura~(\ref{pruebaA-1}).
 
 \InsertFig{\IncludeGraphicsH{pruebaA-1}{3in}{92 86 545 742}}{Resultados de la prueba A configuración 1}{pruebaA-1}
 
-\subsection{Prueba B}
+\subsection{Prueba B-1}
 
 La media de penalización de usar esta configuración fue de aproximadamente 0\% con un factor lineal de 1.004 y el resultado está graficado en la figura~(\ref{pruebaB-1}).
 
@@ -58,13 +81,13 @@ Para el primer set de resultados se usó lo siguientes ajustes al momento de mon
 \item[organizer] = Date - Esta opción extiende de TagOrganizer igual que Documents
 \end{itemize}
 
-\subsection{Prueba A}
+\subsection{Prueba A-2}
 
 La media de penalización de usar esta configuración dio como resultado un factor exponencial de 1.401 y el resultado está graficado en la figura~(\ref{pruebaA-2}).
 
 \InsertFig{\IncludeGraphicsH{pruebaA-2}{3in}{92 86 545 742}}{Resultados de la prueba A configuración 2}{pruebaA-2}
 
-\subsection{Prueba B}
+\subsection{Prueba B-2}
 
 La media de penalización de usar esta configuración fue de aproximadamente 1\% con un factor lineal de 1.014 y el resultado está graficado en la figura~(\ref{pruebaB-2}).
 
@@ -81,13 +104,13 @@ Para el primer set de resultados se usó lo siguientes ajustes al momento de mon
 \item[organizer] = ISO9660 - Esta opción no extiende de TagOrganizer
 \end{itemize}
 
-\subsection{Prueba A}
+\subsection{Prueba A-3}
 
 La media de penalización de usar esta configuración fue de aproximadamente 98\% con un factor de 1.982 y el resultado está graficado en la figura~(\ref{pruebaA-3}).
 
 \InsertFig{\IncludeGraphicsH{pruebaA-3}{3in}{92 86 545 742}}{Resultados de la prueba A configuración 3}{pruebaA-3}
 
-\subsection{Prueba B}
+\subsection{Prueba B-3}
 
 La media de penalización de usar esta configuración fue de aproximadamente 1\% con un factor lineal de 1.010 y el resultado está graficado en la figura~(\ref{pruebaB-3}).
 

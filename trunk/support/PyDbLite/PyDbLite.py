@@ -34,7 +34,7 @@ Syntax :
     # create an index on a field
     db.create_index('age')
     # access by index
-    records = db._age[23] # returns the list of records with age == 23
+    records = db.get_index('age')[23] # returns the list of records with age == 23
     # update
     db.update(record,age=24)
     # add and drop fields
@@ -314,13 +314,13 @@ if __name__ == '__main__':
 
     print 'Record #20 :',db[20]
     print '\nRecords with age=30 :'
-    for rec in db._age[30]:
+    for rec in db.get_index('age')[30]:
         print '%-10s | %2s | %s' %(rec['name'],rec['age'],round(rec['size'],2))
 
     print "\nSame with __call__"
     for rec in db(age=30):
         print '%-10s | %2s | %s' %(rec['name'],rec['age'],round(rec['size'],2))
-    print db._age[30] == db(age=30)
+    print db.get_index('age')[30] == db(age=30)
 
     db.insert(name=unicode(random.choice(names))) # missing fields
     print '\nNumber of records with 30 <= age < 33 :',
@@ -331,7 +331,7 @@ if __name__ == '__main__':
     d = db.delete([r for r in db if 32> r['age'] >= 30 and r['name']==u'pierre'])
     print "\nDeleting %s records with name == 'pierre' and 30 <= age < 32" %d
     print '\nAfter deleting records '
-    for rec in db._age[30]:
+    for rec in db.get_index('age')[30]:
         print '%-10s | %2s | %s' %(rec['name'],rec['age'],round(rec['size'],2))
     print '\n',sum([1 for r in db]),'records in the database'
     print '\nMake pierre uppercase for age > 27'
@@ -360,10 +360,10 @@ if __name__ == '__main__':
     db.add_field('adate',datetime.date.today())
     print db[21]
     
-    k = db._age.keys()[0]
+    k = db.get_index('age').keys()[0]
     print "key",k
-    print k in db._age
-    db.delete(db._age[k])
-    print db._age[k]
-    print k in db._age
+    print k in db.get_index('age')
+    db.delete(db.get_index('age')[k])
+    print db.get_index('age')[k]
+    print k in db.get_index('age')
 

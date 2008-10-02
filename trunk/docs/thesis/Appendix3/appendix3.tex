@@ -1,13 +1,124 @@
 \chapter{Manual Técnico}
 
-\section{Uso desde la consola}
+\section{Detalles del ciclo de vida de inicialización de los módulos}
+\label{detallesciclodevida}
+
+Los módulos se inicializan en este orden: primero el filtro, luego el cache y finalmente el organizador.
+
+El filtro recibe en su constructor dos parámetros: \textit{query} y \textit{root}. Estos son asignados a variables de instancia.
+
+El cache se inicializa con la instancia del filtro como parámetro y lo asigna a una variable de instancia.
+
+El organizador se inicializa con dos parámetros: la instancia del cache y \textit{recursive}. Estos se asignan a variables de instancia.
+
+Una vez inicializados se llama al método \textit{reset} del organizador y este resetea primero el cache.
+
+En el cache cuando se llama el método \textit{reset} se crea una base de datos en memoria de los archivos en el espacio de nombres original y se rellena con todos las rutas devueltas por el filtro.
+
+En el organizador en el método \textit{reset} crea una base de datos en memoria del mapeo entre los archivos en el espacio de nombres original y los archivos en el espacio de nombres transformado y finalmente llena su base de datos llamando el método \textit{generateallpaths}. Este método pasa cada una de las rutas en el espacio de nombres original que tiene el cache al método \textit{generatepaths} que devuelve las rutas en el espacio de nombres transformado. Si se construyo el organizador con \textit{recursive=True} también pasa cada uno de los subdirs que se encuentran en cada ruta. Por ejemplo para ``\path{/tmp/directorio/subdir1/subdir2/subdir3/unarchivo.txt}'' y con \textit{root}=\path{/tmp/directorio/} se pasaría esta lista de archivos:
+
+\begin{itemize}
+\item \path{/tmp/directorio/subdir1/}
+\item \path{/tmp/directorio/subdir1/subdir2/}
+\item \path{/tmp/directorio/subdir1/subdir2/subdir3/}
+\item \path{/tmp/directorio/subdir1/subdir2/subdir3/unarchivo.txt}
+\end{itemize}
+
+Si \textit{recursive=False} solamente el último ítem de esta lista. Estos paths serían transformados dependiendo el organizador en uso. Si tomamos como ejemplo el organizador \textit{Flat}~(\ref{dejumblefs/organizers/flat.py}) lo que se encontraría en la base de datos en memoria del organizador al final para este archivo sería lo que se ve en el cuadro \ref{baseflat}.
+
+\begin{table}[htdp]
+\caption{Base de datos en memoria para organizador Flat}
+\label{baseflat}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+realpath & path & dirname\\
+\hline
+\path{/tmp/.../unarchivo.txt} & \path{/unarchivo.txt} & \path{/}\\
+\hline
+\end{tabular}
+\end{center}
+\label{default}
+\end{table}
+
+En caso de usar el organizador \textit{Original}~(\ref{dejumblefs/organizers/original.py}) en la tabla \ref{baseoriginal} se puede ver el resultado.
+
+\begin{table}[htdp]
+\caption{Base de datos en memoria para organizador Original}
+\label{baseoriginal}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+realpath & path & dirname\\
+\hline
+\path{/tmp/.../unarchivo.txt} & \path{/subdir1/.../unarchivo.txt} & \path{/subdir1/.../subdir3/}\\
+\hline
+\end{tabular}
+\end{center}
+\label{default}
+\end{table}
+
+
+Como último ejemplo en caso de usar el organizador \textit{ISO9660}~(\ref{dejumblefs/organizers/iso9660.py}), el resultado sería lo que está en la tabla \ref{baseiso9660}.
+
+\begin{table}[htdp]
+\caption{Base de datos en memoria para organizador ISO9660}
+\label{baseiso9660}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+realpath & path & dirname\\
+\hline
+\path{/tmp/.../unarchivo.txt} & \path{/SUBDIR1/.../ARCHIV~1.TXT} & \path{/SUBDIR1/.../SUBDIR3/}\\
+\hline
+\end{tabular}
+\end{center}
+\label{default}
+\end{table}
 
 
 
+\section{Extendiendo DejumbleFS}
 
-\section{Uso de la interfaz visual}
+\subsection{Creando un filtro}
 
+Para crear un filtro se debe crear una archivo con el nombre del filtro en minúsculas todo, en la carpeta \path{dejumblefs/filters/} con extensión \path{.py}. En este archivo se debe crear una clase python que tenga por nombre el nombre del filtro terminando en \textit{FileListFilter} que extienda de \textit{dejumblefs.filter.FileListFilter}.
 
+Esta clase debe contener al menos un método llamado \textit{filelist}. Este método debe devolver un iterador, generador, lista o tupla conteniendo rutas de archivos. El filtro puede hacer uso de las variables \textit{query} y \textit{root} para refinar su funcionamiento. Como ejemplo se puede ver \path{dejumblefs/filters/null.py}~(\ref{dejumblefs/filters/null.py}).
+
+\subsection{Creando un cache}
+
+Para crear un cache se debe crear una archivo con el nombre del cache en minúsculas todo, en la carpeta \path{dejumblefs/caches/} con extensión \path{.py}. En este archivo se debe crear una clase python que tenga por nombre el nombre del cache terminando en \textit{Cache} que extienda de \textit{dejumblefs.cache.Cache}.
+
+Esta clase puede sobreescribir cualquier método de la clase Cache pero en especial sobreescribiendo \textit{getfdandfile} se puede crear un cache con una funcionalidad diferente.
+
+Este método recibe como parámetros el path en el sistema de archivos transformado, varias banderas y el modo en el que se requiere abrir un archivo. Entre las banderas posibles se encuentran las banderas que usa la funcion open de C estandar como O\_CREAT, O\_RDONLY, etc.
+
+El modo es un modo que contiene ``r'' si se requiere escribir en el archivo, ``w'' si se requiere escribir ``w+'' si se requiere leer y escribir. Si se requiere que no se sobreescriba el archivo si existe y se quiere agregar contenido se puede recibir ``a' en vez de ``w''.
+
+El método debe devolver un descriptor o numero de archivo POSIX y un \textit{objeto tipo archivo} de python.
+
+Como ejemplo se puede ver \path{dejumblefs/caches/sandbox.py}~(\ref{dejumblefs/caches/sandbox.py}).
+
+\subsection{Creando un organizador basado en etiquetas}
+
+Para crear un organizador basado en etiquetas se debe crear una archivo con el nombre del organizador en minúsculas todo, en la carpeta \path{dejumblefs/organizers/} con extensión \path{.py}. En este archivo se debe crear una clase python que tenga por nombre el nombre del organizador terminando en \textit{Organizer} que extienda de \textit{dejumblefs. organizer.TagOrganizer}.
+
+Esta clase debe sobreescribir el método \textit{generatetags}. Este método recibe como parámetro la ruta del archivo real que se está manejando y debe usar la funcione \textit{self.tag} para agregar etiquetas al archivo. La función \textit{self.tag} recibe como parámetros la ruta del archivo, una categoría al que pertenece la etiqueta y la etiqueta en si como tercer parámetro.
+
+Como ejemplo se puede ver \path{dejumblefs/organizers/date.py}~(\ref{dejumblefs/organizers/date.py}).
+
+\subsection{Creando un organizador no basado en etiquetas}
+
+Para crear un organizador no basado en etiquetas se debe crear una archivo con el nombre del organizador en minúsculas todo, en la carpeta \path{dejumblefs/organizers/} con extensión \path{.py}. En este archivo se debe crear una clase python que tenga por nombre el nombre del organizador terminando en \textit{Organizer} que extienda de \textit{dejumblefs. organizer.Organizer}.
+
+En este caso se deberá sobreescribir \textit{generatepaths} y opcionalmente \textit{increasefilename}.
+
+El método \textit{generatepaths} recibe una ruta al archivo en el sistema de archivos original y debe devolver un iterador, generador, lista o tupla con las rutas convertidas para usar en el espacio de nombres transformado.
+
+El método \textit{increasefilename} se llama en caso de que haya conflicto al usar una ruta de las devueltas por generatepaths. Este método recibe la ruta del archivo en el espacio de nombres transformado y la modifica para evitar el conflicto. Por ejemplo la implementación por defecto de este método transforma ``algún archivo.txt'' a ``algún archivo(1).txt'' y en caso de que se vuelva a llamar en ``algun archivo(2).txt''.
+
+Como ejemplo se puede ver \path{dejumblefs/organizers/iso9660.py}~(\ref{dejumblefs/organizers/iso9660.py}).
 
 
 % ------------------------------------------------------------------------
