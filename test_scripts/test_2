@@ -1,0 +1,6 @@
+#!/bin/sh
+
+cd `dirname $0`
+
+./test_performance 2 CompleteDirectory PassThrough Date
+

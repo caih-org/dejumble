@@ -136,7 +136,7 @@ class DejumbleFS(fuse.Fuse):
             os.chdir('/tmp')
 
     ############################################
-    # Filesystem functions
+    # Filesystem functions - general
 
     def fsinit(self):
         os.fchdir(self.originaldir)
@@ -153,6 +153,9 @@ class DejumbleFS(fuse.Fuse):
     def fsdestroy(self):
         logger.debug('fsdestroy()')
         self.tempfile.close()
+
+    ############################################
+    # Filesystem functions - structure
 
     def getattr(self, path):
         logger.debug('getattr(%s)' % path)
@@ -177,6 +180,9 @@ class DejumbleFS(fuse.Fuse):
                                     self.organizer.realpath(pathdest))
         self.organizer.deletefromcache(path)
         self.organizer.addtocache(pathdest)
+
+    ############################################
+    # Filesystem functions - file attributes
 
     def chmod(self, path, mode):
         logger.debug('chmod(%s, %s)' % (path, mode))
