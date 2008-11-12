@@ -1,8 +1,8 @@
 \chapter{Pruebas de desempeño}
 \ifpdf
-    \graphicspath{{Chapter3/Chapter3Figs/PNG/}{Chapter3/Chapter3Figs/PDF/}{Chapter3/Chapter3Figs/}}
+    \graphicspath{{Chapter4/Chapter4Figs/PNG/}{Chapter4/Chapter4Figs/PDF/}{Chapter4/Chapter4Figs/}}
 \else
-    \graphicspath{{Chapter3/Chapter3Figs/EPS/}{Chapter3/Chapter3Figs/}}
+    \graphicspath{{Chapter4/Chapter4Figs/EPS/}{Chapter4/Chapter4Figs/}}
 \fi
 
 En este capítulo se presentará los resultados de las pruebas de desempeño realizadas sobre el sistema de archivos proxy usando diferentes combinaciones de módulos.
@@ -10,7 +10,7 @@ En este capítulo se presentará los resultados de las pruebas de desempeño rea
 
 \section{Metodología}
 
-Para estas realizar estas pruebas se utilizó scripts de bash que ejecutan un set de comandos tanto sobre el sistema de archivos original como sobre el sistema de archivos proxy montado. Estos scripts se los puede encontrar en \path{test_scripts/test_*}. Se utilizó una computadora MacBook Pro de 2.33 GHz Intel Core 2 Duo con 2 GB de RAM (667 MHz DDR2 SDRAM). Esta computadora corre Mac OS X 10.5.4 con todos los últimos patches disponibles al 1 de Septiembre del 2008. Además corre MacFUSE versión 1.7 y Python versión 2.5.1. Para realizar los gráficos se usó gnuplot versión 4.2 patchlevel 3. Todos los fuentes para la generación de los gráficos se encuentran en \path{docs/thesis/Chapter3/Chapter3Figs/*.gnu}. Los archivos de datos con los que se generó estos gráficos también están en el mismo directorio con la extensión \path{.dat}.
+Para estas realizar estas pruebas se utilizó scripts de bash que ejecutan un set de comandos tanto sobre el sistema de archivos original como sobre el sistema de archivos proxy montado. Estos scripts se los puede encontrar en \path{test_scripts/test_*}. Se utilizó una computadora MacBook Pro de 2.33 GHz Intel Core 2 Duo con 2 GB de RAM (667 MHz DDR2 SDRAM). Esta computadora corre Mac OS X 10.5.4 con todos los últimos patches disponibles al 1 de Septiembre del 2008. Además corre MacFUSE versión 1.7 y Python versión 2.5.1. Para realizar los gráficos se usó gnuplot versión 4.2 patchlevel 3. Todos los fuentes para la generación de los gráficos se encuentran en \path{docs/thesis/Chapter4/Chapter4Figs/*.gnu}. Los archivos de datos con los que se generó estos gráficos también están en el mismo directorio con la extensión \path{.dat}.
 
 Cada prueba se ejecutó 10 ocasiones.  Se calculó un porcentaje promedio de penalidad de usar el sistema. Se escogió una de las 10 ejecuciones y se uso como fuente para los gráficos. El método de cálculo del promedio fue el siguiente:
 
