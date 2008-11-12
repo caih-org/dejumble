@@ -15,7 +15,7 @@ Una vez inicializados se llama al método \textit{reset} del organizador y este 
 
 En el cache cuando se llama el método \textit{reset} se crea una base de datos en memoria de los archivos en el espacio de nombres original y se rellena con todos las rutas devueltas por el filtro.
 
-En el organizador en el método \textit{reset} crea una base de datos en memoria del mapeo entre los archivos en el espacio de nombres original y los archivos en el espacio de nombres transformado y finalmente llena su base de datos llamando el método \textit{generateallpaths}. Este método pasa cada una de las rutas en el espacio de nombres original que tiene el cache al método \textit{generatepaths} que devuelve las rutas en el espacio de nombres transformado. Si se construyo el organizador con \textit{recursive=True} también pasa cada uno de los subdirs que se encuentran en cada ruta. Por ejemplo para ``\path{/tmp/directorio/subdir1/subdir2/subdir3/unarchivo.txt}'' y con \textit{root}=\path{/tmp/directorio/} se pasaría esta lista de archivos:
+En el organizador en el método \textit{reset} crea una base de datos en memoria del mapeo entre los archivos en el espacio de nombres original y los archivos en el espacio de nombres transformado y finalmente llena su base de datos llamando el método \textit{generateallpaths}. Este método pasa cada una de las rutas en el espacio de nombres original que tiene el cache al método \textit{generatepaths} que devuelve las rutas en el espacio de nombres transformado. Si se construyó el organizador con \textit{recursive=True} también pasa cada uno de los subdirs que se encuentran en cada ruta. Por ejemplo para ``\path{/tmp/directorio/subdir1/subdir2/subdir3/unarchivo.txt}'' y con \textit{root}=\path{/tmp/directorio/} se pasaría esta lista de archivos:
 
 \begin{itemize}
 \item \path{/tmp/directorio/subdir1/}
@@ -94,9 +94,11 @@ Esta clase puede sobreescribir cualquier método de la clase Cache pero en espec
 
 Este método recibe como parámetros el path en el sistema de archivos transformado, varias banderas y el modo en el que se requiere abrir un archivo. Entre las banderas posibles se encuentran las banderas que usa la funcion open de C estandar como O\_CREAT, O\_RDONLY, etc.
 
-El modo es un modo que contiene ``r'' si se requiere escribir en el archivo, ``w'' si se requiere escribir ``w+'' si se requiere leer y escribir. Si se requiere que no se sobreescriba el archivo si existe y se quiere agregar contenido se puede recibir ``a' en vez de ``w''.
+El modo es una cadena que contiene ``r'' si se requiere escribir en el archivo, ``w'' si se requiere escribir ``w+'' si se requiere leer y escribir. Si se requiere que no se sobreescriba el archivo si existe y se quiere agregar contenido se puede recibir ``a'' en vez de ``w''.
 
 El método debe devolver un descriptor o numero de archivo POSIX y un \textit{objeto tipo archivo} de python.
+
+Es posible sobreescribir la clase interna \textit{Cache.DejumbleFile} que se encarga de acceder a los archivos para dar más flexibilidad al cache que se quiera implementar. 
 
 Como ejemplo se puede ver \path{dejumblefs/caches/sandbox.py}~(\ref{dejumblefs/caches/sandbox.py}).
 
@@ -119,6 +121,17 @@ El método \textit{generatepaths} recibe una ruta al archivo en el sistema de ar
 El método \textit{increasefilename} se llama en caso de que haya conflicto al usar una ruta de las devueltas por generatepaths. Este método recibe la ruta del archivo en el espacio de nombres transformado y la modifica para evitar el conflicto. Por ejemplo la implementación por defecto de este método transforma ``algún archivo.txt'' a ``algún archivo(1).txt'' y en caso de que se vuelva a llamar en ``algun archivo(2).txt''.
 
 Como ejemplo se puede ver \path{dejumblefs/organizers/iso9660.py}~(\ref{dejumblefs/organizers/iso9660.py}).
+
+
+\section{Otras consideraciones}
+
+Existe un directorio especial en todos los sistemas de archivos creados por DejumbleFS llamado \path{.dejumblefs}. Dentro de este directorio se encuentran 3 directorios.
+
+\begin{itemize}
+\item[root] Contiene un proxy transparente a los contenidos de la carpeta que se usó como \textit{root} al momento de montar.
+\item[original] Contiene un proxy transparente a los contenidos de la carpeta que se usó como \textit{target} al momento de montar.
+\item[commands] Contiene una lista de comandos que se pueden ejecutar sobre el sistema de archivos, actualmente sólo \path{umount} que prepara el sistema para ser desmontado. Estos comandos están declarados en la clase \textit{CommandHandler} en el archivo \path{dejumblefs/fs.py}~(\ref{dejumblefs/fs.py}).
+\end{itemize}
 
 
 % ------------------------------------------------------------------------

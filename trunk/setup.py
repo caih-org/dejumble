@@ -11,7 +11,15 @@ time, metadata, etc. This search an be a shell script (find, locate, etc) or
 many other backends as a xesam filter.
 """
 
-classifiers = """\
+from distutils.core import setup
+
+try:
+    # Just for development to be able to do sudo python setup.py develop
+    import py2app
+except ImportError:
+    pass
+
+_classifiers = """\
 Development Status :: 4 - Beta
 Intended Audience :: Developers
 License :: OSI Approved :: GNU General Public License (GPL)
@@ -20,9 +28,6 @@ Topic :: System :: Filesystems
 Topic :: Software Development :: Libraries :: Python Modules
 Operating System :: POSIX
 """
-
-from distutils.core import setup
-import py2app
 
 doclines = __doc__.strip().splitlines()
 
@@ -43,7 +48,7 @@ setup(name='dejumblefs',
       license='http://www.gnu.org/copyleft/gpl.html',
       platforms=['unix', 'linux', 'mac'],
       description=doclines[0],
-      classifiers=filter(None, classifiers.splitlines()),
+      classifiers=filter(None, _classifiers.splitlines()),
       long_description='\n'.join(doclines[2:]),
       app=['dejumblefs/ui/dejumblegui.py'],
       install_requires=['psyco>=1.6',

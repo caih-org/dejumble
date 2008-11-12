@@ -6,11 +6,11 @@ Aquí están algunas guías para compilar y ejecutar el código fuente para este
 
 \subsection{Python}
 
-Para instalar python ver la pagina web \url{http://www.python.org}. Se recomienda la última versión.
+Para instalar Python ver la página web \url{http://www.python.org}. Se recomienda la última versión. MacOS 10.5 viene con un paquete de Python adecuado y en Linux generalmente se puede usar el manejador de paquetes de la distribución para instalarlo si no está instalado por defecto.
 
 \subsection{FUSE}
 
-No se necesita instalar fuse en linux ya que es parte del kernel desde la versión 2.6.14. En MacOS X se recomienda usar MacFUSE (\url{http://code.google.com/p/macfuse/}). Ver el sitio web para más información.
+No se necesita instalar fuse en linux ya que es parte del kernel desde la versión 2.6.14. En MacOS X se recomienda usar MacFUSE (\url{http://code.google.com/p/macfuse/}). Ver el sitio web para más información. Al momento no existe una implementación para plataformas Windows.
 
 \subsection{Módulos de Python}
 
@@ -23,7 +23,13 @@ Los siguientes módulos de python son necesarios para ejecutar la aplicación:
 \item PyDbLite (\url{http://quentel.pierre.free.fr/PyDbLite/index.html})
 \end{enumerate}
 
-Para instalarlos se puede usar easy\_install (parte de python) para instalar estos paquetes con excepción de PyDbLite.
+Para instalarlos se puede usar easy\_install (se instala automáticamente con Python) de la situiente manera
+
+\begin{verbatim}
+easy_install [nombre_del_paquete]
+\end{verbatim}
+
+Para PyDbLite existe una carpeta llamada \path{support/PyDbLite} donde se puede usar el mismo comando de \path{easy_install} para instalarlo.
 
 \subsection{Proctor}
 
@@ -42,6 +48,8 @@ Para instalar:
 \begin{verbatim}
 sudo python setup.py install
 \end{verbatim}
+
+\subsection{Pruebas}
 
 Existe un script en el directorio \path{test_scripts} que ejecuta estos comandos y además ejecuta los unit tests que existen. Para usar este script simplemente llamar:
 

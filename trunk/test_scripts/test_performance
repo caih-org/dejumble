@@ -1,20 +1,27 @@
 #!/bin/sh
 
-cd `dirname $0`
+B="`dirname $0`"
 
-mkdir /tmp/dejumblefs_1
-mkdir /tmp/dejumblefs_2
+cd "$B"
 
-dejumble /tmp/dejumblefs_1 -o root="/tmp/dejumblefs_2",filter="$2",cache="$3",organizer="$4",noappledouble
+D1="`pwd`/tmp/dejumblefs_1"
+D2="`pwd`/tmp/dejumblefs_2"
+
+mkdir -p "$D1"
+mkdir -p "$D2"
 
 echo Ejecutando prueba A...
-./test_createdelete /tmp/dejumblefs_1 /tmp/dejumblefs_2 > pruebaA-$1.dat
+dejumble "$D1" -o root="$D2",filter="$2",cache="$3",organizer="$4"
+./test_createdelete "$D1" "$D2" > pruebaA-$1.dat
+umountdejumble "$D1"
+
 echo Ejecutando prueba B...
-./test_createcontent /tmp/dejumblefs_1 /tmp/dejumblefs_2 > pruebaB-$1.dat
+dejumble "$D1" -o root="$D2",filter="$2",cache="$3",organizer="$4"
+./test_createcontent "$D1" "$D2" > pruebaB-$1.dat
+umountdejumble "$D1"
+
 echo Los resultados fueron guardados en pruebaA-$1.dat y pruebaB-$1.dat
 
-umountdejumble /tmp/dejumblefs_1
-
-rm -rf /tmp/dejumblefs_1
-rm -rf /tmp/dejumblefs_2
+rm -rf "$D1"
+rm -rf "$D2"
 
