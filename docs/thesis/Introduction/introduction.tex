@@ -9,10 +9,10 @@
 Los sistemas de archivos han estado presentes en el mundo de la informática desde hace muchas décadas. Principalmente, un sistema de archivos nos permite almacenar datos en un disco de una manera organizada. Existen muchos diferentes tipos de sistemas de archivo, pero parece que después de muchos años de desarrollo el paradigma básico de organización de archivos no ha podido evolucionar más allá de una organización jerárquica de directorios y archivos. Esta estructura está fijada a nivel del kernel en distintos sistemas operativos. Estas son algunas de las suposiciones que hacen los sistemas de archivos en general:
 
 \begin{itemize}
-\item Existe un punto de montaje root que corresponde a / donde se montará un solo sistema de archivos físico que se le viene a llamar root filesystem.
-\item Existe un sistema de archivos virtual que tiene una estructura jerárquica de directorios, es decir, se puede encontrar directorios en root y dentro de cualquier directorio. Estos directorios pertenecen a un solo sistema de archivos físico.
+\item Existe un punto de montaje root que corresponde a / donde se montará un sólo sistema de archivos físico que se le viene a llamar root filesystem.
+\item Existe un sistema de archivos virtual que tiene una estructura jerárquica de directorios, es decir, se puede encontrar directorios en root y dentro de cualquier directorio. Estos directorios pertenecen a un sólo sistema de archivos físico.
 \item Se puede montar otros sistemas de archivos físicos en cualquier parte de este sistema de archivos virtual, pero un sistema de archivos solo puede controlar la jerarquía comenzando en el punto en el que está montado para adentro.
-\item Un archivo pertenece a un solo sistema de archivos y puede tener varios hard-links en diferentes directorios solo dentro de su propio sistema de archivos físico. El proceso de creación y borrado de estos hard-links tiene que ser ejecutado por parte del usuario y no se mantiene automáticamente por parte del kernel o del sistema de archivos físico. Además esta característica es raramente usada por las aplicaciones comunes de escritorio.
+\item Un archivo pertenece a un sólo sistema de archivos y puede tener varios hard-links en diferentes directorios solo dentro de su propio sistema de archivos físico. El proceso de creación y borrado de estos hard-links tiene que ser ejecutado por parte del usuario y no se mantiene automáticamente por parte del kernel o del sistema de archivos físico. Además esta característica es raramente usada por las aplicaciones comunes de escritorio.
 \item La mayoría funciones de los diferentes reciben una ruta para manejar archivos. Aunque también muchas funciones reciben un numero de archivo o file descriptor, este es generado por el kernel y para el caso de archivos en un sistema de archivos físico este número siempre es asignado a partir de una ruta de un archivo en el sistema de archivos.
 \item Todas las aplicaciones de usuario que requieren leer o escribir archivos utilizan rutas en algún momento para acceder a los archivos.
 \end{itemize}
@@ -56,7 +56,7 @@ POSIX significa Portable Operating System Interface. El estándar de sistemas de
 
 \subsection{XESAM}
 
-XEXAM significa eXtEnsible Search And Metadata specification. Este estandar busca unificar la interfaz que usan los programas de usuario con sistemas de búsqueda de archivos. Existen varios programas como Tracker o Beagle que proveen a los usuarios con una infraestructura de búsqueda de archivos dentro de sus computadores. Cada uno de estos programas por el momento proveen con interfaces gráficas y de consola para ejecutar las búsquedas, pero también implementan la interfaz XESAM para poder ser usados desde otras aplicaciones de una manera independiente.
+XEXAM significa eXtEnsible Search And Metadata specification. Este estándar busca unificar la interfaz que usan los programas de usuario con sistemas de búsqueda de archivos. Existen varios programas como Tracker o Beagle que proveen a los usuarios con una infraestructura de búsqueda de archivos dentro de sus computadores. Cada uno de estos programas por el momento proveen con interfaces gráficas y de consola para ejecutar las búsquedas, pero también implementan la interfaz XESAM para poder ser usados desde otras aplicaciones de una manera independiente.
 
 %%% ----------------------------------------------------------------------
 
