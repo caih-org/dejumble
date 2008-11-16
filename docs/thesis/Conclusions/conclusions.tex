@@ -6,11 +6,11 @@
     \graphicspath{{Conclusions/ConclusionsFigs/EPS/}{Conclusions/ConclusionsFigs/}}
 \fi
 
-Luego de implementar el sistema de archivos proxy ponerlo a prueba se puede concluir que es factible la creación de sistemas de archivos proxy. Los resultados de las pruebas son mixtos con resultados excelentes en las pruebas de creación de archivos con contenido y resultados mixtos en la creación y borrado de múltiples archivos.
+Luego de implementar el sistema de archivos proxy ponerlo a prueba se puede concluir que es factible la creación de sistemas de archivos proxy. Los resultados de las pruebas son mixtos con resultados excelentes en las pruebas de creación de archivos con contenido y resultados buenos en la creación y borrado de múltiples archivos.
 
 \section{Resultados de creación y borrado de archivos}
 
-Se puede observar claramente que el área en el que necesita mejorar en general es con el manejo de listas de archivos crecientes. Esto es más notable al usar cualquier Organizador que se base en TagOrganizer, el tiempo de respuesta del sistema de archivos crece exponencialmente en este caso. Para los otros casos el tiempo de respuesta se altera linealmente con respecto al tiempo de respuesta del sistema de archivos original.
+En el caso de manejo de listas de archivos crecientes, el tiempo de respuesta se altera linealmente con respecto al tiempo de respuesta del sistema de archivos original, es decir tiene un tiempo de ejecución de O(n). El tiempo que le toma al sistema de archivos proxy crear y borrar archivos es en promedio el doble que si se usa el sistema de archivos normal.
 
 \section{Resultados de creación de archivos con contenido}
 
@@ -18,7 +18,13 @@ En el caso de crear archivos con contenido la penalización que se sufre por usa
 
 \section{Recomendaciones}
 
-Es necesario realizar un perfilado de la aplicación para averiguar cuales son las funciones que toman más tiempo en ejecutarse. De esta manera se puede empezar a optimizar el tiempo de procesamiento. Otro camino a seguir es crear más indices en las bases de datos en memoria de los archivos buscando una mayor optimización del tiempo de consulta con la desventaja de que esto probablemente haría que el sistema de archivos proxy use más memoria.
+En un uso cotidiano de diferentes configuraciones del sistema de archivos proxy no es muy notable el tiempo que toma crear o borrar un archivo. Estas operaciones son en general muy pocas para usuarios normales. En cambio la mayoría de usuarios acceden a sus archivos muchas veces y cambian su contenido constantemente. 
+
+Existen ciertas áreas del sistema de archivos que se modifican constantemente, creando y borrando archivos como por ejemplo los archivos temporales de internet. En este caso no sería práctico usar un sistema de archivos proxy en esa localización por dos razones. Primero, es un área que los usuarios normalmente no acceden directamente si no accede solamente el navegador y, segundo, el navegador espera una estructura especial para esa área y al usar un sistema de archivos proxy seguramente estaríamos cambiando esa estructura de directorios y archivos y el navegador no encontraría los archivos temporales. 
+
+Sin embargo existen otras áreas del sistema de archivos que los usuarios acceden constantemente como son las carpetas donde se guardan documentos o imágenes. Estas carpetas pueden hacer uso de un sistema de archivos proxy para organizarse mejor. Habría que tomar una precaución que sería en el caso de que se desee copiar muchos archivos de un disco externo u otra localización a estas carpetas. En ese caso sería mejor desmontar temporalmente el sistema de archivos proxy para hacer la copia y luego volverlo a montar ya que en este caso si estaríamos creando muchos archivos y el sistema de archivos proxy puede afectar en el desempeño. 
+
+En todo caso sería interesante poder hacer un estudio de usabilidad de los sistemas de archivo proxy con un grupo de usuarios no técnicos en el que se mida también patrones de uso del sistema de archivos en una sesión de usuario normal.
 
 
 
