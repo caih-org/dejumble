@@ -6,14 +6,22 @@
     \graphicspath{{Introduction/IntroductionFigs/EPS/}{Introduction/IntroductionFigs/}}
 \fi
 
-Los sistemas de archivos han estado presentes en el mundo de la informática desde hace muchas décadas. Principalmente, un sistema de archivos nos permite almacenar datos en un disco de una manera organizada. Existen muchos diferentes tipos de sistemas de archivo, pero parece que después de muchos años de desarrollo el paradigma básico de organización de archivos no ha podido evolucionar más allá de una organización jerárquica de directorios y archivos. Esta estructura está fijada a nivel del kernel en distintos sistemas operativos. Debido a esto todas las aplicaciones que requieren leer o escribir archivos están basadas en esta estructura.
+Los sistemas de archivos han estado presentes en el mundo de la informática desde hace muchas décadas. Principalmente, un sistema de archivos nos permite almacenar datos en un disco de una manera organizada. Existen muchos diferentes tipos de sistemas de archivo, pero parece que después de muchos años de desarrollo el paradigma básico de organización de archivos no ha podido evolucionar más allá de una organización jerárquica de directorios y archivos. Esta estructura está fijada a nivel del kernel en distintos sistemas operativos. Estas son algunas de las suposiciones que hacen los sistemas de archivos en general:
 
-A partir de fines de los 90's y en especial desde el 2000, empezaron a aparecer ciertas aplicaciones que permiten buscar y categorizar archivos dentro de una computadora y mas adelante incluso indexar varias computadoras. También los programas que manejan música, imágenes, vídeos y otros archivos multimedia empezaron a incluir dentro de sus características indexadores y sistemas de categorización. Esto fue necesario ya que las colecciones multimedia de los usuarios empezaron a crecer a un ritmo altísimo debido a varios factores como la popularización de formatos como el mp3 o sistemas de compartición de archivos tipo P2P. Lentamente la información de organización de los archivos fue perdiendo importancia en el sistema de archivos y cada aplicación empezó a guardar su propia información al respecto.
+\begin{itemize}
+\item Existe un punto de montaje root que corresponde a / donde se montará un solo sistema de archivos físico que se le viene a llamar root filesystem.
+\item Existe un sistema de archivos virtual que tiene una estructura jerárquica de directorios, es decir, se puede encontrar directorios en root y dentro de cualquier directorio. Estos directorios pertenecen a un solo sistema de archivos físico.
+\item Se puede montar otros sistemas de archivos físicos en cualquier parte de este sistema de archivos virtual, pero un sistema de archivos solo puede controlar la jerarquía comenzando en el punto en el que está montado para adentro.
+\item Un archivo pertenece a un solo sistema de archivos y puede tener varios hard-links en diferentes directorios solo dentro de su propio sistema de archivos físico. El proceso de creación y borrado de estos hard-links tiene que ser ejecutado por parte del usuario y no se mantiene automáticamente por parte del kernel o del sistema de archivos físico. Además esta característica es raramente usada por las aplicaciones comunes de escritorio.
+\item La mayoría funciones de los diferentes reciben una ruta para manejar archivos. Aunque también muchas funciones reciben un numero de archivo o file descriptor, este es generado por el kernel y para el caso de archivos en un sistema de archivos físico este número siempre es asignado a partir de una ruta de un archivo en el sistema de archivos.
+\item Todas las aplicaciones de usuario que requieren leer o escribir archivos utilizan rutas en algún momento para acceder a los archivos.
+\end{itemize}
 
-Hubo varios intentos de generar nuevos sistemas de archivos que permitan guardar metadata acerca de los archivos para poder luego encontrarlos más fácilmente. Estos sistemas no han llegado a popularizarse en especial por que no han podido superar a los sistemas de archivos tradicionales. Estos sistemas han pasado por un periodo de desarrollo muy largo, lo que les ha permitido aumentar su desempeño y fiabilidad, consolidando sus algoritmos de uso de espacio de disco y organización de la jerarquía de directorios.
+A partir de fines de los 90's y en especial desde el 2000, empezaron a aparecer ciertas aplicaciones que permiten buscar y categorizar archivos dentro de una computadora y mas adelante incluso indexar varias computadoras. También los programas que manejan música, imágenes, vídeos y otros archivos multimedia empezaron a incluir dentro de sus características indexadores y sistemas de categorización. Esto fue necesario ya que las colecciones multimedia de los usuarios empezaron a crecer a un ritmo altísimo debido a varios factores como la popularización de formatos como el mp3 o sistemas de compartición de archivos tipo P2P. Lentamente la información de organización de los archivos fue perdiendo importancia en el sistema de archivos y cada aplicación empezó a guardar su propia información al respecto tanto que muchos programas, como la mayoría de reproductores de música, prefieren tener su propia base de datos acerca de los archivos y sus características a hacer uso de una organización jerárquica en el sistema de archivos.
+
+Existen varios intentos de generar nuevos sistemas de archivos que permitan guardar metadata acerca de los archivos para poder luego encontrarlos más fácilmente como TagFS (varios), Tagsistant, LFS. Estos sistemas no han llegado a popularizarse en especial por que no han podido superar a los sistemas de archivos tradicionales. Los sistemas tradicionales han pasado por un periodo de desarrollo muy largo, lo que les ha permitido aumentar su desempeño y fiabilidad, consolidando sus algoritmos de uso de espacio de disco y organización de la jerarquía de directorios.
 
 Es por eso que este proyecto pretende presentar una alternativa con la cual se pueda experimentar con sistemas de archivos diferentes sin necesidad de reimplementar los algoritmos de uso de disco. Esto sería posible creando una capa de adaptación que serviría de proxy al sistema de archivos que sirve de base. Esto permitiría crear sistemas de archivo proxy.
-
 
 \section{Historia de los sistemas de archivos}
 
@@ -35,7 +43,8 @@ Como lenguaje base para la programación se escogió python (\url{http://www.pyt
 
 \subsection{Google Code}
 
-Para mantener el código de este proyecto se escogió usar los servicios de Google Code creando un proyecto llamado ``dejumble'' (\url{http://code.google.com/p/dejumble}) donde se podrá encontrar todo el código fuente del sistema así como el código fuente para generar esta tesis, todo publicado bajo una licencia GPLv3 (\url{http://www.gnu.org/licenses/gpl.html}).
+Para mantener el código de este proyecto se escogió usar los servicios de Google Code creando un proyecto llamado ``dejumble'' (\url{http://code.google.com/p/dejumble}) donde se podrá encontrar todo el código fuente del sistema así como el código fuente para generar esta tesis, todo publicado bajo una licencia GPLv3 (\url{http://www.gnu.org/licenses/gpl.html}). Google Code provee servicios de versionamiento basado en Subversion y almacenamiento de instaladores o paquetes. 
+
 
 \subsection{FUSE}
 
@@ -43,11 +52,11 @@ Fuse es un conjunto de una biblioteca y un módulo de kernel para varios sistema
 
 \subsection{Sistemas de archivo POSIX}
 
-El estándar de sistemas de archivo POSIX es el IEEE Std 1003.1. Este estándar define varias estructuras de datos relacionadas con sistemas de archivos así como también estandariza la manera en que un sistema de archivos debe reaccionar frente a ciertas acciones y comandos. Define restricciones de seguridad. La mayoría de sistemas de archivos usados hoy en día en sistemas UNIX/LINUX se apegan a este estándar.
+POSIX significa Portable Operating System Interface. El estándar de sistemas de archivo POSIX es el IEEE Std 1003.1. Este estándar define varias estructuras de datos relacionadas con sistemas de archivos así como también estandariza la manera en que un sistema de archivos debe reaccionar frente a ciertas acciones y comandos. Define restricciones de seguridad. La mayoría de sistemas de archivos usados hoy en día en sistemas UNIX/LINUX se apegan a este estándar.
 
 \subsection{XESAM}
 
-XESAM busca unificar la interfaz que usan los programas de usuario con sistemas de búsqueda de archivos. Existen varios programas como Tracker o Beagle que proveen a los usuarios con una infraestructura de búsqueda de archivos dentro de sus computadores. Cada uno de estos programas por el momento proveen con interfaces gráficas y de consola para ejecutar las búsquedas, pero también implementan la interfaz XESAM para poder ser usados desde otras aplicaciones de una manera independiente.
+XEXAM significa eXtEnsible Search And Metadata specification. Este estandar busca unificar la interfaz que usan los programas de usuario con sistemas de búsqueda de archivos. Existen varios programas como Tracker o Beagle que proveen a los usuarios con una infraestructura de búsqueda de archivos dentro de sus computadores. Cada uno de estos programas por el momento proveen con interfaces gráficas y de consola para ejecutar las búsquedas, pero también implementan la interfaz XESAM para poder ser usados desde otras aplicaciones de una manera independiente.
 
 %%% ----------------------------------------------------------------------
 
