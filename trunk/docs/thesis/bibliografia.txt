@@ -4,5 +4,8 @@ http://xesam.org/
 http://www.valhenson.org/fs_slides.pdf
 http://www.unix.org/single_unix_specification/
 http://www.gnu.org/licenses/gpl.html
+http://en.wikipedia.org/wiki/Inode
+http://lxr.linux.no/linux+v2.6.27.6
+http://www.cse.unsw.edu.au/~neilb/oss/linux-commentary/vfs-7.html
 
 
