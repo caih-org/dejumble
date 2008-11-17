@@ -1,7 +1,50 @@
-\chapter{Introducción teorica}
+\chapter{Introducción teórica}
 
-\section{El Kernel}
+En este capítulo se explicará con más detalle como funcionan los sistemas de archivos en el sistema operativo Linux. Estos conceptos se aplican de manera similar a otros sistemas operativos.
 
+
+\section{Historia de los sistemas de archivos}
+
+En el entorno UNIX, el primer sistema de archivos apareció en 1974 y se llamaba simplemente ``FS'' aunque generalmente se lo denominaba S5FS, que se refiere a System V FS. Este era un sistema de archivos basado en superbloques y inodes. Era muy lento, podía usar solamente entre el 2\% y el 5\% del ancho de banda del disco. Más adelante aparecieron sistemas de archivos como el Berkeley File System en 1974 que daba hasta cerca de un 50\% de uso del ancho de banda del disco. Este sistema fue muy utilizado y actualizado varias veces. En 1991 se creo el Log-Structured File System que daba un 70\% de eficiencia en el uso del disco al momento de escribir. Fue de los primeros en usar un Log para evitar tener que revisar todo el disco en casos de fallos. En 1993 se inventó ext2, y mas adelante se actualizó a ext3. Estos sistemas usan hasta ahora un sistema de journaling y su efectividad de acceso al disco es muy alta. Más adelante aparecieron otros sistemas como XFS, JFS, ReiserFS. Pero realmente un salto en utilidad lo dio ZFS que permite creación de volúmenes y discos en RAID con muy poca configuración además de poder guardar instantáneas del disco en cualquier momento, es siempre consistente por lo que no necesita un programa para corrección de errores, puede cambiar su tamaño mientras el sistema está montado, etc. Pero aún así todos estos sistemas continúan usando los mismos conceptos de superbloque, dentries y inodes que usaba el S5FS al principio de los tiempos.
+
+
+\section{El kernel de Linux}
+
+Para esta sección se usó como guía el código fuente de Linux de la versión 2.6.27.6. 
+
+\subsection{Un sistema de archivos}
+
+Un sistema de archivos es el encargado de organizar archivos en un dispositivo de hardware. Generalmente los sistemas de archivos manejan archivos en discos fijos o removibles pero también existen sistemas de archivos que manejan archivos en regiones de memoria o a través de una red. En el caso que un sistema de archivos se encuentre en un medio físico, este suele tener un superbloque, es decir un sector del disco que contiene la información sobre el sistema de archivos, así el kernel sabe como montar y manejar este disco. También existen otros sistemas de archivos que permiten el acceso a información sobre el sistema operativo como \textit{procfs} que permite tener una vista como archivos de los procesos que se están ejecutando en ese sistema.
+
+\subsection{El sistema de archivos virtual}
+
+Linux usa como una base para organizar los diferentes sistemas de archivos un sistema de archivos virtual donde se montan cada uno de los diferentes sistemas de archivos del sistema operativo. Este sistema de archivos virtual no contiene archivos ni directorios pero mantiene información acerca de que sistemas de archivos están montados. El sistema de archivos root (montado en \path{/}) es sobre el que se manejara el sistema de archivos virtual.
+
+La estructura de los sistemas de archivos que se montan en el sistema de archivos virtual se define en el archivo \path{include/linux/mount.h} con el nombre de \textit{vfsmount}. Esta estructura de datos define un \textit{dentry} que apunta al directorio donde se ha montado el sistema de archivos y también un puntero al superbloque del sistema de archivos. Además se define una lista de sistemas de archivos montados dentro de este sistema de archivos que se definen con la misma estructura de datos \textit{vfsmount}.
+
+\subsection{Los directorios}
+
+Los directorios se definen en linux con la estructura de datos \textit{dentry} definida en el archivo \path{include/linux/dcache.h}. Esta estructura de datos contiene una lista de nombres de archivos y los \textit{inodes} relacionados, una lista de subdirectorios y los \textit{dentries} relacionados con cada uno y un solo \textit{dentry} padre. A todos estos se los llama hard-links ya que solo pueden apuntar a \textit{inodes} y \textit{dentries} dentro del mismo sistema de archivos. También existen soft-links que son solo apuntadores que pueden apuntar a cualquier lugar del sistema de archivos virtual.
+
+\subsection{Los archivos}
+
+La estructura de datos \textit{inode} definida en el archivo \path{include/linux/fs.h} es la que se encarga de guardar información acerca de los archivos. Esta estructura no guarda información acerca del nombre del archivo ya que esta información se almacena en el \textit{dentry}.
+
+
+\section{Limitaciones}
+
+Existen algunas limitaciones en los conceptos sobre los que se basa el sistema de archivos virtual que pueden o no limitar las capacidades de organización que pueda necesitar una aplicación:
+
+\begin{itemize}
+\item Solo se permite solamente un padre por directorio. Existe la posibilidad de crear hard-links hacia directorios desde otros directorios pero esta práctica ha sido descalificada por presentar muchos problemas al dar la posibilidad de crear un gráfico ciclico de directorios. El único lugar donde se presenta esto es generalmente el directorio raiz para el cual su padre es si mismo.
+\item Los directorios pertenecen a un sólo sistema de archivos físico.
+\item Se puede montar otros sistemas de archivos físicos en cualquier parte de este sistema de archivos virtual, pero un sistema de archivos solo puede controlar la jerarquía comenzando en el punto en el que está montado para adentro.
+\item Un archivo pertenece a un sólo sistema de archivos y puede tener varios hard-links en diferentes directorios solo dentro de su propio sistema de archivos físico. El proceso de creación y borrado de estos hard-links tiene que ser ejecutado por parte del usuario y no se mantiene automáticamente por parte del kernel o del sistema de archivos físico. Además esta característica es raramente usada por las aplicaciones comunes de escritorio.
+\item La mayoría funciones que acceden al sistema de archivos reciben una ruta para manejar archivos. Aunque también muchas funciones reciben un número de archivo o file descriptor, este es generado por el kernel y para el caso de archivos en un sistema de archivos físico este número siempre es asignado a partir de una ruta de un archivo en el sistema de archivos.
+\item Todas las aplicaciones de usuario que requieren leer o escribir archivos utilizan rutas en algún momento para acceder a los archivos.
+\end{itemize}
+
+Debido a todas estas limitaciones es que en este proyecto se busca que el sistema de archivos proxy rompa estas limitaciones permitiendo a un archivo ubicarse en cualquier lugar del sistema de archivos proxy sin importar el sistema de archivos del cual proviene, incluso permitiendo tener diferentes archivos de diferentes sistemas de archivos en el mismo directorio.
 
 % ------------------------------------------------------------------------
 

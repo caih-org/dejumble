@@ -10,7 +10,7 @@ En este capítulo se presentará los resultados de las pruebas de desempeño rea
 
 \section{Metodología}
 
-Para estas realizar estas pruebas se utilizó scripts de bash que ejecutan un set de comandos tanto sobre el sistema de archivos original como sobre el sistema de archivos proxy montado. Estos scripts se los puede encontrar en \path{test_scripts/test_*}. Se utilizó una computadora MacBook Pro de 2.33 GHz Intel Core 2 Duo con 2 GB de RAM (667 MHz DDR2 SDRAM). Esta computadora corre Mac OS X 10.5.4 con todos los últimos patches disponibles al 1 de Septiembre del 2008. Además corre MacFUSE versión 1.7 y Python versión 2.5.1. Para realizar los gráficos se usó gnuplot versión 4.2 patchlevel 3. Todos los fuentes para la generación de los gráficos se encuentran en \path{docs/thesis/Chapter4/Chapter4Figs/*.gnu}. Los archivos de datos con los que se generó estos gráficos también están en el mismo directorio con la extensión \path{.dat}.
+Para estas realizar estas pruebas se utilizó scripts de bash que ejecutan un conjunto de comandos tanto sobre el sistema de archivos original como sobre el sistema de archivos proxy montado. Estos scripts se los puede encontrar en \path{test_scripts/test_*}. Se utilizó una computadora MacBook Pro de 2.33 GHz Intel Core 2 Duo con 2 GB de RAM (667 MHz DDR2 SDRAM). Esta computadora corre Mac OS X 10.5.4 con todos los últimos patches disponibles al 1 de Septiembre del 2008. Además corre MacFUSE versión 1.7 y Python versión 2.5.1. Para realizar los gráficos se usó gnuplot versión 4.2 patchlevel 3. Todos los fuentes para la generación de los gráficos se encuentran en \path{docs/thesis/Chapter4/Chapter4Figs/*.gnu}. Los archivos de datos con los que se generó estos gráficos también están en el mismo directorio con la extensión \path{.dat}.
 
 Cada prueba se ejecutó 10 ocasiones.  Se calculó un porcentaje promedio de penalidad de usar el sistema. Se escogió una de las 10 ejecuciones y se uso como fuente para los gráficos. El método de cálculo del promedio fue el siguiente:
 
@@ -24,7 +24,7 @@ c_{i} = \frac{b_{i}}{a_{i}}
 El porcentaje de cambio sería entonces lo expuesto en la ecuación (\ref{eqP}).
 
 \begin{equation}
-\label{eqC}
+\label{eqP}
 porcentaje_{i} = 100(c_{i} - 1)
 \end{equation}
 
@@ -39,7 +39,7 @@ Debido a que este valor indica la pendiente de la curva del porcentaje de cambio
 
 \subsection{Prueba A}
 
-La prueba A consiste en crear y borrar un numero de archivos vacíos. En esta prueba se varió el numero de archivos entre 50 y 500 con incrementos de 50 archivos. Con esta prueba se intenta analizar el impacto que tiene el sistema de archivos proxy con el manejo de estructuras de directorios en general.
+La prueba A consiste en crear y borrar un número de archivos vacíos. En esta prueba se varió el número de archivos entre 50 y 500 con incrementos de 50 archivos. Con esta prueba se intenta analizar el impacto que tiene el sistema de archivos proxy con el manejo de estructuras de directorios en general.
 
 \subsection{Prueba B}
 
@@ -59,13 +59,13 @@ Para el primer set de resultados se usó lo siguientes ajustes al momento de mon
 
 \subsection{Prueba A-1}
 
-La media de penalización de usar esta configuración fue de aproximadamente 91\% con un factor c de 1.906 y el resultado está graficado en la figura~(\ref{pruebaA-1}).
+Estos resultados corresponden a la ejecución de la prueba A usando la configuración 1. La media de penalización de usar esta configuración fue de aproximadamente 91\% con un factor c de 1.906 y el resultado está graficado en la figura~(\ref{pruebaA-1}).
 
 \InsertFig{\IncludeGraphicsH{pruebaA-1}{3in}{92 86 545 742}}{Resultados de la prueba A configuración 1}{pruebaA-1}
 
 \subsection{Prueba B-1}
 
-La media de penalización de usar esta configuración fue de aproximadamente 0\% con un factor c de 1.004 y el resultado está graficado en la figura~(\ref{pruebaB-1}).
+Estos resultados corresponden a la ejecución de la prueba B usando la configuración 1. La media de penalización de usar esta configuración fue de aproximadamente 0\% con un factor c de 1.004 y el resultado está graficado en la figura~(\ref{pruebaB-1}).
 
 \InsertFig{\IncludeGraphicsH{pruebaB-1}{3in}{92 86 545 742}}{Resultados de la prueba B configuración 1}{pruebaB-1}
 
@@ -83,13 +83,13 @@ Para el primer set de resultados se usó lo siguientes ajustes al momento de mon
 
 \subsection{Prueba A-2}
 
-La media de penalización de usar esta configuración fue de aproximadamente 144\% con un factor c de 2.438 y el resultado está graficado en la figura~(\ref{pruebaA-2}).
+Estos resultados corresponden a la ejecución de la prueba A usando la configuración 2. La media de penalización de usar esta configuración fue de aproximadamente 144\% con un factor c de 2.438 y el resultado está graficado en la figura~(\ref{pruebaA-2}).
 
 \InsertFig{\IncludeGraphicsH{pruebaA-2}{3in}{92 86 545 742}}{Resultados de la prueba A configuración 2}{pruebaA-2}
 
 \subsection{Prueba B-2}
 
-La media de penalización de usar esta configuración fue de aproximadamente 1\% con un factor c de 1.001 y el resultado está graficado en la figura~(\ref{pruebaB-2}).
+Estos resultados corresponden a la ejecución de la prueba B usando la configuración 2. La media de penalización de usar esta configuración fue de aproximadamente 1\% con un factor c de 1.001 y el resultado está graficado en la figura~(\ref{pruebaB-2}).
 
 \InsertFig{\IncludeGraphicsH{pruebaB-2}{3in}{92 86 545 742}}{Resultados de la prueba B configuración 2}{pruebaB-2}
 
@@ -106,13 +106,13 @@ Para el primer set de resultados se usó lo siguientes ajustes al momento de mon
 
 \subsection{Prueba A-3}
 
-La media de penalización de usar esta configuración fue de aproximadamente 98\% con un factor c de 1.976 y el resultado está graficado en la figura~(\ref{pruebaA-3}).
+Estos resultados corresponden a la ejecución de la prueba A usando la configuración 3. La media de penalización de usar esta configuración fue de aproximadamente 98\% con un factor c de 1.976 y el resultado está graficado en la figura~(\ref{pruebaA-3}).
 
 \InsertFig{\IncludeGraphicsH{pruebaA-3}{3in}{92 86 545 742}}{Resultados de la prueba A configuración 3}{pruebaA-3}
 
 \subsection{Prueba B-3}
 
-La media de penalización de usar esta configuración fue de aproximadamente 1\% con un factor c de 1.010 y el resultado está graficado en la figura~(\ref{pruebaB-3}).
+Estos resultados corresponden a la ejecución de la prueba B usando la configuración 3. La media de penalización de usar esta configuración fue de aproximadamente 1\% con un factor c de 1.010 y el resultado está graficado en la figura~(\ref{pruebaB-3}).
 
 \InsertFig{\IncludeGraphicsH{pruebaB-3}{3in}{92 86 545 742}}{Resultados de la prueba B configuración 3}{pruebaB-3}
 
