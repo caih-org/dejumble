@@ -43,12 +43,12 @@
 
 %Bibliography
 %uncomment next line to change bibliography name to references for Book document class
-\renewcommand{\bibname}{Referencias}
+\renewcommand{\bibname}{References}
 % note that this doesn't do much if you later define another bibliography style 
 
 
 % Nomenclature
-\usepackage[compatible]{nomencl}
+\usepackage{nomencl}
 \makeglossary
 \renewcommand\nomgroup[1]{%
   \ifthenelse{\equal{#1}{A}}{%
