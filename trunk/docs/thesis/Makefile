@@ -195,6 +195,7 @@ TEXFILES=$(wildcard *.tex)
 	@$(MAKEINDEX) -s nomencl.ist -o $*.gls $*.glo
 
 latex:
+	find * -mindepth 1 -name "Makefile" -execdir make \;
 # Below the 'true' is included to prevent unnecessarily many errors.
 	@if [ -n "${LATEXTARGET}" ]; then \
 		$(MAKE) ${LATEXTARGET}.dvi; \
@@ -304,6 +305,7 @@ clean latexclean::
 			fi \
 		done \
 	fi
+	find * -mindepth 1 -name "Makefile" -execdir make clean\;
 
 cleanpspdf : clean
 	@rm -f *.ps *.pdf
