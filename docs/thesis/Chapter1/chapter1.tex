@@ -5,12 +5,12 @@ En este capítulo se explicará con más detalle como funcionan los sistemas de 
 
 \section{Historia de los sistemas de archivos}
 
-En el entorno UNIX, el primer sistema de archivos apareció en 1974 y se llamaba simplemente ``FS'' aunque generalmente se lo denominaba S5FS, que se refiere a System V FS. Este era un sistema de archivos basado en superbloques y inodes. Era muy lento, podía usar solamente entre el 2\% y el 5\% del ancho de banda del disco. Más adelante aparecieron sistemas de archivos como el Berkeley File System en 1974 que daba hasta cerca de un 50\% de uso del ancho de banda del disco. Este sistema fue muy utilizado y actualizado varias veces. En 1991 se creo el Log-Structured File System que daba un 70\% de eficiencia en el uso del disco al momento de escribir. Fue de los primeros en usar un Log para evitar tener que revisar todo el disco en casos de fallos. En 1993 se inventó ext2, y mas adelante se actualizó a ext3. Estos sistemas usan hasta ahora un sistema de journaling y su efectividad de acceso al disco es muy alta. Más adelante aparecieron otros sistemas como XFS, JFS, ReiserFS. Pero realmente un salto en utilidad lo dio ZFS que permite creación de volúmenes y discos en RAID con muy poca configuración además de poder guardar instantáneas del disco en cualquier momento, es siempre consistente por lo que no necesita un programa para corrección de errores, puede cambiar su tamaño mientras el sistema está montado, etc. Pero aún así todos estos sistemas continúan usando los mismos conceptos de superbloque, dentries y inodes que usaba el S5FS al principio de los tiempos.
+En el entorno UNIX, el primer sistema de archivos apareció en 1974 y se llamaba simplemente ``FS'' aunque generalmente se lo denominaba S5FS, que se refiere a System V FS. Este era un sistema de archivos basado en superbloques y inodes. Era muy lento, podía usar solamente entre el 2\% y el 5\% del ancho de banda del disco. Más adelante aparecieron sistemas de archivos como el Berkeley File System en 1974 que daba hasta cerca de un 50\% de uso del ancho de banda del disco. Este sistema fue muy utilizado y actualizado varias veces. En 1991 se creo el Log-Structured File System que daba un 70\% de eficiencia en el uso del disco al momento de escribir. Fue de los primeros en usar un Log para evitar tener que revisar todo el disco en casos de fallos. En 1993 se inventó ext2, y mas adelante se actualizó a ext3. Estos sistemas usan hasta ahora un sistema de journaling y su efectividad de acceso al disco es muy alta. Más adelante aparecieron otros sistemas como XFS, JFS, ReiserFS. Pero realmente un salto en utilidad lo dio ZFS que permite creación de volúmenes y discos en RAID con muy poca configuración además de poder guardar instantáneas del disco en cualquier momento, es siempre consistente por lo que no necesita un programa para corrección de errores, puede cambiar su tamaño mientras el sistema está montado, etc. Pero aún así todos estos sistemas continúan usando los mismos conceptos de superbloque, dentries y inodes que usaba el S5FS al principio de los tiempos.~(\cite{history:website})
 
 
 \section{El kernel de Linux}
 
-Para esta sección se usó como guía el código fuente de Linux de la versión 2.6.27.6. 
+Para esta sección se usó como guía el código fuente de Linux de la versión 2.6.27.6.~(\cite{linuxsource:website})
 
 \subsection{Un sistema de archivos}
 
@@ -18,7 +18,7 @@ Un sistema de archivos es el encargado de organizar archivos en un dispositivo d
 
 \subsection{El sistema de archivos virtual}
 
-Linux usa como una base para organizar los diferentes sistemas de archivos un sistema de archivos virtual donde se montan cada uno de los diferentes sistemas de archivos del sistema operativo. Este sistema de archivos virtual no contiene archivos ni directorios pero mantiene información acerca de que sistemas de archivos están montados. El sistema de archivos root (montado en \path{/}) es sobre el que se manejara el sistema de archivos virtual.
+Linux usa como una base para organizar los diferentes sistemas de archivos un sistema de archivos virtual donde se montan cada uno de los diferentes sistemas de archivos del sistema operativo. Este sistema de archivos virtual no contiene archivos ni directorios pero mantiene información acerca de que sistemas de archivos están montados. El sistema de archivos root (montado en \path{/}) es sobre el que se manejara el sistema de archivos virtual.~(\cite{vfs:website})
 
 La estructura de los sistemas de archivos que se montan en el sistema de archivos virtual se define en el archivo \path{include/linux/mount.h} con el nombre de \textit{vfsmount}. Esta estructura de datos define un \textit{dentry} que apunta al directorio donde se ha montado el sistema de archivos y también un puntero al superbloque del sistema de archivos. Además se define una lista de sistemas de archivos montados dentro de este sistema de archivos que se definen con la misma estructura de datos \textit{vfsmount}.
 
@@ -28,7 +28,7 @@ Los directorios se definen en linux con la estructura de datos \textit{dentry} d
 
 \subsection{Los archivos}
 
-La estructura de datos \textit{inode} definida en el archivo \path{include/linux/fs.h} es la que se encarga de guardar información acerca de los archivos. Esta estructura no guarda información acerca del nombre del archivo ya que esta información se almacena en el \textit{dentry}.
+La estructura de datos \textit{inode} definida en el archivo \path{include/linux/fs.h} es la que se encarga de guardar información acerca de los archivos. Esta estructura no guarda información acerca del nombre del archivo ya que esta información se almacena en el \textit{dentry}.~(\cite{inode:wikipedia})
 
 
 \section{Limitaciones}
