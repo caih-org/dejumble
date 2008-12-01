@@ -1,8 +1,0 @@
-#!/bin/sh
-
-A=`echo $1 | egrep -o "[A-Z]"`
-B=`echo $1 | egrep -o "[1-9]"`
-
-echo FILE=\"prueba$A-$B\"
-cat prueba$A.gnu
-
