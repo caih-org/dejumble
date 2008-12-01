@@ -1,0 +1,92 @@
+\chapter{Sistema Base}
+\ifpdf
+    \graphicspath{{Chapter2/Chapter2Figs/PNG/}{Chapter2/Chapter2Figs/PDF/}{Chapter2/Chapter2Figs/}}
+\else
+    \graphicspath{{Chapter2/Chapter2Figs/EPS/}{Chapter2/Chapter2Figs/}}
+\fi
+
+\section{Descripción general del sistema}
+
+En Linux el sistema de archivos proxy se monta en una ruta dentro del VFS (Virtual File System). En otros sistemas operativos sucede un proceso casi idéntico. Cuando una aplicación accede a esta ruta se llama a través del kernel al módulo de FUSE que a su vez llama al sistema de archivos proxy instalado en el espacio de usuario. El sistema de archivos proxy accede al sistema de archivos original a través del VFS como se puede ver en la figura~(\ref{kernel}).
+
+\InsertFig{\IncludeGraphicsH{kernel}{2in}{92 86 545 742}}{Comunicación con el kernel}{kernel}
+
+Para efectos prácticos, el sistema de archivos proxy, entonces, se sitúa en medio de el sistema de archivos original y la aplicaciones de usuario como en la siguiente figura~(\ref{proxy}).
+
+\InsertFig{\IncludeGraphicsH{proxy}{1.5in}{92 86 545 742}}{Sistema proxy}{proxy}
+
+Para poder permitir una mayor modularización de un sistema de archivos proxy, se ha dividido este en varios componentes. Estos componentes son, en general, independientes unos de otros para permitir usarlos en diversas combinaciones~(\ref{general}).
+
+\InsertFig{\IncludeGraphicsH{general}{3.5in}{92 86 545 742}}{Diseño general}{general}
+
+En este gráfico se definen dos áreas dentro del sistema de archivos proxy. La primera se define como ``Espacio de nombres original''. En esta área todos los componentes tratan a los archivos con sus nombres y rutas tal y como están en el sistema de archivos original. La segunda área se denomina ``Espacio de nombres transformado''. En esta área se referencia a los archivos por su nombres y rutas una vez convertidas por el organizador.
+
+De estos módulos sólo la interfaz con FUSE es la única que no puede cambiar. Para el resto de módulos se tendrá diferentes implementaciones. Un sistema de archivos proxy tiene entonces 3 módulos principales: un filtro, un cache y un organizador.
+
+
+\section{Ciclo de vida}
+
+Los siguientes puntos son los diferentes momentos por los que pasa el sistema de archivos desde el momento en que se monta hasta el momento en que se desmonta.
+
+\begin{itemize}
+\item[mount] Al momento de montar el sistema de archivos se ejecuta primero el archivo \path{dejumblefs/ui/dejumble.py}~(\ref{dejumblefs/ui/dejumble.py}). Este archivo se encarga de revisar y procesar los parámetros de la línea de comando, inicializa el sistema de archivos instanciando a la clase \textit{DejumbleFS}~(\ref{dejumblefs/fs.py}) y esta instancia la guarda en la variable global \textit{server} para poder ser accedido por los módulos cuando lo requieran. Además se inicializa el sistema de logging.
+\item[init] En el método main de la clase \textit{DejumbleFS}~(\ref{dejumblefs/fs.py}) se inicializan los diferentes módulos que van a formar parte de este sistema de archivos. Más detalles del proceso de inicialización se encuentran en la sección (\ref{detallesciclodevida}).
+\item[main] Una vez inicializado todo se pasa el control a la superclase \textit{fuse.FUSE} (que es parte de la libraria \textit{fuse-python}) la cual se encarga de contactarse con el módulo de FUSE en el kernel para montar el sistema de archivos. En este punto el hilo de ejecución se bloquea hasta recibir pedidos o en el momento en que se desmonta o cuando sucede un error.
+\item[request] Mientras el sistema de archivos se encuentra suspendido puede recibir varios pedidos del módulo del kernel cuando este recibe pedidos atravez del sistema de archivos. El request se recibe en la clase \textit{DejumbleFS}~(\ref{dejumblefs/fs.py}) en cualquiera de sus funciones de sistema de archivos. Más adelante se definen cada una de estas funciones.
+\item[umount] Una vez que se desmonta el sistema de archivos simplemente se termina la ejecución del programa y se devuelve el control al sistema operativo.
+\end{itemize}
+
+\subsection{Funciones generales}
+
+Estas funciones están implementadas en la clase \textit{DejumbleFS} que se encuentra en el archivo \path{dejumblefs/fs.py}~(\ref{dejumblefs/fs.py}). 
+
+\begin{itemize}
+\item[fsinit] Inicializa el sistema de archivos. En este paso se guarda un puntero al directorio donde estamos montando para poder acceder a esos datos en caso de que se necesite.
+\item[fsdestroy] Se ejecuta después que el sistema de archivos ha sido desmontado.
+\end{itemize}
+
+\subsection{Funciones sobre de la estructura del sistema de archivos}
+
+Las siguientes funciones son reenviadas al organizador definido al momento de montar el sistema de archivos.
+
+\begin{itemize}
+\item[getattr] Obtiene los atributos del archivo o directorio.
+\item[readdir] Obtiene una lista de archivos dado una ruta.
+\item[readlink] Lee un link	y devuelve el path real.
+\item[unlink] Elimina un archivo.
+\item[rename] Cambia de nombre un archivo.
+\end{itemize}
+
+\subsection{Funciones sobre las propiedades de un archivo o directorio}
+
+Estas funciones modifican solamente las propiedades del archivo. La única excepción es  \textit{truncate} que si cambia al archivo. Este método requiere a nivel de FUSE para poder cortar un archivo sin abrirlo. Todas estas funciones se envían directamente al cache sin pasar por el organizador.
+
+\begin{itemize}
+\item[chmod] Cambia permisos a un archivo.
+\item[truncate] Corta la longitud de un archivo.
+\item[utime] Actualiza la fecha de acceso al archivo.
+\item[access] Prueba si se puede acceder al archivo.
+\end{itemize}
+
+\subsection{Funciones  sobre los contenidos de un archivo}
+
+Existen ciertas operaciones que se utilizan para acceder y cambiar el contenido de un archivo. Se reenvía los pedidos de estas funciones a la clase DejumbleFile existente dentro del cache que se esté utilizando.
+
+\begin{itemize}
+\item[read] Devuelve datos del archivo. Recibe un parámetro que es la cantidad de bytes que se requieren.
+\item[write] Escribe datos al archivo. Devuelve la cantidad de datos escritos.
+\item[release] Cierra el archivo.
+\item[fsync] Sincroniza los datos con el disco o medio físico.
+\item[flush] Envía los datos que se encuentren en un buffer.
+\item[fgetattr] Obtiene los atributos del archivo.
+\item[ftruncate] Corta la longitud de un archivo. Recibe un parámetro que es la cantidad de bytes máximos que contendrá el archivo después de ejecutar esta función.
+\end{itemize}
+
+
+% ------------------------------------------------------------------------
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../thesis"
+%%% End: 
