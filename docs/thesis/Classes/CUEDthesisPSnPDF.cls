@@ -43,7 +43,7 @@
 
 %Bibliography
 %uncomment next line to change bibliography name to references for Book document class
-\renewcommand{\bibname}{References}
+\renewcommand{\bibname}{Referencias}
 % note that this doesn't do much if you later define another bibliography style 
 
 
