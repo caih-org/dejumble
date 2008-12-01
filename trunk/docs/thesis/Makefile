@@ -305,9 +305,9 @@ clean latexclean::
 			fi \
 		done \
 	fi
-	find * -mindepth 1 -name "Makefile" -execdir make clean\;
 
 cleanpspdf : clean
+	find * -mindepth 1 -name "Makefile" -execdir make clean \;
 	@rm -f *.ps *.pdf
 
 clobber : cleanpspdf
