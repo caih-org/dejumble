@@ -10,7 +10,7 @@ En este capítulo se presentará los resultados de las pruebas de desempeño rea
 
 \section{Metodología}
 
-Para estas realizar estas pruebas se utilizó scripts de bash que ejecutan un conjunto de comandos tanto sobre el sistema de archivos original como sobre el sistema de archivos proxy montado. Estos scripts se los puede encontrar en \path{test_scripts/test_*}. Se utilizó una computadora MacBook Pro de 2.33 GHz Intel Core 2 Duo con 2 GB de RAM (667 MHz DDR2 SDRAM). Esta computadora corre Mac OS X 10.5.4 con todos los últimos patches disponibles al 1 de Septiembre del 2008. Además corre MacFUSE versión 1.7 y Python versión 2.5.1. Para realizar los gráficos se usó gnuplot versión 4.2 patchlevel 3. Todos los fuentes para la generación de los gráficos se encuentran en \path{docs/thesis/Chapter4/Chapter4Figs/*.gnu}. Los archivos de datos con los que se generó estos gráficos también están en el mismo directorio con la extensión \path{.dat}.
+Para realizar estas pruebas se utilizó scripts de bash que ejecutan un conjunto de comandos tanto sobre el sistema de archivos original como sobre el sistema de archivos proxy montado. Estos scripts se los puede encontrar en \path{test_scripts/test_*}. Se utilizó una computadora MacBook Pro de 2.33 GHz Intel Core 2 Duo con 2 GB de RAM (667 MHz DDR2 SDRAM). Esta computadora corre Mac OS X 10.5.4 con todos los últimos parches disponibles al 1 de Septiembre del 2008. Además corre MacFUSE versión 1.7 y Python versión 2.5.1. Para realizar los gráficos se usó gnuplot versión 4.2 patchlevel 3. Todos los fuentes para la generación de los gráficos se encuentran en \path{docs/thesis/Chapter4/Chapter4Figs/*.gnu}. Los archivos de datos con los que se generó estos gráficos también están en el mismo directorio con la extensión \path{.dat}.
 
 Cada prueba se ejecutó 10 ocasiones.  Se calculó un porcentaje promedio de penalidad de usar el sistema. Se escogió una de las 10 ejecuciones y se uso como fuente para los gráficos. El método de cálculo del promedio fue el siguiente:
 
@@ -35,7 +35,7 @@ Además se hizo una regresión lineal usando la ecuación (\ref{eqB}) entre \tex
 \hat{b} = \frac {\sum_{i=1}^{N}  (x_{i} - \bar{x})(c_{i} - \bar{c}) }  {\sum_{i=1}^{N} (x_{i} - \bar{x}) ^2}
 \end{equation}
 
-Debido a que este valor indica la pendiente de la curva del porcentaje de cambio de tiempo nos indica si existe un aumento dependiente del numero de archivos o del tamaño de los archivos en la prueba correspondiente. Para efectos de simplificación del problema se descarto este valor si era menor al 0.1\%. En tal caso suponemos que el uso del sistema de archivos proxy tiene una penalidad O(1) con respecto al uso del sistema original. De no ser así asumimos que el sistema de archivos proxy tiene una penalidad O(n) con respecto al sistema de archivos original.
+Debido a que este valor indica la pendiente de la curva del porcentaje de cambio de tiempo nos indica si existe un aumento dependiente del número de archivos o del tamaño de los archivos en la prueba correspondiente. Para efectos de simplificación del problema se descartó este valor si era menor al 0.1\%. En tal caso suponemos que el uso del sistema de archivos proxy tiene una penalidad O(1) con respecto al uso del sistema original. De no ser así asumimos que el sistema de archivos proxy tiene una penalidad O(n) con respecto al sistema de archivos original.
 
 \subsection{Prueba A}
 
@@ -52,9 +52,9 @@ Para el primer set de resultados se usó lo siguientes ajustes al momento de mon
 
 \begin{itemize}
 \item[filter] = CompleteDirectory - Para acceder a un directorio completo
-\item[root] = /path - Este path apunta hacia un directorio vacío en el sistema de archivos original
-\item[cache] = PassThrough - Este es la opción por defecto
-\item[organizer] = Original - Este es la opción por defecto
+\item[root] = /path - Esta ruta apunta hacia un directorio vacío en el sistema de archivos original
+\item[cache] = PassThrough - Esta es la opción por defecto
+\item[organizer] = Original - Esta es la opción por defecto
 \end{itemize}
 
 \subsection{Prueba A-1}
@@ -72,12 +72,12 @@ Estos resultados corresponden a la ejecución de la prueba B usando la configura
 
 \section{Resultados configuración 2}
 
-Para el primer set de resultados se usó lo siguientes ajustes al momento de montar el sistema de archivos proxy.
+Para el primer grupo de resultados se usó los siguientes ajustes al momento de montar el sistema de archivos proxy.
 
 \begin{itemize}
 \item[filter] = CompleteDirectory - Para acceder a un directorio completo
-\item[root] = /path - Este path apunta hacia un directorio vacío en el sistema de archivos original
-\item[cache] = PassThrough - Este es la opción por defecto
+\item[root] = /path - Esta ruta apunta hacia un directorio vacío en el sistema de archivos original
+\item[cache] = PassThrough - Esta es la opción por defecto
 \item[organizer] = Date - Esta opción extiende de TagOrganizer igual que Documents
 \end{itemize}
 
@@ -99,8 +99,8 @@ Para el primer set de resultados se usó lo siguientes ajustes al momento de mon
 
 \begin{itemize}
 \item[filter] = CompleteDirectory - Para acceder a un directorio completo
-\item[root] = /path - Este path apunta hacia un directorio vacío en el sistema de archivos original
-\item[cache] = PassThrough - Este es la opción por defecto
+\item[root] = /path - Esta ruta apunta hacia un directorio vacío en el sistema de archivos original
+\item[cache] = PassThrough - Esta es la opción por defecto
 \item[organizer] = ISO9660 - Esta opción no extiende de TagOrganizer
 \end{itemize}
 

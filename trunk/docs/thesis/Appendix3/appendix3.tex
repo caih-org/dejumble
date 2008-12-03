@@ -24,7 +24,7 @@ En el organizador en el método \textit{reset} crea una base de datos en memoria
 \item \path{/tmp/directorio/subdir1/subdir2/subdir3/unarchivo.txt}
 \end{itemize}
 
-Si \textit{recursive=False} solamente el último ítem de esta lista. Estos paths serían transformados dependiendo el organizador en uso. Si tomamos como ejemplo el organizador \textit{Flat}~(\ref{dejumblefs/organizers/flat.py}) lo que se encontraría en la base de datos en memoria del organizador al final para este archivo sería lo que se ve en el cuadro (\ref{baseflat}).
+Si \textit{recursive=False} solamente el último ítem de esta lista. Estas rutas serían transformados dependiendo el organizador en uso. Si tomamos como ejemplo el organizador \textit{Flat}~(\ref{dejumblefs/organizers/flat.py}) lo que se encontraría en la base de datos en memoria del organizador al final para este archivo sería lo que se ve en el cuadro (\ref{baseflat}).
 
 \begin{table}[htdp]
 \caption{Base de datos en memoria para organizador Flat}
@@ -96,7 +96,7 @@ Este método recibe como parámetros el path en el sistema de archivos transform
 
 El modo es una cadena que contiene ``r'' si se requiere escribir en el archivo, ``w'' si se requiere escribir ``w+'' si se requiere leer y escribir. Si se requiere que no se sobreescriba el archivo si existe y se quiere agregar contenido se puede recibir ``a'' en vez de ``w''.
 
-El método debe devolver un descriptor o numero de archivo POSIX y un \textit{objeto tipo archivo} de Python.
+El método debe devolver un descriptor o número de archivo POSIX y un \textit{objeto tipo archivo} de Python.
 
 Es posible sobreescribir la clase interna \textit{Cache.DejumbleFile} que se encarga de acceder a los archivos para dar más flexibilidad al cache que se quiera implementar. 
 
@@ -118,7 +118,7 @@ En este caso se deberá sobreescribir \textit{generatepaths} y opcionalmente \te
 
 El método \textit{generatepaths} recibe una ruta al archivo en el sistema de archivos original y debe devolver un iterador, generador, lista o tupla con las rutas convertidas para usar en el espacio de nombres transformado.
 
-El método \textit{increasefilename} se llama en caso de que haya conflicto al usar una ruta de las devueltas por generatepaths. Este método recibe la ruta del archivo en el espacio de nombres transformado y la modifica para evitar el conflicto. Por ejemplo la implementación por defecto de este método transforma ``algún archivo.txt'' a ``algún archivo(1).txt'' y en caso de que se vuelva a llamar en ``algun archivo(2).txt''.
+El método \textit{increasefilename} se llama en caso de que haya conflicto al usar una ruta de las devueltas por generatepaths. Este método recibe la ruta del archivo en el espacio de nombres transformado y la modifica para evitar el conflicto. Por ejemplo la implementación por defecto de este método transforma ``algún archivo.txt'' a ``algún archivo(1).txt'' y en caso de que se vuelva a llamar en ``algún archivo(2).txt''.
 
 Como ejemplo se puede ver \path{dejumblefs/organizers/iso9660.py}~(\ref{dejumblefs/organizers/iso9660.py}).
 
