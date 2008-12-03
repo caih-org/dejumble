@@ -14,7 +14,7 @@ En este capítulo se explicará como funcionan cada una de las implementaciones 
 
 \section{Filtros}
 
-Un filtro se encarga de escoger que partes del sistema de archivos original serán pasadas al organizador. La implementación más sencilla sería usar todo el sistema de archivos original. Se puede complicar un poco más pasando solamente un subdirectorio del sistema original o se puede llegar a filtros más complejos como el resultado de una búsqueda o los archivos de música que tengan en su metadata ciertas características.
+Un filtro se encarga de escoger que partes del sistema de archivos original serán pasadas al organizador. La implementación más sencilla sería usar todo el sistema de archivos original. Se puede complicar un poco más pasando solamente un subdirectorio del sistema original o se puede llegar a filtros más complejos como el resultado de una búsqueda o los archivos de música que tengan en sus metadatos ciertas características.
 
 \InsertFig{\IncludeGraphicsH{Filters}{3.2in}{92 86 545 742}}{Diagrama de clases - Filtros}{Filters}
 
@@ -30,7 +30,7 @@ Este filtro es la implementación por defecto. Se encuentra en el archivo \path{
 
 \subsection{Shell}
 
-Este filtro permite ejecutar un comando de shell y se pasa el resultado de esta ejecución. Se presupone que el resultado va a dar un archivo por linea. Se encuentra implementado en el archivo \path{dejumblefs/filters/shell.py}~(\ref{dejumblefs/filters/shell.py}) y la clase se llama \textit{ShellFileListFilter}.
+Este filtro permite ejecutar un comando de shell y se pasa el resultado de esta ejecución. Se presupone que el resultado va a dar un archivo por línea. Se encuentra implementado en el archivo \path{dejumblefs/filters/shell.py}~(\ref{dejumblefs/filters/shell.py}) y la clase se llama \textit{ShellFileListFilter}.
 
 \subsection{Xesam}
 
@@ -62,22 +62,22 @@ Este tipo de cache lee del disco una vez y guarda cualquier cambio solamente en 
 
 Un organizador se encarga de tomar los archivos que fueron filtrados y los organiza en una estructura de directorios tradicional. El organizador puede ubicar un archivo en varias localizaciones de esta estructura.
 
-El organizador debe poder hacer un mapeo de los archivos en dos direcciones, es decir debe poder conocer el nombre (o nombres) de un archivo en el espacio de nombres transformado dado el nombre del archivo en el espacio de nombres original y ademas poder hacerlo en la dirección contraria, saber el nombre del archivo en el espacio de nombres original dado el nombre del archivo en el espacio de nombres transformado.
+El organizador debe poder hacer un mapeo de los archivos en dos direcciones, es decir debe poder conocer el nombre (o nombres) de un archivo en el espacio de nombres transformado dado el nombre del archivo en el espacio de nombres original y además poder hacerlo en la dirección contraria, saber el nombre del archivo en el espacio de nombres original dado el nombre del archivo en el espacio de nombres transformado.
 
 \InsertFig{\IncludeGraphicsH{Organizers}{3.5in}{92 86 545 742}}{Diagrama de clases - Organizadores}{Organizers}
 
 En el archivo \path{dejumblefs/organizer.py}~(\ref{dejumblefs/organizer.py}) se encuentra una clase llamada \textit{Organizer}. Esta clase implementa los métodos básicos para crear un organizador. Por un lado tenemos las funciones que son llamadas directamente desde el modulo de FUSE: \textit{getattr} y \textit{readdir}.
 
 \begin{itemize}
-\item[getattr] La implementación básica de \textit{getattr} funciones devuelve los mismos permisos del directorio donde fue montado el sistema de archivos proxy para el caso de directorios que no existen en el sistema original o devuelve los permisos tal y como estaban en el sistema original.
-\item[readdir] La función \textit{readdir} devuelve un lista de archivo para un directorio en especifico.
+\item[getattr] La implementación básica de \textit{getattr} devuelve los mismos permisos del directorio donde fue montado el sistema de archivos proxy para el caso de directorios que no existen en el sistema original o devuelve los permisos tal y como estaban en el sistema original.
+\item[readdir] La función \textit{readdir} devuelve un lista de archivo para un directorio en específico.
 \end{itemize}
 
 Además de estas funciones existen varias funciones necesarias para generar un árbol de directorios nuevo basado en el árbol de directorios original y funciones para evitar conflictos en los nombres. Las subclases de \textit{Organizer} deben implementar dos funciones: \textit{paths} y \textit{dirlist}.
 
 \begin{itemize}
 \item[paths] Devuelve una lista de rutas de archivos dado una ruta en el sistema de archivos original. Esta función se llama cuando el sistema se inicializa o cuando el cache expira con todos los archivos que tiene el cache.
-\item[dirlist] Devuelve una lista de archivos dado un directorio en el sistema de archivos proxy. Los directorios que devuelve \textit{dirlist} Devuelve una lista de directorios que no existan en el sistema de archivos original pero que existan en el sistema de archivos proxy.
+\item[dirlist] Devuelve una lista de archivos y directorios dado un directorio en el sistema de archivos proxy. Los directorios que devuelva \textit{dirlist} deben ser directorios que no existan en el sistema de archivos original, pero que existan en el sistema de archivos proxy.
 \end{itemize}
 
 \subsection{Original}
@@ -86,11 +86,11 @@ Presenta los archivos en la misma estructura de directorios del sistema de archi
 
 \subsection{Plano}
 
-Este organizador presenta todos los archivos encontrados en un sólo directorio. La implementación se encuentra en el archivo \path{dejumblefs/organizers/flat.py}~(\ref{dejumblefs/organizers/flat.py}) y se llama \textit{FlatOrganizer}. Este organizador atraviesa todo el sistema de archivos original desde la raiz definida por el parametro \textit{root} al momento de montar y extrae solamente el nombre de los archivos encontrados descartando la parte del directorio donde se encontraban.
+Este organizador presenta todos los archivos encontrados en un sólo directorio. La implementación se encuentra en el archivo \path{dejumblefs/organizers/flat.py}~(\ref{dejumblefs/organizers/flat.py}) y se llama \textit{FlatOrganizer}. Este organizador atraviesa todo el sistema de archivos original desde la raíz definida por el parámetro \textit{root} al momento de montar y extrae solamente el nombre de los archivos encontrados descartando la parte del directorio donde se encontraban.
 
 \subsection{TagOrganizer}
 
-Este organizador no se puede usar directamente, se deben usar alguna de sus subclases. La implementación se encuentra en el archivo \path{dejumblefs/organizer.py}~(\ref{dejumblefs/organizer.py}) y se llama \textit{TagOrganizer}. Provee la funcionalidad de poder asignar etiquetas a los archivos y luego presentar una lista de etiquetas como los directorios en la raiz del sistema de archivos montado y dentro de cada uno de estos directorios los archivos que contienen estos tags.
+Este organizador no se puede usar directamente, se deben usar alguna de sus subclases. La implementación se encuentra en el archivo \path{dejumblefs/organizer.py}~(\ref{dejumblefs/organizer.py}) y se llama \textit{TagOrganizer}. Provee la funcionalidad de poder asignar etiquetas a los archivos y luego presentar una lista de etiquetas como los directorios en la raíz del sistema de archivos montado y dentro de cada uno de estos directorios los archivos que contienen estos tags.
 
 \subsection{Fecha}
 
