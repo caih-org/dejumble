@@ -22,7 +22,7 @@ El \textit{punto\_de\_montaje} es el directorio donde se va a montar el sistema 
 \item[cache] Define que cache va a ser usado. Este valor debe ser un paquete de Python válido que exista dentro del paquete dejumblefs.caches. Dentro de este paquete debe existir una clase que tenga ese nombre agregando Cache. Su valor por defecto es \textit{PassThrough}.
 \item[organizer] Define que organizador va a ser usado. Este valor debe ser un paquete de Python válido que exista dentro del paquete dejumblefs.organizers. Dentro de este paquete debe existir una clase que tenga ese nombre agregando Organizer. Su valor por defecto es \textit{Original}.
 \item[nonempty] Permite en linux que el sistema de archivos pueda acceder al sistema de archivos original.
-\item[noappledouble] Evita que el sistema de archivos proxy reciba llamadas del sistema de archivos OS X de Apple acerca de archivos especiales encontrados en volúmenes de archivos normales. Esto incrementa ligeramente el desempeño en este sistema de archivos.
+\item[noappledouble] Evita que el sistema de archivos proxy reciba llamadas del sistema de archivos OS X de Apple acerca de archivos especiales encontrados en volúmenes de archivos normales. Esto incrementa ligeramente el desempeño en este sistema operativo.
 \end{itemize}
 
 Existen otras opciones que son propias de FUSE. Una lista se puede obtener en la página \url{http://code.google.com/p/macfuse/wiki/OPTIONS}. Esta información también se la puede obtener ejecutando:
@@ -58,7 +58,7 @@ Para usar la interfaz visual del programa se debe ejecutar:
 dejumblegui
 \end{verbatim}
 
-Se puede también escoger la aplicación \textit{DejumbleFS Mounter} del manejador de aplicaciones del sistema operativo. La interfaz visual permite montar un sistema de archivos tal como lo hace la interfaz de linea de comando con las opciones específicas indicadas anteriormente pero no permite usar opciones arbitrarias de FUSE.
+Se puede también escoger la aplicación \textit{DejumbleFS Mounter} del manejador de aplicaciones del sistema operativo. La interfaz visual permite montar un sistema de archivos tal como lo hace la interfaz de línea de comando con las opciones específicas indicadas anteriormente pero no permite usar opciones arbitrarias de FUSE.
 
 \InsertFig{\IncludeGraphicsH{guiosx}{3.2in}{92 86 545 742}}{Interfaz visual en el sistema operativo OS X}{guiosx}
 
