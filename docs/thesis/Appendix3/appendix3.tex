@@ -82,13 +82,13 @@ realpath & path & dirname\\
 
 \subsection{Creando un filtro}
 
-Para crear un filtro se debe crear una archivo con el nombre del filtro en minúsculas todo, en la carpeta \path{dejumblefs/filters/} con extensión \path{.py}. En este archivo se debe crear una clase python que tenga por nombre el nombre del filtro terminando en \textit{FileListFilter} que extienda de \textit{dejumblefs.filter.FileListFilter}.
+Para crear un filtro se debe crear una archivo con el nombre del filtro en minúsculas todo, en la carpeta \path{dejumblefs/filters/} con extensión \path{.py}. En este archivo se debe crear una clase Python que tenga por nombre el nombre del filtro terminando en \textit{FileListFilter} que extienda de \textit{dejumblefs.filter.FileListFilter}.
 
 Esta clase debe contener al menos un método llamado \textit{filelist}. Este método debe devolver un iterador, generador, lista o tupla conteniendo rutas de archivos. El filtro puede hacer uso de las variables \textit{query} y \textit{root} para refinar su funcionamiento. Como ejemplo se puede ver \path{dejumblefs/filters/null.py}~(\ref{dejumblefs/filters/null.py}).
 
 \subsection{Creando un cache}
 
-Para crear un cache se debe crear una archivo con el nombre del cache en minúsculas todo, en la carpeta \path{dejumblefs/caches/} con extensión \path{.py}. En este archivo se debe crear una clase python que tenga por nombre el nombre del cache terminando en \textit{Cache} que extienda de \textit{dejumblefs.cache.Cache}.
+Para crear un cache se debe crear una archivo con el nombre del cache en minúsculas todo, en la carpeta \path{dejumblefs/caches/} con extensión \path{.py}. En este archivo se debe crear una clase Python que tenga por nombre el nombre del cache terminando en \textit{Cache} que extienda de \textit{dejumblefs.cache.Cache}.
 
 Esta clase puede sobreescribir cualquier método de la clase Cache pero en especial sobreescribiendo \textit{getfdandfile} se puede crear un cache con una funcionalidad diferente.
 
@@ -96,7 +96,7 @@ Este método recibe como parámetros el path en el sistema de archivos transform
 
 El modo es una cadena que contiene ``r'' si se requiere escribir en el archivo, ``w'' si se requiere escribir ``w+'' si se requiere leer y escribir. Si se requiere que no se sobreescriba el archivo si existe y se quiere agregar contenido se puede recibir ``a'' en vez de ``w''.
 
-El método debe devolver un descriptor o numero de archivo POSIX y un \textit{objeto tipo archivo} de python.
+El método debe devolver un descriptor o numero de archivo POSIX y un \textit{objeto tipo archivo} de Python.
 
 Es posible sobreescribir la clase interna \textit{Cache.DejumbleFile} que se encarga de acceder a los archivos para dar más flexibilidad al cache que se quiera implementar. 
 
@@ -104,7 +104,7 @@ Como ejemplo se puede ver \path{dejumblefs/caches/sandbox.py}~(\ref{dejumblefs/c
 
 \subsection{Creando un organizador basado en etiquetas}
 
-Para crear un organizador basado en etiquetas se debe crear una archivo con el nombre del organizador en minúsculas todo, en la carpeta \path{dejumblefs/organizers/} con extensión \path{.py}. En este archivo se debe crear una clase python que tenga por nombre el nombre del organizador terminando en \textit{Organizer} que extienda de \textit{dejumblefs. organizer.TagOrganizer}.
+Para crear un organizador basado en etiquetas se debe crear una archivo con el nombre del organizador en minúsculas todo, en la carpeta \path{dejumblefs/organizers/} con extensión \path{.py}. En este archivo se debe crear una clase Python que tenga por nombre el nombre del organizador terminando en \textit{Organizer} que extienda de \textit{dejumblefs. organizer.TagOrganizer}.
 
 Esta clase debe sobreescribir el método \textit{generatetags}. Este método recibe como parámetro la ruta del archivo real que se está manejando y debe usar la funcione \textit{self.tag} para agregar etiquetas al archivo. La función \textit{self.tag} recibe como parámetros la ruta del archivo, una categoría al que pertenece la etiqueta y la etiqueta en si como tercer parámetro.
 
@@ -112,7 +112,7 @@ Como ejemplo se puede ver \path{dejumblefs/organizers/date.py}~(\ref{dejumblefs/
 
 \subsection{Creando un organizador no basado en etiquetas}
 
-Para crear un organizador no basado en etiquetas se debe crear una archivo con el nombre del organizador en minúsculas todo, en la carpeta \path{dejumblefs/organizers/} con extensión \path{.py}. En este archivo se debe crear una clase python que tenga por nombre el nombre del organizador terminando en \textit{Organizer} que extienda de \textit{dejumblefs. organizer.Organizer}.
+Para crear un organizador no basado en etiquetas se debe crear una archivo con el nombre del organizador en minúsculas todo, en la carpeta \path{dejumblefs/organizers/} con extensión \path{.py}. En este archivo se debe crear una clase Python que tenga por nombre el nombre del organizador terminando en \textit{Organizer} que extienda de \textit{dejumblefs. organizer.Organizer}.
 
 En este caso se deberá sobreescribir \textit{generatepaths} y opcionalmente \textit{increasefilename}.
 

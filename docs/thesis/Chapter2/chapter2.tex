@@ -19,7 +19,7 @@ Para poder permitir una mayor modularización de un sistema de archivos proxy, s
 
 \InsertFig{\IncludeGraphicsH{general}{3.5in}{92 86 545 742}}{Diseño general}{general}
 
-En este gráfico se definen dos áreas dentro del sistema de archivos proxy. La primera se define como ``Espacio de nombres original''. En esta área todos los componentes tratan a los archivos con sus nombres y rutas tal y como están en el sistema de archivos original. La segunda área se denomina ``Espacio de nombres transformado''. En esta área se referencia a los archivos por su nombres y rutas una vez convertidas por el organizador.
+En este gráfico se definen dos áreas dentro del sistema de archivos proxy. La primera se define como ``Espacio de nombres original''. En esta área todos los componentes tratan a los archivos con sus nombres y rutas tal y como están en el sistema de archivos original. La segunda área se denomina ``Espacio de nombres transformado''. En esta área se referencia a los archivos por sus nombres y rutas una vez convertidas por el organizador.
 
 De estos módulos sólo la interfaz con FUSE es la única que no puede cambiar. Para el resto de módulos se tendrá diferentes implementaciones. Un sistema de archivos proxy tiene entonces 3 módulos principales: un filtro, un cache y un organizador.
 
@@ -31,7 +31,7 @@ Los siguientes puntos son los diferentes momentos por los que pasa el sistema de
 \begin{itemize}
 \item[mount] Al momento de montar el sistema de archivos se ejecuta primero el archivo \path{dejumblefs/ui/dejumble.py}~(\ref{dejumblefs/ui/dejumble.py}). Este archivo se encarga de revisar y procesar los parámetros de la línea de comando, inicializa el sistema de archivos instanciando a la clase \textit{DejumbleFS}~(\ref{dejumblefs/fs.py}) y esta instancia la guarda en la variable global \textit{server} para poder ser accedido por los módulos cuando lo requieran. Además se inicializa el sistema de logging.
 \item[init] En el método main de la clase \textit{DejumbleFS}~(\ref{dejumblefs/fs.py}) se inicializan los diferentes módulos que van a formar parte de este sistema de archivos. Más detalles del proceso de inicialización se encuentran en la sección (\ref{detallesciclodevida}).
-\item[main] Una vez inicializado todo se pasa el control a la superclase \textit{fuse.FUSE} (que es parte de la libraria \textit{fuse-python}) la cual se encarga de contactarse con el módulo de FUSE en el kernel para montar el sistema de archivos. En este punto el hilo de ejecución se bloquea hasta recibir pedidos o en el momento en que se desmonta o cuando sucede un error.
+\item[main] Una vez inicializado todo se pasa el control a la superclase \textit{fuse.FUSE} (que es parte de la biblioteca \textit{fuse-python}) la cual se encarga de contactarse con el módulo de FUSE en el kernel para montar el sistema de archivos. En este punto el hilo de ejecución se bloquea hasta recibir pedidos o en el momento en que se desmonta o cuando sucede un error.
 \item[request] Mientras el sistema de archivos se encuentra suspendido puede recibir varios pedidos del módulo del kernel cuando este recibe pedidos atravez del sistema de archivos. El request se recibe en la clase \textit{DejumbleFS}~(\ref{dejumblefs/fs.py}) en cualquiera de sus funciones de sistema de archivos. Más adelante se definen cada una de estas funciones.
 \item[umount] Una vez que se desmonta el sistema de archivos simplemente se termina la ejecución del programa y se devuelve el control al sistema operativo.
 \end{itemize}

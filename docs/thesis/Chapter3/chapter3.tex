@@ -47,7 +47,7 @@ El cache se encarga de guardar o escribir los cambios en el sistema de archivos 
 
 \InsertFig{\IncludeGraphicsH{Caches}{2.7in}{92 86 545 742}}{Diagrama de clases - Caches}{Caches}
 
-El código para este módulo se encuentra en el archivo \path{dejumblefs/cache.py}~(\ref{dejumblefs/cache.py}). Consiste en una clase base llamada \textit{Cache} que provee un set de funciones para almacenar la lista de archivos que se encuentran en el sistema de archivos proxy. Además esta implementación, de la que heredan todos los caches, provee todas las funciones necesarias para acceder al sistema de archivos original y a sus archivos directamente por defecto.
+El código para este módulo se encuentra en el archivo \path{dejumblefs/cache.py}~(\ref{dejumblefs/cache.py}). Consiste en una clase base llamada \textit{Cache} que provee un conjunto de funciones para almacenar la lista de archivos que se encuentran en el sistema de archivos proxy. Además esta implementación, de la que heredan todos los caches, provee todas las funciones necesarias para acceder al sistema de archivos original y a sus archivos directamente por defecto.
 
 \subsection{PassThrough}
 
@@ -90,7 +90,7 @@ Este organizador presenta todos los archivos encontrados en un sólo directorio.
 
 \subsection{TagOrganizer}
 
-Este organizador no se puede usar directamente, se deben usar alguna de sus subclases. La implementación se encuentra en el archivo \path{dejumblefs/organizer.py}~(\ref{dejumblefs/organizer.py}) y se llama \textit{TagOrganizer}. Provee la funcionalidad de poder asignar tags a los archivos y luego presentar una lista de etiquetas como los directorios en la raiz del sistema de archivos montado y dentro de cada uno de estos directorios los archivos que contienen estos tags.
+Este organizador no se puede usar directamente, se deben usar alguna de sus subclases. La implementación se encuentra en el archivo \path{dejumblefs/organizer.py}~(\ref{dejumblefs/organizer.py}) y se llama \textit{TagOrganizer}. Provee la funcionalidad de poder asignar etiquetas a los archivos y luego presentar una lista de etiquetas como los directorios en la raiz del sistema de archivos montado y dentro de cada uno de estos directorios los archivos que contienen estos tags.
 
 \subsection{Fecha}
 
