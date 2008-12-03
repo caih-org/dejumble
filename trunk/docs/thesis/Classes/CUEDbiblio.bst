@@ -867,29 +867,29 @@ FUNCTION {unpublished}
 
 FUNCTION {default.type} { misc }
 
-MACRO {jan} {"January"}
+MACRO {jan} {"Enero"}
 
-MACRO {feb} {"February"}
+MACRO {feb} {"Febrero"}
 
-MACRO {mar} {"March"}
+MACRO {mar} {"Marzo"}
 
-MACRO {apr} {"April"}
+MACRO {apr} {"Abril"}
 
-MACRO {may} {"May"}
+MACRO {may} {"Mayo"}
 
-MACRO {jun} {"June"}
+MACRO {jun} {"Junio"}
 
-MACRO {jul} {"July"}
+MACRO {jul} {"Julio"}
 
-MACRO {aug} {"August"}
+MACRO {aug} {"Agosto"}
 
-MACRO {sep} {"September"}
+MACRO {sep} {"Septiembre"}
 
-MACRO {oct} {"October"}
+MACRO {oct} {"Octubre"}
 
-MACRO {nov} {"November"}
+MACRO {nov} {"Noviembre"}
 
-MACRO {dec} {"December"}
+MACRO {dec} {"Diciembre"}
 
 MACRO {acmcs} {"ACM Computing Surveys"}
 

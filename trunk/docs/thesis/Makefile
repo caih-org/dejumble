@@ -275,6 +275,9 @@ html: .html
 		echo Set variable LATEXTARGET\!; \
 	fi
 
+pdf: latex
+	pdflatex thesis.tex
+
 latexhelp:
 	@echo "LaTeX Makefile Options"
 	@echo "----------------------"
@@ -308,6 +311,7 @@ clean latexclean::
 
 cleanpspdf : clean
 	find * -mindepth 1 -name "Makefile" -execdir make clean \;
+	find * -name "*.aux" -delete
 	@rm -f *.ps *.pdf
 
 clobber : cleanpspdf

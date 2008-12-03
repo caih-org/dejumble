@@ -16,11 +16,11 @@ dejumble [punto_de_montaje] [-o opción1=valor1,opción2=valor2,...]
 El \textit{punto\_de\_montaje} es el directorio donde se va a montar el sistema de archivos. Se pueden usar las siguientes opciones:
 
 \begin{itemize}
-\item[filter] Define que filtro va a ser usado. Este valor debe ser un paquete de python válido que exista dentro del paquete dejumblefs.filters. Dentro de este paquete debe existir una clase que tenga ese nombre agregando FileListFilter. Su valor por defecto es \textit{OriginalDirectory}.
+\item[filter] Define que filtro va a ser usado. Este valor debe ser un paquete de Python válido que exista dentro del paquete dejumblefs.filters. Dentro de este paquete debe existir una clase que tenga ese nombre agregando FileListFilter. Su valor por defecto es \textit{OriginalDirectory}.
 \item[root] Define el directorio base, el directorio original, sobre el cual se va a ejecutar el filtrado. Su valor por defecto es el directorio donde se va a montar. En caso de que no se modifique \textit{root} en linux se debe usar el parámetro \textit{nonempty} para que el sistema de archivos pueda acceder al sistema de archivos original.
 \item[query] Define el query que va a ejecutar el filtro.
-\item[cache] Define que cache va a ser usado. Este valor debe ser un paquete de python válido que exista dentro del paquete dejumblefs.caches. Dentro de este paquete debe existir una clase que tenga ese nombre agregando Cache. Su valor por defecto es \textit{PassThrough}.
-\item[organizer] Define que organizador va a ser usado. Este valor debe ser un paquete de python válido que exista dentro del paquete dejumblefs.organizers. Dentro de este paquete debe existir una clase que tenga ese nombre agregando Organizer. Su valor por defecto es \textit{Original}.
+\item[cache] Define que cache va a ser usado. Este valor debe ser un paquete de Python válido que exista dentro del paquete dejumblefs.caches. Dentro de este paquete debe existir una clase que tenga ese nombre agregando Cache. Su valor por defecto es \textit{PassThrough}.
+\item[organizer] Define que organizador va a ser usado. Este valor debe ser un paquete de Python válido que exista dentro del paquete dejumblefs.organizers. Dentro de este paquete debe existir una clase que tenga ese nombre agregando Organizer. Su valor por defecto es \textit{Original}.
 \item[nonempty] Permite en linux que el sistema de archivos pueda acceder al sistema de archivos original.
 \item[noappledouble] Evita que el sistema de archivos proxy reciba llamadas del sistema de archivos OS X de Apple acerca de archivos especiales encontrados en volúmenes de archivos normales. Esto incrementa ligeramente el desempeño en este sistema de archivos.
 \end{itemize}
