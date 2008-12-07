@@ -1,4 +1,2 @@
-== Screenshots ==
-
 [http://dejumble.googlecode.com/svn/wiki/screenshots/guiosx.png]
 
