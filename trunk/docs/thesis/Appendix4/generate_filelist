@@ -1,7 +1,7 @@
 #/bin/sh
 
 function print {
-	echo "\\section{$1}"
+	echo "\\subsection{$1}"
 	echo "\\label{$1}"
 	pygmentize -l $2 -f latex -P encoding=utf-8 $1
 	echo
@@ -11,8 +11,19 @@ python generate_header.py
 
 cd ../../../
 
+echo "\\section{/}"
+
 for F in `find dejumblefs -name "*.py" | sed -E "/\\.\\//s///" | egrep -v "(^build/|/build/|.svn|__init__)"`
 do
 	print $F python
+done
+
+echo "\\section{/docs/thesis/Chapter4/Chapter4Figs}"
+
+cd docs/thesis/Chapter4/Chapter4Figs
+
+for F in `find . -name "*.gnu*" | sed -E "/\\.\\//s///" | egrep -v "(^build/|/build/|.svn|__init__)"`
+do
+	print $F vim
 done
 

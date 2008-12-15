@@ -36,11 +36,11 @@ La estructura de datos \textit{inode} definida en el archivo \path{include/linux
 Existen algunas limitaciones en los conceptos sobre los que se basa el sistema de archivos virtual que pueden o no limitar las capacidades de organización que pueda necesitar una aplicación:
 
 \begin{itemize}
-\item Se permite solamente un padre por directorio. Existe la posibilidad de crear hard-links hacia directorios desde otros directorios, pero esta práctica ha sido descalificada por presentar muchos problemas al dar la posibilidad de crear un gráfico ciclico de directorios. El único lugar donde se presenta esto es generalmente el directorio raíz para el cual su padre es sí mismo.
+\item Se permite solamente un padre por directorio. Existe la posibilidad de crear hard-links hacia directorios desde otros directorios, pero esta práctica ha sido descalificada por presentar muchos problemas al dar la posibilidad de crear un gráfico cíclico de directorios. El único lugar donde se presenta esto es generalmente el directorio raíz para el cual su padre es sí mismo.
 \item Los directorios pertenecen a un sólo sistema de archivos físico.
 \item Se puede montar otros sistemas de archivos físicos en cualquier parte de este sistema de archivos virtual, pero un sistema de archivos solo puede controlar la jerarquía comenzando en el punto en el que está montado para adentro.
 \item Un archivo pertenece a un sólo sistema de archivos y puede tener varios hard-links en diferentes directorios solo dentro de su propio sistema de archivos físico. El proceso de creación y borrado de estos hard-links tiene que ser ejecutado por parte del usuario y no se mantiene automáticamente por parte del kernel o del sistema de archivos físico. Además esta característica es raramente usada por las aplicaciones comunes de escritorio.
-\item La mayoría funciones que acceden al sistema de archivos reciben una ruta para manejar archivos. Aunque también muchas funciones reciben un número de archivo o ``file descriptor'', este es generado por el kernel y para el caso de archivos en un sistema de archivos físico este número siempre es asignado a partir de una ruta de un archivo en el sistema de archivos.
+\item La mayoría de funciones que acceden al sistema de archivos reciben una ruta para manejar archivos. Aunque también muchas funciones reciben un número de archivo o ``file descriptor'', este es generado por el kernel y para el caso de archivos en un sistema de archivos físico este número siempre es asignado a partir de una ruta de un archivo en el sistema de archivos.
 \item Todas las aplicaciones de usuario que requieren leer o escribir archivos utilizan rutas en algún momento para acceder a los archivos.
 \end{itemize}
 

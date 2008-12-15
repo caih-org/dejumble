@@ -10,9 +10,9 @@ En este capítulo se presentará los resultados de las pruebas de desempeño rea
 
 \section{Metodología}
 
-Para realizar estas pruebas se utilizó scripts de bash que ejecutan un conjunto de comandos tanto sobre el sistema de archivos original como sobre el sistema de archivos proxy montado. Estos scripts se los puede encontrar en \path{test_scripts/test_*}. Se utilizó una computadora MacBook Pro de 2.33 GHz Intel Core 2 Duo con 2 GB de RAM (667 MHz DDR2 SDRAM). Esta computadora corre Mac OS X 10.5.4 con todos los últimos parches disponibles al 1 de Septiembre del 2008. Además corre MacFUSE versión 1.7 y Python versión 2.5.1. Para realizar los gráficos se usó gnuplot versión 4.2 patchlevel 3. Todos los fuentes para la generación de los gráficos se encuentran en \path{docs/thesis/Chapter4/Chapter4Figs/*.gnu}. Los archivos de datos con los que se generó estos gráficos también están en el mismo directorio con la extensión \path{.dat}.
+Para realizar estas pruebas se utilizó scripts de bash que ejecutan un conjunto de comandos tanto sobre el sistema de archivos original como sobre el sistema de archivos proxy montado. Estos scripts se los puede encontrar en \path{test_scripts/test_*}. Se utilizó una computadora MacBook Pro de 2.33 GHz Intel Core 2 Duo con 2 GB de RAM (667 MHz DDR2 SDRAM). Esta computadora corre Mac OS X 10.5.4 con todos los últimos parches disponibles al 1 de Septiembre del 2008. Además corre MacFUSE versión 1.7 y Python versión 2.5.1. Para realizar los gráficos se usó gnuplot versión 4.2 patchlevel 3. Todos los fuentes para la generación de los gráficos se encuentran en \path{docs/thesis/Chapter4/Chapter4Figs/*.gnu}~(\ref{general.gnu.inc}). Los archivos de datos con los que se generó estos gráficos también están en el mismo directorio con la extensión \path{.dat}.
 
-Cada prueba se ejecutó 10 ocasiones.  Se calculó un porcentaje promedio de penalidad de usar el sistema. Se escogió una de las 10 ejecuciones y se uso como fuente para los gráficos. El método de cálculo del promedio fue el siguiente:
+Cada prueba se ejecutó 10 ocasiones.  Se calculó un porcentaje promedio de penalidad en el tiempo de respuesta de usar el sistema. Se escogió una de las 10 ejecuciones y se uso como fuente para los gráficos. El método de cálculo del promedio fue el siguiente:
 
 Dados los resultados tanto para el sistema de archivos original (llamado \textit{a} en adelante), y los resultados del sistema proxy (llamado \textit{b} en adelante), se calculó un valor \textit{c} como la ecuación (\ref{eqC}) que representa el porcentaje de cambio del tiempo de ejecución de la prueba.
 
@@ -28,14 +28,14 @@ El porcentaje de cambio sería entonces lo expuesto en la ecuación (\ref{eqP}).
 porcentaje_{i} = 100(c_{i} - 1)
 \end{equation}
 
-Además se hizo una regresión lineal usando la ecuación (\ref{eqB}) entre \textit{c} y \textit{x}, que sería el valor que varió la prueba, sea el número de archivos o el tamaño del archivo.
+Además se hizo una regresión lineal usando la ecuación (\ref{eqB}) entre \textit{c} y \textit{x}, donde \textit{x} es el valor en el cual varió la prueba. Para la prueba A es el número de archivos y para la prueba B es el tamaño del archivo.
 
 \begin{equation}
 \label{eqB}
 \hat{b} = \frac {\sum_{i=1}^{N}  (x_{i} - \bar{x})(c_{i} - \bar{c}) }  {\sum_{i=1}^{N} (x_{i} - \bar{x}) ^2}
 \end{equation}
 
-Debido a que este valor indica la pendiente de la curva del porcentaje de cambio de tiempo nos indica si existe un aumento dependiente del número de archivos o del tamaño de los archivos en la prueba correspondiente. Para efectos de simplificación del problema se descartó este valor si era menor al 0.1\%. En tal caso suponemos que el uso del sistema de archivos proxy tiene una penalidad O(1) con respecto al uso del sistema original. De no ser así asumimos que el sistema de archivos proxy tiene una penalidad O(n) con respecto al sistema de archivos original.
+Debido a que este valor indica la pendiente de la curva del porcentaje de cambio del tiempo de ejecución, nos indica si existe un aumento que depende de \textit{x}. Para efectos de simplificación del problema se descartó este valor si era menor al 0.1\%. En tal caso suponemos que el uso del sistema de archivos proxy tiene una penalidad en el tiempo de ejecución en el orden de O(1) con respecto al uso del sistema original. De no ser así asumimos que el sistema de archivos proxy tiene una penalidad en el orden de O(n) con respecto al sistema de archivos original.
 
 \subsection{Prueba A}
 
