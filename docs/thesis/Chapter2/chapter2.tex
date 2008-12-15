@@ -19,31 +19,28 @@ Para poder permitir una mayor modularización de un sistema de archivos proxy, s
 
 \InsertFig{\IncludeGraphicsH{general}{3.5in}{92 86 545 742}}{Diseño general}{general}
 
-En este gráfico se definen dos áreas dentro del sistema de archivos proxy. La primera se define como ``Espacio de nombres original''. En esta área todos los componentes tratan a los archivos con sus nombres y rutas tal y como están en el sistema de archivos original. La segunda área se denomina ``Espacio de nombres transformado''. En esta área se referencia a los archivos por sus nombres y rutas una vez convertidas por el organizador.
+En este gráfico se definen dos áreas dentro del sistema de archivos proxy. La primera se define como ``Espacio de nombres original''. En esta área todos los componentes tratan a los archivos con sus nombres y rutas tal y como están en el sistema de archivos original. La segunda área se denomina ``Espacio de nombres transformado''. En esta área se referencia a los archivos por sus nombres y rutas una vez convertidas por el Organizador. El ``Filtro'' es el que escoge que archivos del sistema de archivos original se pasarán al sistema de archivos proxy. El ``Cache'' guarda información sobre los archivos que existen en el sistema de archivos original. El ``Organizador'' transforma los nombres del sistema de archivos original a rutas en el espacio de nombres transformado y viceversa. La ``Interfaz con FUSE'' se encarga de conectarse con el módulo del kernel de FUSE siempre con rutas en el espacio de nombres transformado. En los siguientes capítulos se explicará más a fondo acerca de cada uno de estos módulos.
 
 De estos módulos sólo la interfaz con FUSE es la única que no puede cambiar. Para el resto de módulos se tendrá diferentes implementaciones. Un sistema de archivos proxy tiene entonces 3 módulos principales: un filtro, un cache y un organizador.
 
 
 \section{Ciclo de vida}
 
-Los siguientes puntos son los diferentes momentos por los que pasa el sistema de archivos desde el momento en que se monta hasta el momento en que se desmonta.
+Los siguientes puntos son los diferentes momentos por los que pasa el sistema de archivos desde que se monta hasta se desmonta.
 
 \begin{itemize}
 \item[mount] Al momento de montar el sistema de archivos se ejecuta primero el archivo \path{dejumblefs/ui/dejumble.py}~(\ref{dejumblefs/ui/dejumble.py}). Este archivo se encarga de revisar y procesar los parámetros de la línea de comando, inicializa el sistema de archivos instanciando a la clase \textit{DejumbleFS}~(\ref{dejumblefs/fs.py}) y esta instancia la guarda en la variable global \textit{server} para poder ser accedido por los módulos cuando lo requieran. Además se inicializa el sistema de logging.
 \item[init] En el método main de la clase \textit{DejumbleFS}~(\ref{dejumblefs/fs.py}) se inicializan los diferentes módulos que van a formar parte de este sistema de archivos. Más detalles del proceso de inicialización se encuentran en la sección (\ref{detallesciclodevida}).
-\item[main] Una vez inicializado todo se pasa el control a la superclase \textit{fuse.FUSE} (que es parte de la biblioteca \textit{fuse-python}) la cual se encarga de contactarse con el módulo de FUSE en el kernel para montar el sistema de archivos. En este punto el hilo de ejecución se bloquea hasta recibir pedidos o en el momento en que se desmonta o cuando sucede un error.
-\item[request] Mientras el sistema de archivos se encuentra suspendido puede recibir varios pedidos del módulo del kernel cuando este recibe pedidos a través del sistema de archivos. El request se recibe en la clase \textit{DejumbleFS}~(\ref{dejumblefs/fs.py}) en cualquiera de sus funciones de sistema de archivos. Más adelante se definen cada una de estas funciones.
-\item[umount] Una vez que se desmonta el sistema de archivos simplemente se termina la ejecución del programa y se devuelve el control al sistema operativo.
+\item[main] Una vez inicializado todo se pasa el control a la superclase \textit{fuse.FUSE} (que es parte de la biblioteca \textit{fuse-python}) la cual se encarga de contactarse con el módulo de FUSE en el kernel para montar el sistema de archivos.
+\item[fsinit] Este es un método de la clase \textit{DejumbleFS}~(\ref{dejumblefs/fs.py}). Inicializa el sistema de archivos. En este paso se guarda un puntero al directorio donde estamos montando para poder acceder a esos datos en caso de que se necesite. En este punto el hilo de ejecución se bloquea hasta recibir pedidos o en el momento en que se desmonta o cuando sucede un error.
+\item[request] Mientras el sistema de archivos se encuentra suspendido puede recibir varios pedidos del módulo del kernel. Estos pedidos se generan cada vez que el kernel recibe pedidos a través del sistema de archivos. El pedido se recibe en la clase \textit{DejumbleFS}~(\ref{dejumblefs/fs.py}) en cualquiera de sus funciones de sistema de archivos. Más adelante se definen cada una de estas funciones.
+\item[umount] Una vez que se desmonta el sistema de archivos simplemente se termina la ejecución del programa.
+\item[fsdestroy] Este es un método de la clase \textit{DejumbleFS}~(\ref{dejumblefs/fs.py}). Se ejecuta después que el sistema de archivos ha sido desmontado. Al finalizar este método se devuelve el control al sistema operativo.
 \end{itemize}
 
-\subsection{Funciones generales}
+\section{Pedidos}
 
-Estas funciones están implementadas en la clase \textit{DejumbleFS} que se encuentra en el archivo \path{dejumblefs/fs.py}~(\ref{dejumblefs/fs.py}). 
-
-\begin{itemize}
-\item[fsinit] Inicializa el sistema de archivos. En este paso se guarda un puntero al directorio donde estamos montando para poder acceder a esos datos en caso de que se necesite.
-\item[fsdestroy] Se ejecuta después que el sistema de archivos ha sido desmontado.
-\end{itemize}
+Para cada pedido sobre el sistema de archivos montado, la clase \textit{DejumbleFS}~(\ref{dejumblefs/fs.py}) llama a las siguientes funciones dependiendo del pedido que se está realizando.
 
 \subsection{Funciones sobre la estructura del sistema de archivos}
 
@@ -59,7 +56,7 @@ Las siguientes funciones son reenviadas al organizador definido al momento de mo
 
 \subsection{Funciones sobre las propiedades de un archivo o directorio}
 
-Estas funciones modifican solamente las propiedades del archivo. La única excepción es  \textit{truncate} que sí cambia al archivo. Este método requiere a nivel de FUSE para poder cortar un archivo sin abrirlo. Todas estas funciones se envían directamente al cache sin pasar por el organizador.
+Todas estas funciones se llaman directamente en el cache sin pasar por el organizador. Modifican solamente las propiedades del archivo. La única excepción es  \textit{truncate} que sí cambia al archivo. Este método requiere a nivel de FUSE para poder cortar un archivo sin abrirlo.
 
 \begin{itemize}
 \item[chmod] Cambia permisos a un archivo.

@@ -15,7 +15,7 @@ Una vez inicializados se llama al método \textit{reset} del organizador y este 
 
 En el cache cuando se llama el método \textit{reset} se crea una base de datos en memoria de los archivos en el espacio de nombres original y se rellena con todos las rutas devueltas por el filtro.
 
-En el organizador en el método \textit{reset} crea una base de datos en memoria del mapeo entre los archivos en el espacio de nombres original y los archivos en el espacio de nombres transformado y finalmente llena su base de datos llamando el método \textit{generateallpaths}. Este método pasa cada una de las rutas en el espacio de nombres original que tiene el cache al método \textit{generatepaths} que devuelve las rutas en el espacio de nombres transformado. Si se construyó el organizador con \textit{recursive=True} también pasa cada uno de los subdirs que se encuentran en cada ruta. Por ejemplo para ``\path{/tmp/directorio/subdir1/subdir2/subdir3/unarchivo.txt}'' y con \textit{root}=\path{/tmp/directorio/} se pasaría esta lista de archivos:
+En el organizador en el método \textit{reset} crea una base de datos en memoria del mapeo entre los archivos en el espacio de nombres original y los archivos en el espacio de nombres transformado y finalmente llena su base de datos llamando el método \textit{generateallpaths}. Este método pasa cada una de las rutas en el espacio de nombres original que tiene el cache al método \textit{generatepaths} que devuelve las rutas en el espacio de nombres transformado. Si se construyó el organizador con \textit{recursive=True} también pasa cada uno de los subdirectorios que se encuentran en cada ruta. Por ejemplo para ``\path{/tmp/directorio/subdir1/subdir2/subdir3/unarchivo.txt}'' y con \textit{root}=\path{/tmp/directorio/} se pasaría esta lista de archivos:
 
 \begin{itemize}
 \item \path{/tmp/directorio/subdir1/}
@@ -38,7 +38,7 @@ realpath & path & dirname\\
 \hline
 \end{tabular}
 \end{center}
-\label{default}
+\label{default1}
 \end{table}
 
 En caso de usar el organizador \textit{Original}~(\ref{dejumblefs/organizers/original.py}) en la tabla (\ref{baseoriginal}) se puede ver el resultado.
@@ -55,7 +55,7 @@ realpath & path & dirname\\
 \hline
 \end{tabular}
 \end{center}
-\label{default}
+\label{default2}
 \end{table}
 
 
@@ -73,7 +73,7 @@ realpath & path & dirname\\
 \hline
 \end{tabular}
 \end{center}
-\label{default}
+\label{default3}
 \end{table}
 
 
@@ -82,7 +82,7 @@ realpath & path & dirname\\
 
 \subsection{Creando un filtro}
 
-Para crear un filtro se debe crear una archivo con el nombre del filtro en minúsculas todo, en la carpeta \path{dejumblefs/filters/} con extensión \path{.py}. En este archivo se debe crear una clase Python que tenga por nombre el nombre del filtro terminando en \textit{FileListFilter} que extienda de \textit{dejumblefs.filter.FileListFilter}.
+Para crear un filtro se debe crear un archivo con el nombre del filtro en minúsculas todo, en la carpeta \path{dejumblefs/filters/} con extensión \path{.py}. En este archivo se debe crear una clase Python que tenga por nombre el nombre del filtro terminando en \textit{FileListFilter} que extienda de \textit{dejumblefs.filter.FileListFilter}.
 
 Esta clase debe contener al menos un método llamado \textit{filelist}. Este método debe devolver un iterador, generador, lista o tupla conteniendo rutas de archivos. El filtro puede hacer uso de las variables \textit{query} y \textit{root} para refinar su funcionamiento. Como ejemplo se puede ver \path{dejumblefs/filters/null.py}~(\ref{dejumblefs/filters/null.py}).
 
