@@ -150,19 +150,19 @@
 \setlength{\footskip}{2.36cm}
 
 \pagestyle{fancy}
-\renewcommand{\chaptermark}[1]{\markboth{\MakeUppercase{\thechapter. #1 }}{}}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
 \renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
-\fancyhf{}
-\fancyhead[RO]{\bfseries\rightmark}
-\fancyhead[LE]{\bfseries\leftmark}
-\fancyfoot[C]{\thepage}
-\renewcommand{\headrulewidth}{0.5pt}
-\renewcommand{\footrulewidth}{0pt}
-\addtolength{\headheight}{0.5pt}
-\fancypagestyle{plain}{
-  \fancyhead{}
-  \renewcommand{\headrulewidth}{0pt}
-}
+\fancyhf{} %delete the current section for header and footer
+\fancyhead[LE,RO]{\bfseries\thepage}
+%\fancyhead[LO]{\bfseries\rightmark}
+%\fancyhead[RE]{\bfseries\leftmark}
+\renewcommand{\headrulewidth}{0pt}
+% make space for the rule
+\fancypagestyle{plain}{%
+  %\fancyhead{} %get rid of the headers on plain pages
+  %\renewcommand{\headrulewidth}{0pt} % and the line
+} 
+
 
 \newcommand{\submittedtext}{{Tesis de grado presentada como requisito para la obtención del título de}}
 %
