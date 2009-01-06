@@ -149,20 +149,12 @@
 \setlength{\marginparwidth}{3cm}
 \setlength{\footskip}{2.36cm}
 
-\pagestyle{fancy}
-\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
-\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
-\fancyhf{} %delete the current section for header and footer
-\fancyhead[LE,RO]{\bfseries\thepage}
-%\fancyhead[LO]{\bfseries\rightmark}
-%\fancyhead[RE]{\bfseries\leftmark}
-\renewcommand{\headrulewidth}{0pt}
-% make space for the rule
-\fancypagestyle{plain}{%
-  %\fancyhead{} %get rid of the headers on plain pages
-  %\renewcommand{\headrulewidth}{0pt} % and the line
-} 
 
+\pagestyle{fancy} 
+\renewcommand{\headrulewidth}{0pt} 
+\lhead{} 
+\rhead{\thepage}
+\cfoot{}
 
 \newcommand{\submittedtext}{{Tesis de grado presentada como requisito para la obtención del título de}}
 %
@@ -199,22 +191,97 @@
     \thispagestyle{empty}
 %  \null\vfill
   \begin{center}
-    { \Huge {\bfseries {\@title}} \par}
-{\large \vspace*{35mm} {{\@crest} \par} \vspace*{25mm}}
-    {{\Large \@author} \par}
+{\large {{\@crest} \par}}
+    {\Large \bf {\@university} \par}
 {\large \vspace*{1ex}
     {{\@collegeordept} \par}
-\vspace*{1ex}
-    {{\@university} \par}
+\vspace*{30mm}
+    { \large {\bfseries {\@title}} \par}
+\vspace*{30mm}
+    {{\Large \bf \@author} \par}
 \vspace*{25mm}
-    {{\submittedtext} \par}
+    {\normalsize {\submittedtext} \par}
 \vspace*{1ex}
     {\it {\@degree} \par}
 \vspace*{2ex}
-    {\@degreedate}}
+    {\normalsize {\@degreedate}}}
   \end{center}
   \null\vfill
 \end{alwayssingle}}
+
+% APROVACION (HOJA)
+%
+% Agregado por Pablo Bustamante y modificado por César Izurieta,
+% para la USFQ con el fin de cumplir el estándar para tesis para la graduación.
+
+\newenvironment{approval}
+{\begin{alwayssingle}
+  \pagestyle{empty}
+  \begin{center}
+  {{\large \@university \\ \@collegeordept } \par}
+  \vspace*{1cm}
+  {{\Large HOJA DE APROBACIÓN DE TESIS} \par}
+  \vspace*{1cm}
+  {{\LARGE \@title} \par }
+   \vspace*{0.5cm}
+  {{\large \@author }\par}
+  \end{center}
+  \vspace{1cm}
+   \begin{center}}
+{{\\ \@degreedate} \end{center}
+\end{alwayssingle}}
+
+
+%REVISOR DE TESIS -- HOJA DE APROBACION
+%
+% Los dos Argumentos son: 
+%                              Nombre  Titulo
+\newcommand{\revisor}[2] {%
+ \vspace{1cm}%
+\begin{tabular}{l c}
+#1, #2  & ............................................................... \\
+Miembro del Comité de Tesis & (firma)\\
+\end{tabular}%
+}
+
+% DIRECTOR DE TESIS -- HOJA DE APROBACION
+%
+% Requiere igualmente dos arguentos
+\newcommand{\director}[2] {%
+\begin{tabular}{l c}
+#1, #2  & ............................................................... \\
+Director de Tesis & (firma)\\
+\end{tabular}%
+\vspace{1.5cm}
+}
+
+% DECANOS -- HOJA DE APROBACION
+%
+% Requiere 3 argumentos, siendo el tercero
+% el colegio del cual es decano
+\newcommand{\dean}[3] {%
+ \vspace{1.5cm}%
+\begin{tabular}{l c}
+#1, #2  & ............................................................... \\
+Decano del Colegio #3 & (firma)\\
+\end{tabular}%
+}
+
+% COPYRIGTH
+%
+% Agregado por Pablo Bustamante, para la USFQ con el fin de cumplir
+% el est~Gndar para tesis para la graduaci~Wn.
+
+\newenvironment{copyrigth}
+{\begin{alwayssingle}
+  \pagestyle{empty}
+  \begin{center}
+  \vspace*{1.5cm}
+  {\large \copyright\ Derechos de Autor \\ \@author \\ 2009}
+  \end{center}
+  \vspace{0.5cm}
+  \begin{quote} \begin{center}}
+{\end{center} \end{quote} \end{alwayssingle}}
 
 % DEDICATION
 %
