@@ -1,0 +1,81 @@
+## How to use ##
+
+There are two ways to use this program. You can use a visual application or the command line.
+Look for a program called "DejumbleFS Mounter" to use the graphical application.
+
+To use the command line you can run something like:
+
+```
+dejumble [mountpoint] [options]
+```
+
+Run dejumble --help to see a list of detailed options.
+
+File contents are preserved in a special directory `.dejumblefs` that contains directories with all the previous directory structure and other information. This directory is not shown, not even with a `ls -a` but you can cd into it.
+
+## Flags ##
+
+  * `nonempty` - Linux only. Lets you mount over an existing directory.
+  * `noappledouble` - OS X only. Ignores special Mac OS X files that may make the program create empty directories.
+
+If you are using Mac OS X take a look at http://code.google.com/p/macfuse/wiki/OPTIONS to see more mount time options. Some of this also apply to other operating systems. You'll need to use the command line to use some of this options.
+
+## Filters ##
+
+  * `CompleteDirectory` - Provides a list of files that contains all the files present in a directory.
+  * `OriginalDirectory` - Provides a list of files that contains all the files present before on the mounting directory.
+  * `Null` - Provides a file 'null' that is a proxy for /dev/null, for testing purposes only.
+  * `Shell` - Provides a list of files that are proxies for those returned by the shell script defined by 'query'.
+
+Not implemented yet:
+
+  * `Xesam` - Executes a xesam query against the current search provider.
+
+## Caches ##
+
+  * `PassThrough` - Writes and reads everything from the original filesystem all the time.
+  * `Sandbox` - Treats the original filesystem as read-only and any changes are just saved to memory.
+
+## Organizers ##
+
+  * `Original` - Shows the same directory structure as the original files.
+  * `Flat` - Just shows the list of files provided all in one directory.
+  * `ISO9660` - Converts all filenames to short file names like 8.3 DOS names (SomeFile.ext -> SOMEFI~1.EXT).
+  * `Documents` - Organizes the files on folders by filetype.
+  * `Date` - Organizes de files on folders by date.
+
+Not implemented yet:
+
+  * `CaseInsensitive` - Treats all files names as case insensitive.
+  * `Localization` - Uses a translation table to translate file names or directory names.
+
+## Requirements ##
+
+  * python==1.5
+  * python-setuptools>=0.6
+  * psyco>=1.6
+  * fuse-python>=0.2
+  * PyDBLite==2.0\_pep8 (Use the one on the support/PyDbLite folder which complies better
+> > with pylint and pep8)
+  * python-xesam (not yet, does this even exist?)
+
+## Known issues ##
+
+  * umount on Mac OS X is problematic. See http://code.google.com/p/dejumble/issues/detail?id=1
+
+## Examples ##
+
+Some examples:
+
+```
+dejumble /path/to/mount -o nonempty
+dejumble /path/to/mount -o filter="Null",nonempty
+dejumble /path/to/mount -o filter="OriginalDirectory",organizer="Documents",nonempty
+dejumble /path/to/mount -o root="~/Music",query="find ~/Music/ -name *.mp3",filter="Shell",organizer="Flat",nonempty
+```
+
+to unmount:
+
+```
+umountdejumble /path/to/mount
+```

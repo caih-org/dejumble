@@ -1,0 +1,21 @@
+dejumble 0.8 - Aug 3, 2007
+
+> - A lot of optimizations
+> - ISO9660 organizer implemented
+> - Original organizer implemented
+> - CompleteDirectory filter implemented
+> - Some documentation (in spanish) in the docs folder
+
+dejumble 0.6 - Aug 3, 2007
+
+> - Two organizers implemented, DocumentsOrganizer and DateOrganizer
+> - Some internal changes to improve efficency
+
+searchfs 0.4 - May 28, 2007
+
+> - Many file providers implemented: OriginalDirectory, Null, Shell.
+> - Updated command line options
+
+searchfs 0.2 - May 24, 2007
+
+> - Default SearchHandler implementation. That means that you can do shell searches. See README for details.

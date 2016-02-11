@@ -1,0 +1,15 @@
+**Follow this steps only for a local installation**
+
+Most users should use packages for their operating system. Find them at the Downloads page.
+
+## Build ##
+
+```
+python setup.py build
+```
+
+## Installation ##
+
+```
+sudo python setup.py install
+```
